@@ -1,0 +1,76 @@
+<%- include('partials/header.ejs') %> 
+<body>
+<div class="container-sm">
+    <form class="mb-3" id="form-volunteer" enctype="application/x-www-form-urlencoded"
+      method="POST" action="/voluntario">
+    <h3>Cadastro do Autor</h3>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Nome Completo</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" 
+            min="3" id="fullName" 
+            placeholder="Clarice Lispector" 
+            name="fullName"
+            required>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Usuário</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" 
+            min="3" id="userName" 
+            placeholder="clariceLisp" 
+            name="userName"
+            required>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">CPF</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" 
+            max="11" id="cpf" 
+            placeholder="12345678912" 
+            name="cpf"
+            required>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Data de Nascimento</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" 
+            min="11" max="11"
+            id="dateBirthUser"
+            name="dateBirthUser"
+            required>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">E-mail</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" 
+            min="15" id="email" 
+            placeholder="volunteer@gmail.com" 
+            name="email"
+            required>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Senha</label>
+        <div class="col-sm-10">
+          <input type="password" class="form-control" 
+            min="8" id="password" 
+            placeholder="mínimo 8 caracteres" 
+            name="password"
+            required>
+        </div>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btnProgress" type="submit" form="form-volunteer">Cadastrar</button>
+        <button class="btn btnUpdate" type="button">Atualizar</button>
+        <button class="btn btnCancel" type="button">Cancelar</button>
+      </div>
+    </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  </body>
+</html>
