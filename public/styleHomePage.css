@@ -16,3 +16,26 @@ body {
   background-color: var(--bgBackground);
   display: block;
 }
+
+.carousel-inner {
+  background-color: rgb(42, 41, 41);
+  margin-bottom: 4vh;
+}
+.carousel-inner img{
+  margin: 0 auto;
+  width: 15%;
+}
+
+.flex-legend {
+  display: flex;
+  flex-direction: column;
+}
+.flex-legend .item {
+ width: 12vw;
+ height: 36vh;
+}
+
+.flex-legend .item-icon {
+  width: 10%;
+}
+

@@ -8,8 +8,8 @@
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
-      <div class="carousel-item active w-40">
-        <img src="images/isaura.png" class="d-block w-45" alt="...">
+      <div class="carousel-item active">
+        <img src="images/isaura.png" class="d-block w-30" alt="...">
       </div>
       <div class="carousel-item w-40">
         <img src="images/dom_casmurro.png" class="d-block w-45" alt="...">
@@ -27,12 +27,26 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-<div class="d-flex justify-content-around">
-  <img src="images/hora_estrela.png" alt="" class="item">
-  <img src="images/dom_casmurro.png" alt="" class="item">
-  <img src="images/capitaes.png" alt="" class="item">
-  <img src="images/isaura.png" alt="" class="item">
+<div class="d-flex justify-content-around flex-wrap">
+  <div class="flex-legend">
+    <img src="images/hora_estrela.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>
+  <div class="flex-legend">
+    <img src="images/dom_casmurro.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>  
+  <div class="flex-legend">
+    <img src="images/capitaes.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>
+  <div class="flex-legend">
+    <img src="images/isaura.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-</body>
-</html>
+<%- include('partials/footer.ejs') %> 
