@@ -8,7 +8,11 @@ const Book = connection.define('book', {
   },
   refWriter: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+      model: 'writer',
+      key: 'writerId'
+    }
   },
   publishingCompany: {
     type: Sequelize.STRING,

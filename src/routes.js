@@ -13,7 +13,7 @@ routes.get('/homepage', (req, res) => res.render(views + "homepage"))
 routes.get('/autor', (req, res) => res.render(views + "registerWriter"))
 routes.post('/autor', WriterController.createWriter)
 
-routes.get('/registroLivro',(req, res) => res.render(views + "registerBook"))
+routes.get('/livro',(req, res) => res.render(views + "registerBook"))
 routes.get('/avaliacaoResumo', (req, res) => res.render(views + "approvedReview"))
 
 

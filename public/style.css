@@ -7,7 +7,7 @@
 } 
 
 body, .input-group-text{
-  background-color: var(--bgBackground);
+  background-color: var(--bgBackground2);
   color: var(--bgFont);
 }
 

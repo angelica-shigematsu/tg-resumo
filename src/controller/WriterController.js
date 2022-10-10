@@ -24,9 +24,9 @@ async function listWriter(req, res) {
 async function updateWriter(req, res) {
   const { writerId } = req.parms
   const writers = Writer.get()
-  const write = writers.find(writer => Number(writer.WriterId) === Number(writerId))
+  const writer = writers.find(writer => Number(writer.WriterId) === Number(writerId))
 
-  if (!write) return response.send('Cadastro não encontrado')
+  if (!writer) return response.send('Cadastro não encontrado')
 
   const updateWriter = {
     ...writer,

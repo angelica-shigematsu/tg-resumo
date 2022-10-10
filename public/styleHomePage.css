@@ -11,58 +11,8 @@ body {
   margin: 0px;
   padding: 0px;
 }
-.btnRadioAuto {
-  display: flex;
-  justify-content: center;
-  margin-top: 20%;
-  transition: 1s;
-  cursor: pointer;
-}
-.btnRadio {
-  width: 8%;
-  height: 2em;
-  flex-direction: row;
-}
+
 .navBarColor {
   background-color: var(--bgBackground);
   display: block;
 }
-
-/* Imagem central slider */
-.imageCenter {
-  position: absolute;
-}
-
-.slider {
-  display: flex;
-  flex-direction: column;
-  margin: 6% 0 10% 0 ;
-}
-
-/* Lista de resumos sobre os livros */
-.containerBooks {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex: row;
-}
-
-.item {
-  align-items: center;
-  margin-right: 5%;
-}
-#radio1:checked ~ .first{
-  margin-left: 0;
-}
-#radio2:checked ~ .first{
-  margin-left: 0;
-}
-
-#radio3:checked ~ .first{
-  margin-left: 0;
-}
-
-#radio4:checked ~ .first{
-  margin-left: -75%;
-}
-
