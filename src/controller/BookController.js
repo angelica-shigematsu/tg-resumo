@@ -1,9 +1,9 @@
 const Writer = require('../database/Writer')
 
-async function show ( req, res){
-  const writers = Writer.get()
+async function listVolunteers ( req, res){
+  const writers = Writer.data
 
   return writers
 }
 
-module.exports = writers
+module.exports = { listVolunteers }

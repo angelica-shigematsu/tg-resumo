@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 const connection = require("./config")
 
-const Book = connection.define('writer', {
+const Writer = connection.define('writer', {
   idWriter: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -14,10 +14,9 @@ const Book = connection.define('writer', {
   dateBirthWriter: {
     type: Sequelize.DATE,
     allowNull: false
-  },
-  
+  }
 })
 
-Book.sync({force: false}).then(() => {})
+Writer.sync({force: false}).then(() => {})
 
-module.exports = Book
+module.exports = Writer

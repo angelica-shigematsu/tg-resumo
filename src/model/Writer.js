@@ -1,7 +1,12 @@
 let data = [
   {
     id: 1,
-    name: 'Clarice Lispector',
+    nameWriter: 'Clarice Lispector',
+    dateBirthWriter: Date.now()
+  },
+  {
+    id: 1,
+    nameWriter: 'Joana',
     dateBirthWriter: Date.now()
   }
 ]

@@ -1,25 +1,23 @@
 const Writer = require('../database/Writer')
-
 async function createWriter(req, res) {
-  const { fullName } = req.body
+  const { nameWriter } = req.body
   const { dateBirthWriter } = req.body
 
     await Writer.create({
-    fullName,
+    nameWriter,
     dateBirthWriter
-  }).then(() => res.redirect('/'))
+  }).then(() => res.redirect('/listEscritor'))
 }
 
 async function listWriter(req, res) {
-  const { writerId } = req.params
-    const writers = Writer.get()
-
-    const writer = writers.find(writer => Number(writer.writerId) === Number(writerId))
-
-    if(!writer) return res.send('Escritor não encontrado')
-
-    return res.render(index, { writer })
-  } 
+  Writer.findAll({raw : true, order: [
+    ['nameWriter', 'ASC']//ordem decrescente
+  ]}).then(writers=> {
+    res.render("listEscritor",{
+        writers: writers
+    });
+});
+} 
 
 async function updateWriter(req, res) {
   const { writerId } = req.parms

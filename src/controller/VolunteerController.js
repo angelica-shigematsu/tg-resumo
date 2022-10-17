@@ -1,5 +1,5 @@
 const Volunteer = require('../database/Volunteer')
-
+const dataVolunteer = require('../model/Volunteer')
 async function createVolunteer(req, res) {
   const { fullName } = req.body
   const { userName } = req.body
@@ -18,4 +18,9 @@ async function createVolunteer(req, res) {
   }).then(() => res.redirect(('/')))
 }
 
-module.exports = { createVolunteer }
+async function listVolunteer(req, res) {
+  const listVolunteers = dataVolunteer.get()
+
+  res.redirect('/listVolunteer' + { volunteers: listVolunteers })
+}
+module.exports = { createVolunteer, listVolunteer }
