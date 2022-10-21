@@ -1,7 +1,7 @@
 const Writer = require('../database/Writer')
 
 async function listVolunteers ( req, res){
-  const writers = Writer.data
+  await Writer.findAll({raw: true, order})
 
   return writers
 }

@@ -1,5 +1,5 @@
 const Volunteer = require('../database/Volunteer')
-const dataVolunteer = require('../model/Volunteer')
+
 async function createVolunteer(req, res) {
   const { fullName } = req.body
   const { userName } = req.body
@@ -15,12 +15,16 @@ async function createVolunteer(req, res) {
     dateBirthUser,
     email,
     password
-  }).then(() => res.redirect(('/')))
+  }).then(() => res.redirect(('/listVolunteer')));
 }
 
 async function listVolunteer(req, res) {
-  const listVolunteers = dataVolunteer.get()
-
-  res.redirect('/listVolunteer' + { volunteers: listVolunteers })
+  await Volunteer.findAll({raw: true, order: [
+    ['fullName', 'ASC']
+  ]}).then(volunteers => {
+    res.render("listVolunteer", {
+      volunteers: volunteers
+    });
+  });
 }
 module.exports = { createVolunteer, listVolunteer }

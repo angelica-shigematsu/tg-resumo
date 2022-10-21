@@ -1,4 +1,5 @@
 const Writer = require('../database/Writer')
+
 async function createWriter(req, res) {
   const { nameWriter } = req.body
   const { dateBirthWriter } = req.body
@@ -10,7 +11,7 @@ async function createWriter(req, res) {
 }
 
 async function listWriter(req, res) {
-  Writer.findAll({raw : true, order: [
+  await Writer.findAll({raw : true, order: [
     ['nameWriter', 'ASC']//ordem decrescente
   ]}).then(writers=> {
     res.render("listEscritor",{

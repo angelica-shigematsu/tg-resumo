@@ -20,11 +20,12 @@ const Volunteer = connection.define('volunteer', {
     allowNull: false
   },
   dateBirthUser: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: false
   },
   email: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   password: {
     type: Sequelize.STRING,
