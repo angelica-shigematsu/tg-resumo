@@ -1,0 +1,43 @@
+:root{
+  --bgBtnProgress: #72B078;
+  --bgBackground: #D7C0AE;
+  --bgBackground2: #EEE3CB;
+  --bgFont: #967E76;
+  --bgBtnCancel: #B7C4CF;
+} 
+
+body, .input-group-text{
+  background-color: var(--bgBackground2);
+  color: var(--bgFont);
+}
+
+.btnProgress{
+  background-color: var(--bgBtnProgress);
+}
+
+.btnCancel{
+  background-color: var(--bgBtnCancel);
+}
+
+.btnUpdate{
+  background-color: var(--bgBtnCancel);
+}
+
+.container-sm{
+  margin-top: 20vh;
+  width: 50%;
+  background-color: var(--bgBackground2);
+  padding: 2%;
+}
+
+h3{
+  margin-bottom: 5vh;
+  text-align: center;
+}
+
+img{
+  width: 5%;
+  height: 5%;
+}
+
+

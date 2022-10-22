@@ -1,0 +1,45 @@
+:root{
+  --bgBtnProgress: #72B078;
+  --bgBackground: #D7C0AE;
+  --bgBackground2: #EEE3CB;
+  --bgFont: #967E76;
+  --bgBtnCancel: #B7C4CF;
+} 
+
+body {
+  background-color: var(--bgBackground2);
+  margin: 0px;
+  padding: 0px;
+}
+
+.navBarColor {
+  background-color: var(--bgBackground);
+  display: block;
+}
+
+.carousel-inner {
+  background-color: rgb(42, 41, 41);
+  margin-bottom: 4vh;
+  height: 40%;
+}
+
+.carousel-inner img{
+  margin: 0 auto;
+  width: 15%;
+  height: 100%;
+}
+
+.flex-legend {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-legend .item {
+ width: 12vw;
+ height: 36vh;
+}
+
+.flex-legend .item-icon {
+  width: 10%;
+}
+

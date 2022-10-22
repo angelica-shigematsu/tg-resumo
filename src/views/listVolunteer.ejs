@@ -1,0 +1,16 @@
+<%- include('partials/nav.ejs')  %> 
+<%- include('partials/header.ejs') %> 
+
+<% writers.forEach(writer => { %>
+  <div class="card w-75">
+    <div class="card-body">
+      <h5 class="card-title"><%= writer.nameWriter.toUpperCase() %></h5>
+      <p class="card-text">
+        <p>Cadastrou em:</p>
+        <p><%= writer.createdAt.getDate() %>/<%= writer.createdAt.getMonth()+1 %>/<%= writer.createdAt.getFullYear() %></p>
+        <a href="#" class="btn btn-primary">Excluir</a>
+    </div>
+  </div>
+<% }) %>
+
+<%- include('partials/footer.ejs') %> 

@@ -1,0 +1,53 @@
+<%- include('partials/nav.ejs') %> 
+<%- include('partials/header.ejs') %> 
+
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="images/isaura.png" class="d-block w-30" alt="...">
+      </div>
+      <div class="carousel-item w-40">
+        <img src="images/dom_casmurro.png" class="d-block w-45" alt="...">
+      </div>
+      <div class="carousel-item w-40">
+        <img src="images/hora_estrela.png" class="d-block w-45" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+<div class="d-flex justify-content-around flex-wrap">
+  <div class="flex-legend">
+    <img src="images/hora_estrela.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>
+  <div class="flex-legend">
+    <img src="images/dom_casmurro.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>  
+  <div class="flex-legend">
+    <img src="images/capitaes.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>
+  <div class="flex-legend">
+    <img src="images/isaura.png" alt="" class="item">
+    <img src="images/heart.svg" alt="" class="item-icon">
+    <p>Imagem: Amazon</p>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %> 
