@@ -1,4 +1,5 @@
 const Profile = require('../model/Volunteer')
+const date = require('../utils/DateFormat')
 
 async function listProfile(req, res) {
   const { id } = req.params
@@ -7,7 +8,7 @@ async function listProfile(req, res) {
       where: { idVolunteer: id }
     });
 
-    res.render('profile', { volunteer: volunteer})
+    res.render('profile', { volunteer: volunteer })
     
   }catch(error){
     throw new Error(error);

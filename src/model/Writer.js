@@ -12,7 +12,7 @@ const Writer = connection.define('writer', {
     allowNull: false
   },
   dateBirthWriter: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: false
   }
 })
