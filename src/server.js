@@ -26,4 +26,4 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(routes)
   
-app.listen(3000,() => console.log('rodando'))
+app.listen(8090,() => console.log('rodando'))

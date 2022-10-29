@@ -14,14 +14,29 @@ async function createWriter(req, res) {
   }
 }
 
-async function listWriter(req, res) {
+async function listAllWriter(req, res) {
   await Writer.findAll({raw : true, order: [
     ['nameWriter', 'ASC']//ordem decrescente
   ]}).then(writers=> {
-    res.render("listEscritor",{
+    res.render("listWriters",{
         writers: writers
     });
 });
+} 
+
+async function listWriter(req, res) {
+  const { id } = req.params
+
+  try{
+    const writer = await Writer.findOne({
+      where: { idWriter: id }
+    });
+
+    res.render('listWriter', { writer: writer })
+    
+  }catch(error){
+    throw new Error(error);
+  }
 } 
 
 async function updateWriter(req, res) {
@@ -56,4 +71,4 @@ async function deleteWriter( req, res) {
   return res.redirect('/')
 }
 
-module.exports = { createWriter, listWriter, updateWriter, deleteWriter  }
+module.exports = { createWriter, listAllWriter, listWriter, updateWriter, deleteWriter  }

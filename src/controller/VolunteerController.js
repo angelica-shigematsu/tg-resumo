@@ -16,7 +16,7 @@ async function createVolunteer(req, res) {
       dateBirthUser,
       email,
       password
-    }).then(() => res.redirect(('/listVolunteer')));
+    }).then(() => res.redirect(('listVolunteer')));
 
   }catch(error) {
     throw new Error(error)
@@ -24,12 +24,36 @@ async function createVolunteer(req, res) {
 }
 
 async function listVolunteer(req, res) {
-  await Volunteer.findAll({raw: true, order: [
+  const volunteers = await Volunteer.findAll({raw: true, order: [
     ['fullName', 'ASC']
-  ]}).then(volunteers => {
+  ]});
+
     res.render("listVolunteer", {
       volunteers: volunteers
     });
-  });
+    
+};
+
+async function updateVolunteer(req, res) {
+  const { id } = req.parms
+  
+  try{
+    const volunteer = await Volunteer.findOne({
+      where: { idVolunteer: id }
+    });
+    
+    const updateWriter = {
+      ...volunteer
+    }
+
+    await Volunteer.update(updateWriter)
+
+    res.redirect('/voluntario/')
+    
+  }catch(error){
+    throw new Error(error);
+  }
 }
-module.exports = { createVolunteer, listVolunteer }
+
+
+module.exports = { createVolunteer, listVolunteer, updateVolunteer }

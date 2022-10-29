@@ -7,8 +7,7 @@
       <h5 class="card-title"><%= writer.nameWriter.toUpperCase() %></h5>
       <p class="card-text">
         <form class="mb-3" id="form-autor" enctype="application/x-www-form-urlencoded"
-        method="POST" action="/autor/alterar/<%= writer.idWriter %> ">
-        <input type="text" hidden value="<%= writer.idWriter%>">
+        method="POST" action="/autor/alterar/<%= writer.idWriter %>">
         <p>Cadastrou em:</p>
         <p><%= writer.createdAt.getDate() %>/<%= writer.createdAt.getMonth()+1 %>/<%= writer.createdAt.getFullYear() %></p>
         <button class="btn btnProgress" type="submit" form="form-autor">Detalhes</button>
