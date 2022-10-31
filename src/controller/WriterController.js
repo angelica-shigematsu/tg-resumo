@@ -18,7 +18,7 @@ async function listAllWriter(req, res) {
   await Writer.findAll({raw : true, order: [
     ['nameWriter', 'ASC']//ordem decrescente
   ]}).then(writers=> {
-    res.render("listWriters",{
+    res.render("listAllWriters",{
         writers: writers
     });
 });
@@ -27,40 +27,34 @@ async function listAllWriter(req, res) {
 async function listWriter(req, res) {
   const { id } = req.params
 
-  try{
-    const writer = await Writer.findOne({
-      where: { idWriter: id }
-    });
+  const numberId = Number(id)
 
-    res.render('listWriter', { writer: writer })
-    
-  }catch(error){
-    throw new Error(error);
-  }
+  if(isNaN(numberId)) return res.redirect("listEscritor")
+
+    Writer.findOne({idWriter: numberId}).then(writers => {
+    if(!writers) return res.redirect("listEscritor")
+
+    res.render("listWriter.ejs", { writers: writers })
+  })
 } 
 
 async function updateWriter(req, res) {
-  const { writerId } = req.parms
-  const writers = Writer.get()
-  const writer = writers.find(writer => Number(writer.WriterId) === Number(writerId))
+  const { idWriter } = req.body
+  const { nameWriter } = req.body
+  const { dateBirthWriter } = req.body
 
-  if (!writer) return response.send('Cadastro não encontrado')
-
-  const updateWriter = {
-    ...writer,
-    nameWriter: req.body.nameWriter,
-    dateBirthWriter: req.body.dateBirthWriter
-  }
-
-  const newWriter = writers.map(job => {
-    if (Number(Writer.writerId) == Number(writerId)) {
-      writer = updateWriter
-    }
-    return writer
+  await Writer.update({
+    nameWriter,
+    dateBirthWriter
+  },{
+    where: {
+    idWriter
+  }}).then(writer => {
+    console.log(writer)
+    res.render('/', { writer: writer })
+  }).catch(error => {
+    res.status(400).json('Error')
   })
-
-  await Writer.update(newWriter)
-  res.redirect('/autor/' + writerId)
 }
 
 async function deleteWriter( req, res) {

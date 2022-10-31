@@ -8,24 +8,62 @@ const WriterController = require('./controller/WriterController')
 const VolunteerController = require('./controller/VolunteerController')
 const BookController = require('./controller/BookController')
 const ProfileController = require('./controller/ProfileController')
+const session = require('express-session')
+const flash = require('connect-flash')
 
-routes.get('/', (req, res) => res.render(views + "index"))
-routes.get('/homepage', (req, res) => res.render(views + "homepage"))
+const passport = require('passport')
+
+require('events').EventEmitter.prototype._maxListeners = 70;
+require('events').defaultMaxListeners = 70;
+
+process.on('warning', function (err) {
+  if('MaxListenersExceededWarning' == err.name){
+    console.log(err.name)
+    process.exit(1)
+  }
+})
+require('../config/auth')(passport)
+
+routes.use(session({
+  secret: "",
+  resave: true,
+  saveUninitialized: true
+}))
+routes.use(passport.initialize())
+routes.use(passport.session())
+routes.use(flash())
+
+routes.use((req, res, next) => {
+  res.locals.success_msg = req.flash("Sucess message")
+  res.locals.error_msg = req.flash("error_msg")
+  res.locals.error = req.flash("error")
+  next()
+})
+
+routes.get('/login', (req, res) => res.render(views + "index"))
+routes.post('/login', (req, res, next) => {
+  passport.authenticate('local',{
+    successRedirect: "/menu",
+    failureRedirect: "/login",
+    failureFlash: true
+  })(req, res, next)
+})
+
+routes.get('/menu', (req, res) => res.render(views + "homepage"))
 
 routes.get('/autor', (req, res) => res.render(views + "registerWriter"))
 routes.post('/autor', WriterController.createWriter)
-routes.get('/listEscritor', WriterController.listAllWriter)
-routes.get('/autor/alterar/:id', WriterController.listWriter)
-
+routes.get('/autor/listEscritor/:id', WriterController.listWriter)
+routes.get('/autor/listEscritor', WriterController.listAllWriter)
+routes.post('/autor/alterar/:id', WriterController.updateWriter)
 
 routes.get('/livro',(req, res) => res.render(views + "registerBook"))
 routes.get('/avaliacaoResumo', (req, res) => res.render(views + "approvedReview"))
 
-
 routes.get('/voluntario', (req , res) => res.render(views + "volunteer"))
 routes.post('/voluntario', VolunteerController.createVolunteer)
 routes.get('/listVoluntario', VolunteerController.listVolunteer)
-routes.post('/voluntario/:id', VolunteerController.updateVolunteer)
+routes.get('/voluntario/:id', ProfileController.listProfile)
 
 routes.get('/perfil/alterar/:id', ProfileController.listProfile)
 

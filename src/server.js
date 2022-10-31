@@ -19,7 +19,6 @@ app.set('view engine', 'ejs')
 
 app.set('views', path.join(__dirname, 'views'))
 
-console.log(__dirname)
 app.use(express.static("public"))
 
 app.use(express.urlencoded({ extended: true }))
