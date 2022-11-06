@@ -34,26 +34,27 @@ async function listWriter(req, res) {
     Writer.findOne({idWriter: numberId}).then(writers => {
     if(!writers) return res.redirect("listEscritor")
 
-    res.render("listWriter.ejs", { writers: writers })
+    res.render("listWriter", { writers: writers })
   })
 } 
 
 async function updateWriter(req, res) {
-  const { idWriter } = req.body
+  const { id } = req.params
   const { nameWriter } = req.body
   const { dateBirthWriter } = req.body
 
+  console.log(dateBirthWriter +  id)
+  if(!nameWriter && !dateBirthWriter )  res.render("listAllWriters")
   await Writer.update({
     nameWriter,
     dateBirthWriter
   },{
     where: {
-    idWriter
-  }}).then(writer => {
-    console.log(writer)
-    res.render('/', { writer: writer })
-  }).catch(error => {
-    res.status(400).json('Error')
+      idWriter: id
+  }}).then(() => {
+    res.redirect("../../autor/listEscritor")
+  }).catch(err => {
+    res.status(400).json(err).send('Erro')
   })
 }
 
