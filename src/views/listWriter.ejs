@@ -26,15 +26,15 @@
            value="<%= writers.dateBirthWriter %>">
         </div>
       </div>
-
+      </form>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button class="btn btnUpdate" type="submit" form="form-writer">Atualizar</button>
-        <form class="mb-3" id="form-delete" enctype="application/x-www-form-urlencoded"
-        method="POST" action="/autor/delete">
-          <button class="btn btnCancel" type="submit" form="form-delete">Excluir</button>
+        <form class="mb-3" enctype="application/x-www-form-urlencoded"
+          method="POST" action="/autor/excluir">
+          <input type="text" value="<%=writers.idWriter%>" id ="id" name="id">
+          <button class="btn btnCancel" type="submit">Excluir</button>
         </form>
       </div>
-      </form>
   </div>
   
 <%- include('partials/footer.ejs') %> 

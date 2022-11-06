@@ -43,7 +43,6 @@ async function updateWriter(req, res) {
   const { nameWriter } = req.body
   const { dateBirthWriter } = req.body
 
-  console.log(dateBirthWriter +  id)
   if(!nameWriter && !dateBirthWriter )  res.render("listAllWriters")
   await Writer.update({
     nameWriter,
@@ -59,11 +58,13 @@ async function updateWriter(req, res) {
 }
 
 async function deleteWriter( req, res) {
-  const { writerId } = req.params
+  const { id } = req.body
 
-  await Writer.delete(writerId)
-
-  return res.redirect('/')
+  await Writer.destroy({
+    where: { idwriter: id }
+  }).then(() => {
+    return res.redirect('/autor/listEscritor')
+  })
 }
 
 module.exports = { createWriter, listAllWriter, listWriter, updateWriter, deleteWriter  }
