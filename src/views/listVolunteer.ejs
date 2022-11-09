@@ -8,7 +8,7 @@
       <p class="card-text">
         <p>Cadastrou em:</p>
         <p><%= volunteer.createdAt.getDate() %>/<%= volunteer.createdAt.getMonth()+1 %>/<%= volunteer.createdAt.getFullYear() %></p>
-        <a href="#" class="btn btn-primary">Excluir</a>
+        <a href="/voluntario/<%= volunteer.idVolunteer%>" class="btn btn-primary">Detalhes</a>
     </div>
   </div>
 <% }) %>

@@ -31,7 +31,7 @@
         <button class="btn btnUpdate" type="submit" form="form-writer">Atualizar</button>
         <form class="mb-3" enctype="application/x-www-form-urlencoded"
           method="POST" action="/autor/excluir">
-          <input type="text" value="<%=writers.idWriter%>" id ="id" name="id">
+          <input type="text" value="<%=writers.idWriter%>" name="id" hidden>
           <button class="btn btnCancel" type="submit">Excluir</button>
         </form>
       </div>
