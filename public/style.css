@@ -24,7 +24,7 @@ body, .input-group-text{
 }
 
 .container-sm{
-  margin-top: 20vh;
+  margin-top: 5vh;
   width: 50%;
   background-color: var(--bgBackground2);
   padding: 2%;

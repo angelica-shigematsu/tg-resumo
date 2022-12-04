@@ -1,5 +1,5 @@
 const localStrategy = require("passport-local").Strategy
-const User = require('../src/model/Volunteer')
+const User = require('../src/model/User')
 
 module.exports = async function(passport){
 
