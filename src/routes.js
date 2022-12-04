@@ -5,7 +5,7 @@ const routes = express.Router()
 const views = __dirname + "/views/"
 
 const WriterController = require('./controller/WriterController')
-const VolunteerController = require('./controller/VolunteerController')
+const UserController = require('./controller/UserController')
 const BookController = require('./controller/BookController')
 const ProfileController = require('./controller/ProfileController')
 const session = require('express-session')
@@ -25,7 +25,7 @@ process.on('warning', function (err) {
 require('../config/auth')(passport)
 
 routes.use(session({
-  secret: "",
+  secret: "secret",
   resave: true,
   saveUninitialized: true
 }))
@@ -51,19 +51,22 @@ routes.post('/login', (req, res, next) => {
 
 routes.get('/menu', (req, res) => res.render(views + "homepage"))
 
+//não alterar (finalizado)
 routes.get('/autor', (req, res) => res.render(views + "registerWriter"))
 routes.post('/autor', WriterController.createWriter)
 routes.get('/autor/listEscritor/:id', WriterController.listWriter)
 routes.get('/autor/listEscritor', WriterController.listAllWriter)
 routes.post('/autor/alterar/:id', WriterController.updateWriter)
+routes.post('/autor/excluir', WriterController.deleteWriter)
+//
 
 routes.get('/livro',(req, res) => res.render(views + "registerBook"))
 routes.get('/avaliacaoResumo', (req, res) => res.render(views + "approvedReview"))
 
-routes.get('/voluntario', (req , res) => res.render(views + "volunteer"))
-routes.post('/voluntario', VolunteerController.createVolunteer)
-routes.get('/listVoluntario', VolunteerController.listVolunteer)
-routes.get('/voluntario/:id', ProfileController.listProfile)
+routes.get('/usuario', (req , res) => res.render(views + "user"))
+routes.post('/usuario', UserController.createVolunteer)
+routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
+routes.get('/usuario/:id', ProfileController.listProfile)
 
 routes.get('/perfil/alterar/:id', ProfileController.listProfile)
 
