@@ -28,7 +28,7 @@ const User = connection.define('user', {
     allowNull: false
   },
   active: {
-    type: Sequelize.BOOLEAN,
+    type: Sequelize.STRING,
     allowNull: true
   },
   level: {
