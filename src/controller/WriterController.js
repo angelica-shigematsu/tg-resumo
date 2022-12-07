@@ -17,13 +17,13 @@ async function createWriter(req, res) {
 }
 
 async function listAllWriter(req, res) {
-  await Writer.findAll({raw : true, order: [
+  await Writer.findAll({ raw : true, order: [
     ['nameWriter', 'ASC']//ordem decrescente
-  ]}).then(writers=> {
-    res.render("listAllWriters",{
+  ]}).then(writers => {
+    res.render("listAllWriters", {
         writers: writers
-    });
-});
+    })
+  })
 } 
 
 async function listWriter(req, res) {
