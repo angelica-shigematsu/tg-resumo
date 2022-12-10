@@ -1,0 +1,20 @@
+<%- include('partials/nav.ejs')  %> 
+<%- include('partials/header.ejs') %> 
+
+<body>
+  <div class="container-sm">
+    <form class="mb-3" id="form-title" enctype="application/x-www-form-urlencoded"
+    method="POST" action="/titulo">
+      <h3>Cadastro de Resumo</h3>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Título</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" minlength="3" id="title" name="title">
+        </div>
+      </div>
+        <button class="btn btnProgress" type="submit" form="form-title">Pesquisar</button>
+      </form>
+  </div>
+  
+<%- include('partials/footer.ejs') %> 
+    

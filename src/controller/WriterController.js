@@ -10,7 +10,7 @@ async function createWriter(req, res) {
     await Writer.create({
     nameWriter,
     dateBirthWriter
-  }).then(() => res.status(200).redirect("/listEscritor"))
+  }).then(() => res.status(200).redirect("/autor/listEscritor"))
   }catch(error){
     res.status(400).send('Erro ao criar escritor!')
   }

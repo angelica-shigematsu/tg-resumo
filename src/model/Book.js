@@ -10,8 +10,8 @@ const Book = connection.define('book', {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      model: 'writer',
-      key: 'writerId'
+      model: 'writers',
+      key: 'idWriter'
     }
   },
   publishingCompany: {
@@ -19,15 +19,11 @@ const Book = connection.define('book', {
     allowNull: false
   },
   genre: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false
   },
   year: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
-  imgBook: {
-    type: Sequelize.BLOB('long'),
+    type: Sequelize.INTEGER,
     allowNull: false
   }
 })
