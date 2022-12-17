@@ -2,6 +2,11 @@ const Sequelize = require("sequelize")
 const connection = require("./config")
 
 const Book = connection.define('book', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   title: {
     type: Sequelize.STRING,
     allowNull: false

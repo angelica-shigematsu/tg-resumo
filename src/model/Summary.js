@@ -1,10 +1,11 @@
 const Sequelize = require('sequelize')
 const connection = require('./config')
 
-const Summary = connection.define('summary', {
+const Summary = connection.define('summaryBook', {
   id: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    autoIncrement: true,
+    primaryKey: true
   },
   body: {
     type: Sequelize.TEXT,
@@ -14,18 +15,26 @@ const Summary = connection.define('summary', {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      model: 'writer',
-      key: 'writerId'
+      model: 'writers',
+      key: 'idWriter'
     }
   },
   refVolunteer: {
     type: Sequelize.INTEGER,
     allowNull: false,
     references: {
-      model: 'user',
+      model: 'users',
       key: 'id'
     }
   },
+  refBook: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'books',
+      key: 'id'
+    }
+  }
 })
 
 Summary.sync({force: false}).then(() => {})
