@@ -1,6 +1,7 @@
 const Book = require('../model/Book')
 const Writer = require('../model/Writer')
 const Summary = require('../model/Summary')
+const Volunteer = require('../model/User')
 
 async function searchTitleBook(req, res) {
   const { title } = req.body
@@ -29,11 +30,49 @@ async function createSummary(req, res) {
     refWriter,
     refVolunteer,
     refBook
-  }).then(() => res.status(200).redirect("/listEscritor"))
+  }).then(() => res.status(200).redirect("/listaResumo"))
   }catch(error){
-    res.status(400).send('Erro ao criar escritor!')
-  }
-  
+    res.status(400).send('Erro ao criar resumo!')
+  } 
 }
 
-module.exports = { searchTitleBook, createSummary }
+async function listAllSummary(req, res) {
+  
+  try{
+    Summary.belongsTo(Volunteer, {
+      foreignKey: {
+        name: 'id'
+      }})
+
+      Summary.belongsTo(Writer, {
+        foreignKey: {
+          name: 'id'
+        }})
+
+      Summary.belongsTo(Book, {
+        foreignKey: {
+          name: 'id'
+        }});  
+
+      Summary.findAll({
+        attributes: ['body'],
+        include: [{
+        association: 'user',
+        attributes: ['fullName'],
+      },{
+        association: 'writer',
+        attributes: ['nameWriter'],
+      },{
+        association: 'book',
+        attributes: ['title'],
+      }]
+    }).then(descriptionNames => {
+      res.json(descriptionNames)
+    });
+  }catch(err){
+    res.json(err)
+  }
+}
+
+
+module.exports = { searchTitleBook, createSummary, listAllSummary}
