@@ -67,7 +67,7 @@ async function deleteWriter( req, res) {
 
   try{
     await Writer.destroy({
-      where: { idwriter: id }
+      where: { idWriter: id }
     }).then(() => {
       return res.redirect('listEscritor')
     })

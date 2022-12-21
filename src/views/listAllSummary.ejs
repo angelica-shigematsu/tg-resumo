@@ -1,0 +1,16 @@
+<%- include('partials/nav.ejs')  %> 
+<%- include('partials/header.ejs') %> 
+
+<% summaries.forEach(summary => { %>
+  <div class="card w-75">
+    <div class="card-body">
+      <h5 class="card-title">Livro: <%= summary.book.title.toUpperCase() %></h5>
+      <p class="card-text">
+      <p>Nome do voluntário: <%=summary.user.fullName%></p>
+      <p>Autor: <%=summary.writer.nameWriter%></p>
+      <a href="/resumo/listaResumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+    </div>
+  </div>
+<% }) %>
+
+<%- include('partials/footer.ejs') %> 
