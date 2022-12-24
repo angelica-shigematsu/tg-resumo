@@ -69,10 +69,10 @@ async function deleteWriter( req, res) {
     await Writer.destroy({
       where: { idWriter: id }
     }).then(() => {
-      return res.redirect('listEscritor')
+      return res.redirect("/autor/listEscritor")
     })
   }catch(err) {
-    res.status(400).send('Erro em excluir os dados do Escritor')
+    res.status(400).send('Não pode excluir dados do escritor! Tem dependência de livro cadastrado!')
   }
 }
 

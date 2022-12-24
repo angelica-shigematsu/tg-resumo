@@ -19,10 +19,7 @@ async function searchTitleBook(req, res) {
 
 async function createSummary(req, res) {
  
-  const { body } = req.body
-  const { refWriter } = req.body
-  const { refVolunteer } = req.body
-  const { refBook } = req.body
+  const { body, refWriter, refVolunteer, refBook } = req.body
 
   try{
     await Summary.create({
@@ -30,7 +27,7 @@ async function createSummary(req, res) {
     refWriter,
     refVolunteer,
     refBook
-  }).then(() => res.status(200).redirect("/listaResumo"))
+  }).then(() => listAllSummary(req, res))
   }catch(error){
     res.status(400).send('Erro ao criar resumo!')
   } 
@@ -67,6 +64,7 @@ async function listAllSummary(req, res) {
         attributes: ['title'],
       }]
     }).then(summaries => {
+      res.json(summaries)
       res.render('listAllSummary', { summaries: summaries })
     });
   }catch(err){
@@ -132,21 +130,25 @@ async function updateSummary(req, res) {
         id: id
       }
     }).then((summary) => {
-      res.render('listSummary', { summary: summary })
-    })
+      listSummary(req,res) })
 
   }catch(err) {
     res.json(err)
   }
 }
 
-async function deleteSummary() {
+async function deleteSummary(req, res) {
   const { id } = req.body
-  await Summary.destroy({
-    where: { id: id }
-  }).then(() => {
-    res.json('Delete Summary')
-  })
+
+  try{
+    await Summary.destroy({
+      where: { id: id }
+    }).then(() => {
+      res.redirect('/resumo/listaResumo')
+    })
+  }catch(err) {
+    res.redirect('/resumo/listaResumo')
+  }
 }
 
 module.exports = { 

@@ -39,5 +39,6 @@ const Summary = connection.define('summaryBook', {
 
 Summary.sync({force: false}).then(() => {})
 
+
 module.exports = Summary
 
