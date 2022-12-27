@@ -51,7 +51,7 @@ async function listAllSummary(req, res) {
           name: 'id'
         }});  
 
-      await Summary.findAll({
+      const summary = await Summary.findAll({
         attributes: ['body', 'id'],
         include: [{
         association: 'user',
@@ -63,13 +63,17 @@ async function listAllSummary(req, res) {
         association: 'book',
         attributes: ['title'],
       }]
-    }).then(summaries => {
-      res.json(summaries)
-      res.render('listAllSummary', { summaries: summaries })
-    });
+    })
+    return summary
   }catch(err){
     res.json(err)
   }
+}
+
+async function showAllSummary(req, res) {
+  const summaries = await listAllSummary();
+
+  res.render('listAllSummary', { summaries: summaries })
 }
 
 async function listSummary(req, res) {
@@ -156,6 +160,7 @@ module.exports = {
     createSummary, 
     listAllSummary, 
     listSummary, 
+    showAllSummary,
     updateSummary,
     deleteSummary
   }
