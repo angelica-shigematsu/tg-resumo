@@ -23,18 +23,19 @@ async function createRating(req, res) {
   }
 }
 
-// async function averageRating(id) {
-//   let averageRate = 0
-//   await Rating.findAll({
-//     where: { id: id }
-//   }).then((rating) => {
-//     for(let sumRate; sumRate<= sumRate.length(); sumRate++) {
-//       averageRate += rating.ratingStar
-//     }
-//     averageRate /= sumRate.length()
-//   })
-//   return averageRate
-// }
+function averageRating(id) {
+  let valuesRate = []
+  Rating.findAll({
+    attributes: ['ratingStar'],
+    where: { refSummary: id },
+    raw: true
+  }).then((rating) => { 
+
+    valuesRate = rating.map((valueRating) => Object.values(valueRating)[0])
+
+    return (valuesRate.reduce((valueRate1, valueRate2) => valueRate1 + valueRate2)/valuesRate.length).toFixed(2)
+  })
+}
 
 async function listSummary(req, res) {
   const { id } = req.params
@@ -79,4 +80,4 @@ async function listSummary(req, res) {
   } 
 }
 
-module.exports = { createRating, listSummary }
+module.exports = { createRating, listSummary, averageRating }
