@@ -27,7 +27,7 @@ async function createQuestion(req, res) {
       refBook,
       refVolunteer
     }).then(() => {
-      res.redirect('listAllQuestion')
+      res.redirect('/questao/listaQuestionario')
     })
   } catch (error) {
     res.json(error)
