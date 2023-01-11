@@ -17,6 +17,18 @@ async function searchTitleBook(req, res) {
   }
 }
 
+async function showTitleBookByQuestion(id) {
+  try {
+    const bookTitle = await Book.findOne({
+      attributes: [ 'title', 'id' ],
+      where: { id: id }
+    })
+    return bookTitle;
+  } catch (error) {
+    res.json()
+  }
+}
+
 async function createQuestion(req, res) {
   try {
     const { question, answer, refBook, refVolunteer } = req.body
@@ -63,11 +75,14 @@ async function listQuestion(req, res) {
   const { id } = req.params
 
   try{
-    await QuestionAndAnswer.findOne({
-      where: { id: id}
-    }).then((question) => {
-      res.json(question)
+    const question = await QuestionAndAnswer.findOne({
+      where: { id: id }
     })
+  
+    const book = await showTitleBookByQuestion(question.refBook)
+    console.log(question.answer)
+
+    res.render('listQuestion', { question: question, book: book})
   }catch(error) {
     res.json(error)
   }
