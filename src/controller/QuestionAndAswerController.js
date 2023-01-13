@@ -88,40 +88,41 @@ async function listQuestion(req, res) {
   }
 }
 
-// async function updateQuestion(req, res) {
-//   const { id } = req.params
-//   const { question, answer, refBook, refVolunteer } = req.body
+async function updateQuestion(req, res) {
+  const { id } = req.params
+  const { question, answer, refBook, refVolunteer } = req.body
 
-//   try {
-//     await QuestionAndAnswer.update({
-//       question,
-//       answer,
-//       refBook,
-//       refVolunteer
-//     }, { 
-//       where: { 
-//         id: id 
-//       }
-//     }).then(() => {
-//       res.json()
-//     })
-//   } catch (error) {
-//     res.json("Não existe esse questionário cadastrado")
-//   }
-// }
+  try {
+    await QuestionAndAnswer.update({
+      question,
+      answer,
+      refBook,
+      refVolunteer
+    }, { 
+      where: { 
+        id: id 
+      }
+    }).then(() => {
+      res.redirect('/questao/listaQuestionario');
+    })
+  } catch (error) {
+    res.json("Não existe esse questionário cadastrado")
+  }
+}
 
-// async function deleteQuestion(req, res) {
-//   const { id } = req.params
+async function deleteQuestion(req, res) {
+  const { id } = req.body
 
-//   try{
-//     await QuestionAndAnswer.destroy({
-//       where: { id: id }
-//     }).then(() => {
-//       res.json()
-//     })
-//   }catch(error) {
-//     res.json()
-//   }
-// }
+  console.log(id)
+  try{
+    await QuestionAndAnswer.destroy({
+      where: { id: id }
+    }).then(() => {
+      res.redirect('/questao/listaQuestionario');
+    })
+  }catch(error) {
+    res.json()
+  }
+}
 
-module.exports = { createQuestion, listQuestion, searchTitleBook, listAllQuestions }
+module.exports = { createQuestion, listQuestion, searchTitleBook, listAllQuestions, updateQuestion, deleteQuestion }

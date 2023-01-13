@@ -4,7 +4,7 @@
 <body>
   <div class="container-sm">
     <form class="mb-3" id="form-question" enctype="application/x-www-form-urlencoded"
-    method="POST" action="/questao/alterar/<%question.id%>">
+    method="POST" action="/questao/alterar/<%= question.id %>">
       <h3>Cadastro de Pergunta e resposta</h3>
       <div class="mb-3 row">
         <div class="col-sm-10">
@@ -29,7 +29,7 @@
             <textarea class="form-control" minlength="10" cols="30" rows="20" name="answer" required><%=question.answer%></textarea>
           </div>
         </div>
-
+      </form>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <button class="btn btnUpdate" type="submit" form="form-question">Atualizar</button>
           <form class="mb-3" enctype="application/x-www-form-urlencoded"
@@ -38,7 +38,6 @@
             <button class="btn btnCancel" type="submit">Excluir</button>
           </form>
         </div>
-    </form>
   </div>
   
 <%- include('partials/footer.ejs') %> 
