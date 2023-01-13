@@ -17,14 +17,20 @@ async function createWriter(req, res) {
 }
 
 async function listAllWriter(req, res) {
-  await Writer.findAll({ raw : true, order: [
-    ['nameWriter', 'ASC']//ordem decrescente
-  ]}).then(writers => {
+  const writers = await showAllWriters()
     res.render("listAllWriters", {
         writers: writers
-    })
+
   })
 } 
+
+async function showAllWriters() {
+  const writers = await Writer.findAll({ raw : true, order: [
+    ['nameWriter', 'ASC']//ordem decrescente
+  ]})
+  return writers
+
+}
 
 async function listWriter(req, res) {
   const { id } = req.params
@@ -76,4 +82,11 @@ async function deleteWriter( req, res) {
   }
 }
 
-module.exports = { createWriter, listAllWriter, listWriter, updateWriter, deleteWriter  }
+module.exports = { 
+  createWriter, 
+  listAllWriter, 
+  listWriter, 
+  showAllWriters,
+  updateWriter, 
+  deleteWriter  
+}
