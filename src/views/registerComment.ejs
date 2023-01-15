@@ -1,0 +1,67 @@
+<%- include('partials/header.ejs') %> 
+<%- include('partials/nav.ejs')  %> 
+
+<div class="container-sm">
+    <h3>Resumo <p>JavaScript Assertivo</p></h3>
+    <div class="mb-3 row">
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Autor:</label>
+        <div class="col-sm-10">
+          <p>Lorem ipsum</p></label>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Voluntário:</label>
+        <div class="col-sm-10">
+          <p>Lorem</p></label>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <h4>Resumo</h4>
+      <div class="col-sm-10">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus venenatis 
+          ultricies lorem, id imperdiet felis rutrum quis. Suspendisse pulvinar rutrum 
+          sem, in dapibus nibh molestie vel. Phasellus et scelerisque sem. Praesent a 
+          sapien eget elit eleifend mattis. Praesent velit arcu, tempus vitae ultrices eu, 
+          sodales ac risus. Cras magna dolor, interdum in nisl et, molestie fermentum libero.
+          Pellentesque convallis massa ipsum, nec mattis arcu hendrerit id. Sed sed ornare metus, 
+          id dictum ipsum. Nullam a vestibulum leo.
+
+          Donec ac dui ullamcorper dui finibus vehicula vel sed nunc. Ut dignissim porttitor 
+          orci quis laoreet. Donec id nulla est. Suspendisse id molestie libero, a sollicitudin 
+          dui. In hac habitasse platea dictumst. Morbi venenatis nisl nec aliquet porttitor. Vivamus 
+          id arcu nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere 
+          cubilia curae; Ut nec arcu semper, porta purus in, pulvinar neque. Nullam molestie ornare 
+          purus, eget suscipit nulla pulvinar in.
+        </p>
+      </div>
+    </div>
+    <form class="mb-3" id="form-comment" enctype="application/x-www-form-urlencoded"
+      method="POST" action="/comentario">
+    <div class="mb-3 row">
+      <h4>Comentário</h4>
+      <div class="col-sm-10">
+        <textarea class="form-control" minlength="30" name="body" cols="30" rows="5" name="commentContent"></textarea>
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button class="btn btnProgress" type="submit" form="form-comment">Comentar</button>
+    </div>
+  </form>
+  <div class="mb-3 row">
+    <h5>Comentários</h5>
+    <div class="col-sm-10 ">
+    <p>Usuário: Monteiro Lobato</p>
+    <p>Usando Exemplo usando lorem ipsum para amostra</p>  
+    </div>
+    <hr>
+      <p>Usuário: Monteiro Lobato</p>
+      <p>Usando Exemplo usando lorem ipsum para amostra</p>  
+      <span class="border-bottom-1"></span>
+      </div>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %> 
+    
