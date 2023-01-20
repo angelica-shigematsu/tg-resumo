@@ -11,3 +11,14 @@ Desenvolvimento de um site de divulgação de resumos colaborativos
 - Sequelize
 ##  Desenvolvedora:
 - Angélica Shigematsu
+
+## Como usar
+No terminal digitar:
+```
+yarn dev
+```
+No browser digitar 
+```
+localhost:8090/menu
+```
+
