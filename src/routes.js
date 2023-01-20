@@ -11,6 +11,7 @@ const ProfileController = require('./controller/ProfileController')
 const SummaryController = require('./controller/SummaryController')
 const RatingController = require('./controller/RatingController')
 const QuestionAndAnswerController = require('./controller/QuestionAndAswerController')
+const CommentController = require('./controller/CommentController')
 
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -62,6 +63,11 @@ routes.post('/login', (req, res, next) => {
 
 routes.get('/menu', (req, res) => res.render(views + "homepage"))
 
+routes.get('/usuario/resumo', CommentController.listAllSummaryToUser)
+routes.post('/usuario/comentario/:id', CommentController.searchDetailsSummary)
+
+routes.post('/comentario', CommentController.createComment)
+
 //Routes of Writer não alterar (finalizado)
 routes.get('/autor', (req, res) => res.render(views + "registerWriter"))
 routes.post('/autor', WriterController.createWriter)
@@ -102,10 +108,10 @@ routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQue
 routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
-routes.get('/usuario', (req , res) => res.render(views + "user"))
-routes.post('/usuario', UserController.createVolunteer)
-routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
-routes.get('/usuario/:id', ProfileController.listProfile)
+// routes.get('/usuario', (req , res) => res.render(views + "user"))
+// routes.post('/usuario', UserController.createVolunteer)
+// routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
+// routes.get('/usuario/:id', ProfileController.listProfile)
 
 routes.get('/login', (req, res) => res.render(views + "index"))
 

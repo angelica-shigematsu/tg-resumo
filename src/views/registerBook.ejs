@@ -30,7 +30,7 @@
           <select class="form-select" aria-label="Default select example" name="genre">
             <% writers.forEach((writer) => { %> 
             <option selected>Ação</option>
-            <option value="<% writer.id %>"><% writer.name %></option>
+            <option value="<%= writer.id %>"><%= writer.name %></option>
           <% }) %>
           </select>
       </div>

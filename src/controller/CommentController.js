@@ -1,39 +1,99 @@
 const Book = require('../model/Book')
 const Comment = require('../model/Comment')
+const Summary = require('../model/Summary')
 const Volunteer = require('../model/User')
 const Writer = require('../model/Writer')
+const { listAllSummary } = require('./SummaryController')
+
+async function listAllSummaryToUser(req, res) {
+  const summaries = await listAllSummary()
+
+  res.render('listAllSummaryToUser', { summaries: summaries })
+}
+
+async function searchDetailsSummary(req, res) {
+  const { refSummary, refBook } = req.body
+
+  console.log(refSummary, refBook)
+
+  Summary.belongsTo(Book, {
+    foreignKey: {
+        name: 'id'
+    }
+  })  
+  Book.belongsTo(Writer, {
+    foreignKey: {
+        name: 'id'
+    }
+  })  
+
+  Summary.belongsTo(Volunteer, {
+    foreignKey: {
+        name: 'id'
+    }
+  })
+
+  const summary = await Summary.findOne({
+    attributes: ['body', 'id'],
+    include: [{
+      association: 'user',
+      attributes: ['fullName', 'id']
+    }],
+   where: { id : refSummary }
+  })
+  
+  const nameWriter = await Book.findOne({
+    include: [{
+      association: 'writer',
+      attributes: ['nameWriter']
+    }],
+   where: { id : refBook }
+  })
+
+  const book = await Book.findOne({
+    attributes: ['title'],
+    where: { id : refBook }
+  })
+
+  res.render('registerComment', { summary: summary, nameWriter: nameWriter, book: book })
+}
 
 async function createComment(req, res) {
-  const { commentContent } = req.body
+  const { commentContent, refSummary, refVolunteer } = req.body
 
-  const status = 'enviado'
-
-  await Comment.create({
-    commentContent,
-    status,
-    refSummary
-  }).then(() => {
-    res.json({ sucess: true })
-  })
+  let status = 'enviado'
+  try {
+    await Comment.create({
+      commentContent,
+      status,
+      refSummary,
+      refVolunteer
+    }).then(() => {
+      res.json({success: true})
+      // res.render('registerComment', {})
+    })
+  }catch(error) {
+    res.json(error)
+  }
 }
 
 async function listCommentById() {
   const { id } = req.params
-  
-    Comment.belongsTo(Book, {
-      foreignKey: {
-        name: 'id'
-      }});  
+ 
+  Comment.belongsTo(Summary, {
+    foreignKey: {
+      name: 'id'
+    }});  
 
-  await Comment.findOne({
+  const comment = await Comment.findOne({
     include: [{
-      association: 'book',
-      attributes: ['title']
+      association: 'sumaryBooks',
+      attributes: ['summary']
     }],
    where: { id : id }
-  }).then(comment => {
-    res.json(comment)
   })
+
+ res.json()
 }
 
 async function listCommentBySummary() {
@@ -42,7 +102,7 @@ async function listCommentBySummary() {
   await Comment.findOne({
     where: { refSummary : id }
   }).then(comment => {
-    res.json(comment)
+    res.json()
   })
 }
 
@@ -83,4 +143,8 @@ async function deleteComment(req, res) {
   }
 }
 
-module.exports = { createComment, listCommentById }
+module.exports = { 
+  createComment,
+  listAllSummaryToUser,
+  searchDetailsSummary
+}

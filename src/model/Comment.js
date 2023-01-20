@@ -26,7 +26,15 @@ const Comment = connection.define('Comment', {
       model: 'summaryBooks',
       key: 'id'
     }
-  }
+  },
+  refVolunteer: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id'
+    }
+  },
 })
 
 Comment.sync({ force: false }).then(() => {})
