@@ -13,6 +13,8 @@ const RatingController = require('./controller/RatingController')
 const QuestionAndAnswerController = require('./controller/QuestionAndAswerController')
 const CommentController = require('./controller/CommentController')
 
+const { isAdmin, isVolunteerAndAdmin } = require('./middleware/IsAuthenticateByLevel')
+
 const session = require('express-session')
 const flash = require('connect-flash')
 
@@ -44,6 +46,7 @@ routes.use((req, res, next) => {
   res.locals.error = req.flash("error")
   next()
 })
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -51,6 +54,7 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
   done(null, user);
 });
+
 routes.get('/login', (req, res) => res.render(views + "index"))
 routes.post('/login', (req, res, next) => {
   passport.authenticate('local',{
@@ -61,7 +65,14 @@ routes.post('/login', (req, res, next) => {
   )(req, res, next)
 })
 
-routes.get('/menu', (req, res) => res.render(views + "homepage"))
+// routes.post('/logout', function(req, res, next){
+//   req.logout(function(err) {
+//     if (err) { return next(err); }
+//     res.redirect('/login');
+//   });
+// });
+
+routes.get('/menu', isVolunteerAndAdmin , (req, res) => res.render(views + "homepage"))
 
 routes.get('/usuario/resumo', CommentController.listAllSummaryToUser)
 routes.post('/usuario/comentario/:id', CommentController.searchDetailsSummary)
@@ -108,8 +119,8 @@ routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQue
 routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
-// routes.get('/usuario', (req , res) => res.render(views + "user"))
-// routes.post('/usuario', UserController.createVolunteer)
+routes.get('/usuario', isAdmin, (req , res) => res.render(views + "user"))
+routes.post('/usuario', UserController.createVolunteer)
 // routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
 // routes.get('/usuario/:id', ProfileController.listProfile)
 

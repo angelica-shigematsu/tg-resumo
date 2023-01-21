@@ -1,7 +1,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navBarColor">
   <div class="container-fluid">
-    <a class="navbar-brand" href="homepage">LivroVintage</a>
+    <a class="navbar-brand" href="homepage">ColabBook</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,15 +10,34 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Página Inicial</a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cadastros
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/autor">Autor</a></li>
+            <li><a class="dropdown-item" href="/livro">Livro</a></li>
+            <li><a class="dropdown-item" href="/resumo">Resumo</a></li>
+            <li><a class="dropdown-item" href="/usuario">Usuário</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Livros
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/usuario/resumo">Resumo</a></li>
+          </ul>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Sobre</a>
         </li>
       </ul>
       <div class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-success" form="form-search" type="submit">Search</button>
         <div class="nav-item">
-          <a class="nav-link" href="#">Login</a>
+          <a class="nav-link" href="#" name="email">angelica@gmail.com</a>
         </div>
       </div>
     </div>
