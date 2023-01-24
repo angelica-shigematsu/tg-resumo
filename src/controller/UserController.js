@@ -1,14 +1,8 @@
 const User = require('../model/User')
 
 async function createVolunteer(req, res) {
-  const { fullName } = req.body;
-  const { userName } = req.body;
-  const { cpf } = req.body;
-  const { dateBirthUser } = req.body;
-  const { email } = req.body;
-  const { password } = req.body;
-  const { level } = req.body;
-  const { active } = req.body;
+  const { fullName , userName, cpf, dateBirthUser, email, password, level, reason } = req.body;
+  const active = 'inativo';
 
   await User.create({
       fullName,
@@ -18,8 +12,9 @@ async function createVolunteer(req, res) {
       email,
       password,
       active,
-      level
-    }).then(() => res.redirect(('/usuario/listaUsuarios')));
+      level, 
+      reason
+    }).then(() => res.redirect(('/usuario')));
 
 };
 
@@ -27,21 +22,38 @@ async function listVolunteer(req, res) {
   await User.findAll({raw: true, order: [
     ['fullName', 'ASC']
   ]}).then(users => {
-    res.render("listUsers", {
+    res.render("listAllUser", {
       users: users
     });
   });
 };
 
 async function updateVolunteer(req, res) {
-  const { fullName } = req.body;
-  const { userName } = req.body;
-  const { cpf } = req.body;
-  const { dateBirthUser } = req.body;
-  const { email } = req.body;
-  const { password } = req.body;
+  const { id } = req.params
+  const { fullName, cpf, dateBirthUser, email, password, level, active, reason } = req.body
 
-  
+  console.log(fullName, cpf, dateBirthUser, email, password, level, reason);
+
+  try{
+    await User.update({
+      fullName,
+      cpf,
+      dateBirthUser,
+      email,
+      password,
+      active,
+      level,
+      active, 
+      reason
+    },{
+      where: {
+        id: id
+    }}).then(() => {
+      res.redirect('/usuario')
+    })
+  }catch(error) {
+    res.json({error})
+  }
 }
 
-module.exports = { createVolunteer, listVolunteer }
+module.exports = { createVolunteer, listVolunteer, updateVolunteer }

@@ -1,12 +1,11 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
 
-<% if (error) %> 
-    <div class="alert alert-danger"><%= error %> </div>
+  <div class="alert alert-danger"><%= error %> </div>
   <div class="container-sm">
     <form class="mb-3" id="form-login" enctype="application/x-www-form-urlencoded"
       method="POST" action="/login">
-      <h3>Cadastro do Autor</h3>
+      <h3>Login</h3>
       <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">

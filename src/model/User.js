@@ -34,6 +34,10 @@ const User = connection.define('user', {
   level: {
     type: Sequelize.STRING,
     allowNull: true
+  },
+  reason: {
+    type: Sequelize.TEXT,
+    allowNull: true
   }
 })
 User.sync({force: false}).then(() => {})
