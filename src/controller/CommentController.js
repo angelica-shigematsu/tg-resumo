@@ -14,8 +14,6 @@ async function listAllSummaryToUser(req, res) {
 async function searchDetailsSummary(req, res) {
   const { refSummary, refBook } = req.body
 
-  console.log(refSummary, refBook)
-
   Summary.belongsTo(Book, {
     foreignKey: {
         name: 'id'
@@ -50,12 +48,25 @@ async function searchDetailsSummary(req, res) {
    where: { id : refBook }
   })
 
+  const commentsBySummary = await Comment.findAll({
+    raw: true,
+    order: [['commentContent', 'DESC']],
+    where: {
+      refSummary: refSummary
+    }
+  })
+
   const book = await Book.findOne({
     attributes: ['title'],
     where: { id : refBook }
   })
 
-  res.render('registerComment', { summary: summary, nameWriter: nameWriter, book: book })
+  await res.render('registerComment', {
+    book: book,  
+    commentsBySummary: commentsBySummary,
+    nameWriter: nameWriter, 
+    summary: summary, 
+  })
 }
 
 async function createComment(req, res) {
