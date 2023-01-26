@@ -13,7 +13,7 @@ const RatingController = require('./controller/RatingController')
 const QuestionAndAnswerController = require('./controller/QuestionAndAswerController')
 const CommentController = require('./controller/CommentController')
 
-const { isAdmin, isVolunteerAndAdmin } = require('./middleware/IsAuthenticateByLevel')
+const { isAdmin, isAllLevel } = require('./middleware/IsAuthenticateByLevel')
 
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -73,11 +73,10 @@ routes.post('/logout', function(req, res, next){
   });
 });
 
-routes.get('/menu', isVolunteerAndAdmin , (req, res) => res.render(views + "homepage"))
+routes.get('/menu', isAllLevel , (req, res) => res.render(views + "homepage"))
 
 routes.get('/usuario/resumo', CommentController.listAllSummaryToUser)
 routes.post('/usuario/comentario/:id', CommentController.searchDetailsSummary)
-
 routes.post('/comentario', CommentController.createComment)
 
 //Routes of Writer não alterar (finalizado)
