@@ -11,7 +11,6 @@ const ProfileController = require('./controller/ProfileController')
 const SummaryController = require('./controller/SummaryController')
 const RatingController = require('./controller/RatingController')
 const QuestionAndAnswerController = require('./controller/QuestionAndAswerController')
-const CommentController = require('./controller/CommentController')
 
 const { isAdmin, isAllLevel } = require('./middleware/IsAuthenticateByLevel')
 
@@ -75,10 +74,6 @@ routes.post('/logout', function(req, res, next){
 
 routes.get('/menu', isAllLevel , (req, res) => res.render(views + "homepage"))
 
-routes.get('/usuario/resumo', CommentController.listAllSummaryToUser)
-routes.post('/usuario/comentario/:id', CommentController.searchDetailsSummary)
-routes.post('/comentario', CommentController.createComment)
-
 //Routes of Writer não alterar (finalizado)
 routes.get('/autor', (req, res) => res.render(views + "registerWriter"))
 routes.post('/autor', WriterController.createWriter)
@@ -110,7 +105,6 @@ routes.post('/resumo/excluir', SummaryController.deleteSummary)
 //Rating Summaries
 routes.get('/resumo/avaliacao/:id', RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
-//
 
 routes.get('/questao', QuestionAndAnswerController.searchTitleBook)
 routes.post('/questao', QuestionAndAnswerController.createQuestion)

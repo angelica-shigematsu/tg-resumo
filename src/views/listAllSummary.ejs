@@ -8,8 +8,18 @@
       <p class="card-text">
       <p>Nome do voluntário: <%=summary.user.fullName%></p>
       <p>Autor: <%=summary.writer.nameWriter%></p>
-      <p>Avaliação: <%=ratings.ratingStar%></p>
-      <a href="/resumo/listaResumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+      <p>Avaliação:
+        <% let result = 0
+        let lengthRate = 0 %>
+        <%ratings.forEach(listRate=>  {
+        if (listRate.refSummary === summary.id) {
+         result+= listRate.ratingStar
+           lengthRate++
+       }
+     })%>
+       <%=(result/lengthRate).toFixed(2)%></p>
+
+      <a href="/resumo/avaliacao/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
     </div>
   </div>
 <% }) %>

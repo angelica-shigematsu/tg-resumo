@@ -8,39 +8,31 @@ const Volunteer = require('../model/User')
 async function createRating(req, res) {
   const { ratingStar, note, refUser, refSummary} = req.body
   try{
-    const summaries = await ListAllSummary.listAllSummary(req, res)
+    const summaries = await ListAllSummary.listAllSummary()
 
     await Rating.create({
       ratingStar,
       note,
       refSummary,
       refUser
-    }).then((ratings) => {
-        res.render('listAllSummary', {summaries: summaries, ratings: ratings })
-    }) 
+    })
+    
+    const ratings = await Rating.findAll({
+      raw: true
+    })
+  
+    res.render('listAllSummary', { summaries: summaries, ratings: ratings })
+
   }catch(err) {
     res.json('erro')
   }
-}
-
-function averageRating(id) {
-  let valuesRate = []
-  Rating.findAll({
-    attributes: ['ratingStar'],
-    where: { refSummary: id },
-    raw: true
-  }).then((rating) => { 
-
-    valuesRate = rating.map((valueRating) => Object.values(valueRating)[0])
-
-    return (valuesRate.reduce((valueRate1, valueRate2) => valueRate1 + valueRate2)/valuesRate.length).toFixed(2)
-  })
 }
 
 async function listSummary(req, res) {
   const { id } = req.params
 
   try{
+    
     const value = Summary.belongsTo(Volunteer, {
       foreignKey: {
         name: 'id'
@@ -55,7 +47,7 @@ async function listSummary(req, res) {
           name: 'id'
         }});  
 
-      await Summary.findOne({
+      const summary = await Summary.findOne({
         where: { id: id },
         include: [{
         association: 'user',
@@ -68,16 +60,24 @@ async function listSummary(req, res) {
         attributes: ['title'],
       }]
       
-    }).then(summary => {
+    })
+    const ratings = await Rating.findAll({
+      raw: true,
+      order: [['note', 'DESC']],
+      where: {
+        refSummary: id
+      }
+    })
       res.render('rating', { 
+        book: summary.book.title,   
+        ratings: ratings,
         summary: summary,
-        book: summary.book.title , 
         volunteer: summary.user.fullName, 
         writer: summary.writer.nameWriter})
-    })
+
   }catch(err){
     res.json("Não contém cadastros")
   } 
 }
 
-module.exports = { createRating, listSummary, averageRating }
+module.exports = { createRating, listSummary }

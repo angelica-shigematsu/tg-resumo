@@ -23,6 +23,14 @@
       </select>
       </div>
       <div class="mb-3 row">
+        <h4>Resumo</h4>
+        <div class="col-sm-10">
+          <p>
+            <%=summary.body%>
+          </p>
+        </div>
+      </div>
+      <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Avaliação</label>
         <div class="col-sm-10">
           <select class="form-select" aria-label="Default select example" name="ratingStar">
@@ -42,6 +50,15 @@
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button class="btn btnProgress" type="submit" form="form-rating">Cadastrar</button>
       </div>
+      <% ratings.forEach(rating => {%>
+        <div class="mb-3 row">
+          <h5>Comentários</h5>
+          <div class="col-sm-10 ">
+          <p>Usuário: <%= summary.user.fullName %></p>
+          <p><%= rating.note %></p>  
+        </div>
+        <hr>
+        <%})%>
     </div>
   </div>
   
