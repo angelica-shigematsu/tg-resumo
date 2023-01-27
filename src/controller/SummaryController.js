@@ -1,7 +1,9 @@
 const Book = require('../model/Book')
 const Writer = require('../model/Writer')
+const Rating = require('../model/Rating')
 const Summary = require('../model/Summary')
 const Volunteer = require('../model/User')
+
 
 async function searchTitleBook(req, res) {
   const { title } = req.body
@@ -27,70 +29,36 @@ async function createSummary(req, res) {
     refWriter,
     refVolunteer,
     refBook
-  }).then(() => listAllSummary(req, res))
+  }).then(() => showAllSummary())
   }catch(error){
     res.status(400).send('Erro ao criar resumo!')
   } 
 }
 
-async function listAllSummary(req, res) {
-  
-  try{
-    Summary.belongsTo(Volunteer, {
-      foreignKey: {
-        name: 'id'
-      }})
-
-      Summary.belongsTo(Writer, {
-        foreignKey: {
-          name: 'id'
-        }})
-
-      Summary.belongsTo(Book, {
-        foreignKey: {
-          name: 'id'
-        }});  
-
-      const summary = await Summary.findAll({
-        attributes: ['body', 'id'],
-        include: [{
-        association: 'user',
-        attributes: ['fullName'],
-      },{
-        association: 'writer',
-        attributes: ['nameWriter'],
-      },{
-        association: 'book',
-        attributes: ['title'],
-      }]
-    })
-    return summary
-  }catch(err){
-    res.json(err)
-  }
-}
-
 async function showAllSummary(req, res) {
   const summaries = await listAllSummary();
+  const ratings = await Rating.findAll({
+    raw: true
+  })
 
-  res.render('listAllSummary', { summaries: summaries })
+  res.render('listAllSummary', { summaries: summaries, ratings: ratings })
 }
 
 async function listSummary(req, res) {
   try{
   const { id } = req.params
 
-  Summary.belongsTo(Volunteer, {
+    await Summary.belongsTo(Volunteer, {
     foreignKey: {
       name: 'id'
     }})
 
-    Summary.belongsTo(Writer, {
+    await Summary.belongsTo(Writer, {
       foreignKey: {
         name: 'id'
       }})
 
-    Summary.belongsTo(Book, {
+    await Summary.belongsTo(Book, {
       foreignKey: {
         name: 'id'
       }});  
@@ -107,8 +75,8 @@ async function listSummary(req, res) {
       association: 'book',
       attributes: ['title'],
     }]
-  }).then(summary => {
-    res.render('listSummary', { 
+  }).then(summary => async() =>{
+    await res.render('listSummary', { 
       summary: summary,
       book: summary.book.title , 
       volunteer: summary.user.fullName, 
@@ -117,6 +85,41 @@ async function listSummary(req, res) {
   }catch(err){
     res.json(err)
   } 
+}
+async function listAllSummary() {
+  try{
+    await Summary.belongsTo(Volunteer, {
+      foreignKey: {
+        name: 'id'
+      }})
+
+    await Summary.belongsTo(Writer, {
+        foreignKey: {
+          name: 'id'
+        }})
+
+    await Summary.belongsTo(Book, {
+        foreignKey: {
+          name: 'id'
+        }});  
+
+      const summary = await Summary.findAll({
+        attributes: ['body', 'id', 'refBook'],
+        include: [{
+        association: 'user',
+        attributes: ['fullName'],
+      },{
+        association: 'writer',
+        attributes: ['nameWriter'],
+      },{
+        association: 'book',
+        attributes: ['title'],
+      }]
+    })
+    return summary
+  }catch(error){
+    throw new Error(error)
+  }
 }
 
 async function updateSummary(req, res) {
@@ -154,6 +157,7 @@ async function deleteSummary(req, res) {
     res.redirect('/resumo/listaResumo')
   }
 }
+
 
 module.exports = { 
     searchTitleBook, 

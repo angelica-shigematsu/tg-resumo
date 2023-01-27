@@ -8,13 +8,13 @@
       <h3>Cadastro de Resumo</h3>
       <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Título</label>
-        <select class="form-select col-sm-6" aria-label="Default select example" name="refBook">
-          <option value="<%= book.id %>" name="refBook"><%= book.title %></option>
+        <select class="form-select col-sm-6" aria-label="Default select example" name="refBook" required>
+          <option value="<%= book.id %>"><%= book.title %></option>
         </select>
         <div class="col-sm-10">
           <label for="" class="col-sm-2 col-form-label">Autor</label>
-          <select class="form-select col-sm-6" aria-label="Default select example" name="refWriter">
-            <option value="<%= book.refWriter %>" name="refWriter"><%= writer.nameWriter %></option>
+          <select class="form-select col-sm-6" aria-label="Default select example" name="refWriter" required>
+            <option value="<%= book.refWriter %>"><%= writer.nameWriter %></option>
           </select>
         </div>
         <div class="col-sm-10">
@@ -27,7 +27,7 @@
     <div class="mb-3 row">
       <label for="" class="col-sm-2 col-form-label">Resumo</label>
       <div class="col-sm-10">
-        <textarea class="form-control" minlength="30" name="body" cols="30" rows="10"></textarea>
+        <textarea class="form-control" minlength="30" name="body" cols="30" rows="10" required></textarea>
       </div>
     </div>
     
