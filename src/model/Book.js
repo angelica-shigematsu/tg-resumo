@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 const connection = require("./config")
 
-const Book = connection.define('book', {
+const Book = connection.define('books', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

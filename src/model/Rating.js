@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const connection = require('./config')
 
-const Rating = connection.define('rating', {
+const Rating = connection.define('ratings', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
