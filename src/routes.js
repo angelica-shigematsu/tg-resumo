@@ -116,6 +116,7 @@ routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 routes.get('/usuario', (req , res) => res.render(views + "user"))
 routes.post('/usuario', UserController.createVolunteer)
 routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
+routes.get('/perfil', ProfileController.showUserPage)
 routes.get('/usuario/:id', ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', UserController.updateVolunteer)
 

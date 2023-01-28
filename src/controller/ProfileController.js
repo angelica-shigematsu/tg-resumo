@@ -11,6 +11,23 @@ async function listProfile(req, res) {
   }catch(error) {
     throw new Error(error)
   }
-}   
+}  
 
-module.exports = { listProfile };
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await Profile.findOne({
+      where: { email: email }
+    })
+    return profile
+  }
+}
+
+async function showUserPage(req, res) {
+  const profile = await getUserInformation(req, res)
+  res.render('profile', { profile: profile })
+}
+
+
+
+module.exports = { listProfile, getUserInformation, showUserPage};
