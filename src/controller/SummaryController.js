@@ -1,27 +1,38 @@
 const Book = require('../model/Book')
-const Writer = require('../model/Writer')
 const Rating = require('../model/Rating')
 const Summary = require('../model/Summary')
 const Volunteer = require('../model/User')
-
+const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
   const { title } = req.body
-
+  const profile = {}
   try{
+   console.log(req.session.user)
     let book = await Book.findOne({ attributes: ['refWriter', 'title', 'id'], where: { title: title }})
     let idWriter = book.refWriter
     let writer = await Writer.findOne({ where: { idWriter : idWriter }})
-
-    res.render("summarySubmit", { book: { id: book.id, title: book.title, refWriter: book.refWriter}, writer: {nameWriter: writer.nameWriter}})
+  
+    // const profile = await getUserInformation(req, res)
+    res.render("summarySubmit", { 
+      book: { 
+        id: book.id, 
+        title: book.title, 
+        refWriter: book.refWriter
+      }, 
+      writer: {
+        nameWriter: writer.nameWriter
+      },
+      // profile: profile
+      messageErro: false
+    })
   }catch(error){
-    res.status(400).send('Erro ao encontrar livro!')
+    res.render('summary', {messageError: `Não existe este livro ${title}`})
   }
 }
 
 async function createSummary(req, res) {
- 
-  const { body, refWriter, refVolunteer, refBook } = req.body
+  const { body, refWriter, refVolunteer, refBook} = req.body
 
   try{
     await Summary.create({
@@ -29,7 +40,7 @@ async function createSummary(req, res) {
     refWriter,
     refVolunteer,
     refBook
-  }).then(() => showAllSummary())
+  }).then(() => showAllSummary(req, res))
   }catch(error){
     res.status(400).send('Erro ao criar resumo!')
   } 
@@ -37,6 +48,7 @@ async function createSummary(req, res) {
 
 async function showAllSummary(req, res) {
   const summaries = await listAllSummary();
+
   const ratings = await Rating.findAll({
     raw: true
   })
@@ -48,17 +60,17 @@ async function listSummary(req, res) {
   try{
   const { id } = req.params
 
-    await Summary.belongsTo(Volunteer, {
+    Summary.belongsTo(Volunteer, {
     foreignKey: {
       name: 'id'
     }})
 
-    await Summary.belongsTo(Writer, {
+    Summary.belongsTo(Writer, {
       foreignKey: {
         name: 'id'
       }})
 
-    await Summary.belongsTo(Book, {
+    Summary.belongsTo(Book, {
       foreignKey: {
         name: 'id'
       }});  
@@ -66,17 +78,17 @@ async function listSummary(req, res) {
     await Summary.findOne({
       where: { id: id },
       include: [{
-      association: 'user',
-      attributes: ['fullName'],
-    },{
-      association: 'writer',
-      attributes: ['nameWriter'],
-    },{
-      association: 'book',
-      attributes: ['title'],
+        association: 'user',
+        attributes: ['fullName'],
+      },{
+        association: 'writer',
+        attributes: ['nameWriter'],
+      },{
+        association: 'book',
+        attributes: ['title'],
     }]
   }).then(summary => async() =>{
-    await res.render('listSummary', { 
+     res.render('listSummary', { 
       summary: summary,
       book: summary.book.title , 
       volunteer: summary.user.fullName, 
@@ -88,17 +100,17 @@ async function listSummary(req, res) {
 }
 async function listAllSummary() {
   try{
-    await Summary.belongsTo(Volunteer, {
+    Summary.belongsTo(Volunteer, {
       foreignKey: {
         name: 'id'
       }})
 
-    await Summary.belongsTo(Writer, {
+    Summary.belongsTo(Writer, {
         foreignKey: {
           name: 'id'
         }})
 
-    await Summary.belongsTo(Book, {
+    Summary.belongsTo(Book, {
         foreignKey: {
           name: 'id'
         }});  
@@ -114,7 +126,9 @@ async function listAllSummary() {
       },{
         association: 'book',
         attributes: ['title'],
-      }]
+      }, 
+    ],
+      
     })
     return summary
   }catch(error){

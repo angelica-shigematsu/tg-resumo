@@ -92,7 +92,7 @@ routes.get('/livro/listaLivro/:id', BookController.listBook)
 routes.post('/livro/alterar/:id', BookController.updateBook)
 routes.post('/livro/excluir', BookController.deleteeBook)
 
-// //Route of Resumo
+//Route of Resumo
 routes.get('/resumo', (req, res) => res.render(views + "summary"))
 routes.post('/titulo', SummaryController.searchTitleBook)
 routes.get('/resumo/submit', (req, res) => res.render(views + "summarySubmit"))

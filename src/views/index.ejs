@@ -1,7 +1,7 @@
-<%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
+<%- include('partials/navLandingPage.ejs') %> 
 
-  <div class="alert alert-danger"><%= error %> </div>
+<% if (error) %> <div class="alert alert-danger"><%= error %> </div>
   <div class="container-sm">
     <form class="mb-3" id="form-login" enctype="application/x-www-form-urlencoded"
       method="POST" action="/login">

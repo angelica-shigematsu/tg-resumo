@@ -1,27 +1,33 @@
-<%- include('partials/nav.ejs')  %> 
-<%- include('partials/header.ejs') %> 
-
-<% summaries.forEach(summary => { %>
-  <div class="card w-75">
-    <div class="card-body">
-      <h5 class="card-title">Livro: <%= summary.book.title.toUpperCase() %></h5>
-      <p class="card-text">
-      <p>Nome do voluntário: <%=summary.user.fullName%></p>
-      <p>Autor: <%=summary.writer.nameWriter%></p>
-      <p>Avaliação:
-        <% let result = 0
-        let lengthRate = 0 %>
-        <%ratings.forEach(listRate=>  {
-        if (listRate.refSummary === summary.id) {
-         result+= listRate.ratingStar
-           lengthRate++
-       }
-     })%>
-       <%=(result/lengthRate).toFixed(2)%></p>
-
-      <a href="/resumo/avaliacao/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
-    </div>
+<% if (messageError) { %> 
+  <%- include('partials/header.ejs') %> 
+  <%- include('partials/nav.ejs')  %> 
+  <div class="alert alert-warning" role="alert">
+    <%=messageError%>
   </div>
-<% }) %>
-
+  <%} else { %>
+    <%- include('partials/header.ejs') %> 
+    <%- include('partials/nav.ejs')  %> 
+    <% summaries.forEach(summary => { %>
+      <div class="card w-75">
+        <div class="card-body">
+          <h5 class="card-title">Livro: <%= summary.book.title %></h5>
+          <p class="card-text">
+          <p>Nome do voluntário: <%=summary.user.fullName%></p>
+          <p>Autor: <%=summary.writer.nameWriter%></p>
+          <p>Avaliação:
+            <% let result = 0
+            let lengthRate = 0 %>
+            <%ratings.forEach(listRate=>  {
+            if (listRate.refSummary === summary.id) {
+            result+= listRate.ratingStar
+              lengthRate++
+          }
+        })%>
+        <% if (!isNaN(result)) {%> <%=0%> <%} else {%> <%=(result/lengthRate).toFixed(2)%> <%}%>
+        </p>
+          <a href="/resumo/avaliacao/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+        </div>
+      </div>
+  <% }) %>
+<% } %>
 <%- include('partials/footer.ejs') %> 
