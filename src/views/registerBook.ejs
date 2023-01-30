@@ -11,13 +11,13 @@
           <input type="text" class="form-control" min="3" id="title">
         </div>
       </div>
-      <div class="col-sm-10">
+      <div class="col-sm-8">
         <select class="form-select" aria-label="Default select example" name="writer">
           <% writers.forEach((writer) => { %> 
             <option value="<% writer.id %>"><% writer.name %></option>
           <% }) %>
         </select>
-    </div>
+      </div>
       <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Editora</label>
         <div class="col-sm-10">

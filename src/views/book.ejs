@@ -12,13 +12,15 @@
           <input type="text" class="form-control" minlenght="3" id="title" name="title">
         </div>
       </div>
-      <div class="col-sm-10">
+      <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Autor</label>
-        <select class="form-select col-sm-6" aria-label="Default select example" name="refWriter">
-          <% writers.forEach((writer) => { %> 
-            <option value="<%= writer.idWriter %>"><%= writer.nameWriter %></option>
-          <% }) %>
-        </select>
+        <div class="col-sm-10">
+          <select class="form-select col-sm-6" aria-label="Default select example" name="refWriter">
+            <% writers.forEach((writer) => { %> 
+              <option value="<%= writer.idWriter %>"><%= writer.nameWriter %></option>
+            <% }) %>
+          </select>
+        </div>
       </div>
       <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Editora</label>
@@ -47,8 +49,6 @@
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button class="btn btnProgress" type="submit" form="form-book">Cadastrar</button>
-        <button class="btn btnUpdate" type="button">Atualizar</button>
-        <button class="btn btnCancel" type="button">Cancelar</button>
       </div>
     </form>
   </div>
