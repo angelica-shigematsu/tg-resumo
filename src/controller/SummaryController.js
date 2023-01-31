@@ -53,7 +53,7 @@ async function showAllSummary(req, res) {
     raw: true
   })
 
-  res.render('listAllSummary', { summaries: summaries, ratings: ratings })
+  res.render('listAllSummary', { summaries: summaries, ratings: ratings, messageError: false })
 }
 
 async function listSummary(req, res) {
