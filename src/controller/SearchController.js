@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 const Book = require("../model/Book")
 const Rating = require("../model/Rating")
 const Summary = require("../model/Summary")
@@ -6,6 +8,8 @@ const Writer = require("../model/Writer")
 
 async function searchSummary(req, res) {
   const { fieldSearch } = req.body
+  let writer = []
+  let summaries = []
 
   if (!fieldSearch) res.render('listAllSummary', {messageError: 'O campo está vazio!'})
 
@@ -17,7 +21,7 @@ async function searchSummary(req, res) {
 
       await Summary.belongsTo(Writer, {
         foreignKey: {
-          name: 'id'
+          name: 'refWriter'
         }})
 
       await Summary.belongsTo(Book, {
@@ -25,52 +29,42 @@ async function searchSummary(req, res) {
           name: 'id'
         }});  
 
-    const book = await Book.findOne({
-      attributes: ['id', 'title'],
-      where: { 
-        title: fieldSearch
-      }
-    })
+      const book = await Book.findOne({
+        attributes: ['id', 'title'],
+        where: { 
+          title: { [Op.like]: `%${fieldSearch}%` }
+        }
+      })
 
-    // const writer = await Writer.find({
-    //   where: { 
-    //     nameWriter: fieldSearch 
-    //   }
-    //  })
+      // writer = await Writer.findOne({
+      //   where: { nameWriter: { [Op.like]: `%${fieldSearch}%`}},
+      //   attributes: ['id'],
+      // })
+
+      summaries = await Summary.findAll({
+        where: { id: book.id },
+        include: [{
+          association: 'user',
+          attributes: ['fullName'],
+        },{
+          association: 'writer',
+          attributes: ['nameWriter'],
+        },{
+          association: 'book',
+          attributes: ['title'],
+        }]
+      })
+
+      // summaries = await Summary.findAll({
+      //   where: {
+      //     refWriter: writer.id
+      // }})
 
     const ratings = await Rating.findAll({
       raw: true
     })
 
-    const summaries = await Summary.findAll({
-      where: { refBook: book.id },
-      include: [{
-        association: 'user',
-        attributes: ['fullName'],
-      },
-      {
-        association: 'writer',
-        attributes: ['nameWriter'],
-      },{
-        association: 'book',
-      attributes: ['title'],
-    }]
-  })
-  if (!summaries) res.render('listAllSummary', {
-       summaries: summaries, 
-       ratings: ratings, 
-       messageError: false, 
-       fieldSearch: fieldSearch
-      })
- 
-    // if (writer) {
-    //   Summary.findAll({
-    //   where: {
-    //     ref
-    //   }})
-    // }
-
-    res.render('listAllSummary', { summaries: summaries, ratings: ratings, messageError: false})
+    res.render('listAllSummary', { summaries: summaries, ratings: ratings, messageError: false, messageReport: false })
  }catch(error) {
   res.render('listAllSummary', {messageError: `Não existe: ${fieldSearch}`})
  } 
