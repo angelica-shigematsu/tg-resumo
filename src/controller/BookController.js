@@ -96,7 +96,7 @@ async function deleteeBook(req, res) {
   try {
     await Book.destroy({
       where: { id: id }
-    }).then(book => {
+    }).then(() => {
       res.redirect('/livro/listaLivro')
     })
   } catch (error) {

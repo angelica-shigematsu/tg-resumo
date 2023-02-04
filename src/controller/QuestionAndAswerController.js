@@ -5,8 +5,7 @@ async function searchTitleBook(req, res) {
   try {
     await Book.findAll({
       raw : true, 
-      order: 
-      [
+      order: [
          ['title', 'ASC']
       ]
     }).then((books) => {
@@ -25,7 +24,7 @@ async function showTitleBookByQuestion(id) {
     })
     return bookTitle;
   } catch (error) {
-    res.json()
+    res.json(error)
   }
 }
 

@@ -7,6 +7,11 @@
   <%} else { %>
     <%- include('partials/header.ejs') %> 
     <%- include('partials/nav.ejs')  %> 
+    <% if (messageReport) {%>
+      <div class="alert alert-success" role="alert">
+        <%=messageReport%>
+      </div>
+    <% } %>
     <% summaries.forEach(summary => { %>
       <div class="card w-75">
         <div class="card-body">
@@ -23,7 +28,7 @@
               lengthRate++
           }
         })%>
-        <% if (!isNaN(result)) {%> <%=0%> <%} else {%> <%=(result/lengthRate).toFixed(2)%> <%}%>
+        <% if (isNaN(result)) {%> <%=0%> <%} else {%> <%=(result/lengthRate).toFixed(2)%> <%}%>
         </p>
           <a href="/resumo/avaliacao/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
         </div>

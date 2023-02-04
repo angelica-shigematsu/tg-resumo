@@ -45,13 +45,14 @@ async function searchSummary(req, res) {
     const summaries = await Summary.findAll({
       where: { refBook: book.id },
       include: [{
-      association: 'user',
-      attributes: ['fullName'],
-    },{
-      association: 'writer',
-      attributes: ['nameWriter'],
-    },{
-      association: 'book',
+        association: 'user',
+        attributes: ['fullName'],
+      },
+      {
+        association: 'writer',
+        attributes: ['nameWriter'],
+      },{
+        association: 'book',
       attributes: ['title'],
     }]
   })

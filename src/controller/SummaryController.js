@@ -53,7 +53,12 @@ async function showAllSummary(req, res) {
     raw: true
   })
 
-  res.render('listAllSummary', { summaries: summaries, ratings: ratings, messageError: false })
+  res.render('listAllSummary', {
+    summaries: summaries, 
+    ratings: ratings, 
+    messageError: false, 
+    messageReport: false
+  })
 }
 
 async function listSummary(req, res) {
@@ -92,12 +97,14 @@ async function listSummary(req, res) {
       summary: summary,
       book: summary.book.title , 
       volunteer: summary.user.fullName, 
-      writer: summary.writer.nameWriter})
+      writer: summary.writer.nameWriter
+    })
   })
   }catch(err){
     res.json(err)
   } 
 }
+
 async function listAllSummary() {
   try{
     Summary.belongsTo(Volunteer, {
