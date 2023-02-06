@@ -92,7 +92,7 @@ async function listSummary(req, res) {
         association: 'book',
         attributes: ['title'],
     }]
-  }).then(summary => async() =>{
+  }).then(summary =>{
      res.render('listSummary', { 
       summary: summary,
       book: summary.book.title , 
