@@ -15,7 +15,6 @@ async function createVolunteer(req, res) {
       level, 
       reason
     }).then(() => res.redirect(('/usuario')));
-
 };
 
 async function listVolunteer(req, res) {
@@ -31,8 +30,6 @@ async function listVolunteer(req, res) {
 async function updateVolunteer(req, res) {
   const { id } = req.params
   const { fullName, cpf, dateBirthUser, email, password, level, active, reason } = req.body
-
-  console.log(fullName, cpf, dateBirthUser, email, password, level, reason);
 
   try{
     await User.update({
@@ -56,4 +53,13 @@ async function updateVolunteer(req, res) {
   }
 }
 
-module.exports = { createVolunteer, listVolunteer, updateVolunteer }
+async function deleteUser(req, res) {
+  const { id } = req.body;
+
+  await User.destroy({
+     where: { id: id}
+  }).then(() => res.redirect(('/login')));
+
+};
+
+module.exports = { createVolunteer, listVolunteer, updateVolunteer, deleteUser }
