@@ -44,9 +44,10 @@ console.log('hit')
     raw: true,
     nest: true
   })
-  res.render('listReport', {
+  res.render('listAllReport', {
     reports: reports
   })
 }
+
 
 module.exports = { createReport, getInformationReport }
