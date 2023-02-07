@@ -18,6 +18,7 @@ const Rating = connection.define('ratings', {
   refSummary: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'summaryBooks',
       key: 'id'
@@ -26,6 +27,7 @@ const Rating = connection.define('ratings', {
   refUser: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'users',
       key: 'id'

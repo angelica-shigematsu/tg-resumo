@@ -10,6 +10,7 @@ const Report = connection.define('reports', {
   refSummary: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'summaryBooks',
       key: 'id'
@@ -18,6 +19,7 @@ const Report = connection.define('reports', {
   refUser: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'users',
       key: 'id'

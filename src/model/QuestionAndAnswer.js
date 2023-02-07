@@ -18,6 +18,7 @@ const QuestionAndAnswer = connection.define('questions', {
   refBook: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'books',
       key: 'id'
@@ -26,6 +27,7 @@ const QuestionAndAnswer = connection.define('questions', {
   refVolunteer: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'users',
       key: 'id'

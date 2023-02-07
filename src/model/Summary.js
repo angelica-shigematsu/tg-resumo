@@ -14,6 +14,7 @@ const Summary = connection.define('summaryBooks', {
   refWriter: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'writers',
       key: 'idWriter'
@@ -22,6 +23,7 @@ const Summary = connection.define('summaryBooks', {
   refVolunteer: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'users',
       key: 'id'
@@ -30,6 +32,7 @@ const Summary = connection.define('summaryBooks', {
   refBook: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    onDelete: 'CASCADE',
     references: {
       model: 'books',
       key: 'id'
