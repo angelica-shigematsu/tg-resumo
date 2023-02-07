@@ -1,0 +1,37 @@
+<%- include('partials/header.ejs') %> 
+<%- include('partials/nav.ejs')  %> 
+  <div class="container-sm">
+    <h3>Avaliação do Resumo</h3>
+    <form class="mb-3" id="form-rating" enctype="application/x-www-form-urlencoded"
+      method="POST" action="/avaliacao/alterar/<%=rating.id%>">   
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Avaliação</label>
+        <div class="col-sm-10">
+          <select class="form-select" aria-label="Default select example" name="ratingStar">
+              <option selected><%=rating.ratingStar%></option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+          </select>
+      </div>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Comentário</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" minlength="5" name="note" cols="30" rows="10"><%=rating.note%></textarea>
+        </div>
+      </div>
+    </form>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btnProgress" type="submit" form="form-rating">Atualizar</button>
+        <form class="mb-3" enctype="application/x-www-form-urlencoded"
+          method="POST" action="/autor/excluir">
+          <input type="text" value="<%=rating.id%>" name="id" hidden>
+          <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+      </div>
+    </div>
+  
+<%- include('partials/footer.ejs') %> 
+    

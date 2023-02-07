@@ -85,47 +85,21 @@ async function listAllRatingByUser(req, res) {
 
   try{
     
-    const value = Summary.belongsTo(Volunteer, {
+     Summary.belongsTo(Volunteer, {
       foreignKey: {
         name: 'id'
       }})
-      Summary.belongsTo(Writer, {
-        foreignKey: {
-          name: 'id'
-        }})
-  
-      Summary.belongsTo(Book, {
-        foreignKey: {
-          name: 'id'
-        }});  
-
+    
       const ratings = await Rating.findAll({
-        attributes: ['refSummary', 'ratingStar'],
+        attributes: ['refSummary', 'ratingStar', 'createdAt', 'note', 'id'],
         raw: true,
         where: {
           refUser: id
         }
       })
-      const summary = await Summary.findAll({
-        where: { id: ratings.refSummary },
-        include: [{
-        association: 'user',
-        attributes: ['fullName'],
-      },{
-        association: 'writer',
-        attributes: ['nameWriter'],
-      },{
-        association: 'book',
-        attributes: ['title'],
-      }]
-    })
 
     res.render('listRatingByUser', { 
-      book: summary.book.title,   
       ratings: ratings,
-      summary: summary,
-      volunteer: summary.user.fullName, 
-      writer: summary.writer.nameWriter
     })
 
   }catch(err){
@@ -133,4 +107,21 @@ async function listAllRatingByUser(req, res) {
   } 
 }
 
-module.exports = { createRating, listSummary, listAllRatingByUser }
+async function listRating(req, res) {
+  const { id } = req.params
+
+  try{
+      const rating = await Rating.findOne({
+        where: { id: id }
+      })
+  
+      res.render('listRating', {  
+        rating: rating
+      })
+
+  }catch(err){
+    res.json("Não contém cadastros")
+  } 
+}
+
+module.exports = { createRating, listSummary, listAllRatingByUser, listRating }

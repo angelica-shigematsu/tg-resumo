@@ -1,0 +1,16 @@
+<%- include('partials/nav.ejs')  %> 
+<%- include('partials/header.ejs') %> 
+
+<h4>Lista de Avaliação</h4>
+<%  ratings.forEach(rating => { %>
+  <div class="card w-75">
+    <div class="card-body">
+      <h5 class="card-title"><%= rating.createdAt.getDate() %>/<%= rating.createdAt.getMonth()+1 %>/<%= rating.createdAt.getFullYear()  %> </h5>
+      <p class="card-text">
+        <p> <%= rating.note %> </p>
+      <a href="/avaliacao/alterar/<%=rating.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+    </div>
+  </div>
+<% }) %>
+
+<%- include('partials/footer.ejs') %> 
