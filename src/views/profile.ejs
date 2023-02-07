@@ -80,11 +80,15 @@
           <textarea class="form-control" minlength="30" name="reason" cols="30" rows="10" required><%=profile.reason%></textarea>
         </div>
       </div>
+    </form>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button class="btn btnUpdate" type="submit" form="form-profile">Atualizar</button>
-        <button class="btn btnCancel" type="submit">Cancelar</button>
+        <form class="mb-3" enctype="application/x-www-form-urlencoded"
+          method="POST" action="/usuario/excluir">
+          <input type="text" value="<%= profile.id %>" name="id" hidden>
+          <button class="btn btnCancel" type="submit">Excluir</button>
+        </form>
       </div>
-    </form>
   </div>
   
 <%- include('partials/footer.ejs') %> 

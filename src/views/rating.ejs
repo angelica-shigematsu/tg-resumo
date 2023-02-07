@@ -3,13 +3,26 @@
 
   <div class="container-sm">
     <h3>Avaliação do Resumo</h3>
-    <form action="/denuncia" id="form-report" method="POST">
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
-        <input type="text" value="<%=1%>" name="refUser" hidden>
-        <button type="submit" class="btn btn-danger" form="form-report">Denunciar</button>
+    <div class="d-inline-flex">
+      <div class="col">
+      <form action="/denuncia" id="form-report" method="POST">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
+          <input type="text" value="<%=1%>" name="refUser" hidden>
+          <button type="submit" class="btn btn-danger" form="form-report">Denunciar</button>
+        </div>
+      </form>
       </div>
-    </form>
+      <div class="col">
+        <form action="/favoritar" id="form-favorite" method="POST">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
+            <input type="text" value="<%=1%>" name="refUser" hidden>
+            <button type="submit" class="btn btn-warning">Favoritar</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <form class="mb-3" id="form-rating" enctype="application/x-www-form-urlencoded"
     method="POST" action="/resumo/avaliacao">
     <div class="mb-3 row">
