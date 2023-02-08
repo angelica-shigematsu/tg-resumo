@@ -7,6 +7,10 @@ const Report = connection.define('reports', {
     autoIncrement: true,
     primaryKey: true
   },
+  active: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  },
   refSummary: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -27,6 +31,6 @@ const Report = connection.define('reports', {
   }
 })
 
-Report.sync({force: false}).then(() => {})
+Report.sync({alter: true}).then(() => {})
 
 module.exports = Report

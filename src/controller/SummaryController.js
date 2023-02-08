@@ -1,5 +1,6 @@
 const Book = require('../model/Book')
 const Rating = require('../model/Rating')
+const Report = require('../model/Report')
 const Summary = require('../model/Summary')
 const Volunteer = require('../model/User')
 const Writer = require('../model/Writer')
@@ -64,6 +65,13 @@ async function showAllSummary(req, res) {
 async function listSummary(req, res) {
   try{
   const { id } = req.params
+  let { active, reportId } = req.body
+
+  await Report.update({
+    active
+  }, {
+    where: { id : reportId }
+  })
 
     Summary.belongsTo(Volunteer, {
     foreignKey: {
@@ -80,7 +88,7 @@ async function listSummary(req, res) {
         name: 'id'
       }});  
 
-    await Summary.findOne({
+    const summary = await Summary.findOne({
       where: { id: id },
       include: [{
         association: 'user',
@@ -92,14 +100,13 @@ async function listSummary(req, res) {
         association: 'book',
         attributes: ['title'],
     }]
-  }).then(summary =>{
+  })
      res.render('listSummary', { 
       summary: summary,
       book: summary.book.title , 
       volunteer: summary.user.fullName, 
       writer: summary.writer.nameWriter
     })
-  })
   }catch(err){
     res.json(err)
   } 

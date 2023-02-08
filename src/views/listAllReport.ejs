@@ -6,9 +6,13 @@
     <div class="card-body">
       <h5 class="card-title">Data da denúncia: <%= report.createdAt.getDate() %>/<%= report.createdAt.getMonth()+1 %>/<%= report.createdAt.getFullYear() %> %></h5>
       <p class="card-text">
-      <p>Denuciante<%=report.user.fullName%></p>
+      <p>Denuciante: <%=report.user.fullName%></p>
       <p>Email:<%=report.user.email%></p>
-      <a href="/resumo/listaResumo/<%=report.refSummary%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+      <form action="/resumo/listaResumo/<%=report.refSummary%>" id="form-report" method="POST">
+        <input type="text" name="active" value="<%=false%>" hidden>
+        <input type="text" name="reportId" value="<%=report.id%>" hidden>
+        <button type="submit" class="btn btn-primary" form="form-report">Verificar</button>
+      </form>
     </div>
   </div>
 <% }) %>

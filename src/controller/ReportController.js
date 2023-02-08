@@ -6,8 +6,9 @@ const User = require('../model/User')
 async function createReport(req, res) {
   try {
     const { refSummary, refUser } = req.body
-
+    let active = true
     await Report.create({
+      active,
       refSummary,
       refUser
     }).then(async() => {
@@ -30,7 +31,6 @@ async function createReport(req, res) {
 }
 
 async function getInformationReport(req, res) {
-console.log('hit')
   Report.belongsTo(User, {
     foreignKey: 'id'
   })
