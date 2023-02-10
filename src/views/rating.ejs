@@ -1,6 +1,11 @@
 <%- include('partials/header.ejs') %> 
 <%- include('partials/nav.ejs')  %> 
 
+<% if(messageFavorite) {%>
+  <div class="alert alert-success" role="alert">
+    <%=messageFavorite%>
+  </div>
+<% } %>
   <div class="container-sm">
     <h3>Avaliação do Resumo</h3>
     <div class="d-inline-flex">

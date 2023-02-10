@@ -73,7 +73,8 @@ async function listSummary(req, res) {
         ratings: ratings,
         summary: summary,
         volunteer: summary.user.fullName, 
-        writer: summary.writer.nameWriter})
+        writer: summary.writer.nameWriter, 
+        messageFavorite: false})
 
   }catch(err){
     res.json("Não contém cadastros")
