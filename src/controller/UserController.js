@@ -4,17 +4,23 @@ async function createVolunteer(req, res) {
   const { fullName , userName, cpf, dateBirthUser, email, password, level, reason } = req.body;
   const active = 'inativo';
 
-  await User.create({
-      fullName,
-      userName,
-      cpf,
-      dateBirthUser,
-      email,
-      password,
-      active,
-      level, 
-      reason
-    }).then(() => res.redirect(('/usuario')));
+  try{
+    await User.create({
+        fullName,
+        userName,
+        cpf,
+        dateBirthUser,
+        email,
+        password,
+        active,
+        level, 
+        reason
+      }).then(() => 
+        res.render('user', { message: 'Enviado com sucesso' })
+      );
+    }catch(err){
+      res.json(err)
+    }
 };
 
 async function listVolunteer(req, res) {

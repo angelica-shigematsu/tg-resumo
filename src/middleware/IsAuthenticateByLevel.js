@@ -32,7 +32,9 @@ module.exports = {
       if(allLevelUsers) {
         next();
       }
-			res.redirect('/login')
+      else{
+        res.redirect('/login')
+      }
     }
     }catch(error) {
       res.redirect('/login')

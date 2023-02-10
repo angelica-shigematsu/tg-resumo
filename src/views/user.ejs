@@ -1,6 +1,11 @@
 <%- include('partials/header.ejs') %> 
 <%- include('partials/navLandingPage.ejs') %> 
 
+<% if (message) {%>
+  <div class="alert alert-success" role="alert">
+    <%=message%>
+  </div>
+<% } %>
 <div class="container-sm">
   <form class="mb-3" id="form-volunteer" enctype="application/x-www-form-urlencoded"
     method="POST" action="/usuario">
