@@ -1,22 +1,29 @@
 module.exports = {  
   isAdmin: (req, res, next) => {
     if (req.isAuthenticated()) {
-      if (req.user.level=== "Administrador") {
+      if (req.user.level === "Administrador") {
         next();
       }
-      res.redirect('/login')
-  	}
-  res.redirect("/login");
-},
-isUser: (req, res, next) => {
-  if (req.isAuthenticated()) {
-    if (req.user.level=== "Usuario") {
-      next();
+      else{
+        res.redirect('/login')
+      }
+  	}else{
+      res.redirect("/login");
     }
-    res.redirect('/login')
-  }
-res.redirect("/login");
-},
+  },
+  isVolunteer: (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.level === "Voluntario") {
+        next();
+      }
+      else {
+        res.redirect('/login')
+      }
+    }
+    else {
+      res.redirect("/login");
+    }
+  },
   //Admin has acess what volunteer has
   isAllLevel: (req, res, next) => {
     try {
