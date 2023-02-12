@@ -12,8 +12,10 @@ const SummaryController = require('./controller/SummaryController')
 const RatingController = require('./controller/RatingController')
 const QuestionAndAnswerController = require('./controller/QuestionAndAswerController')
 const SearchController = require('./controller/SearchController')
+const ReportController = require('./controller/ReportController')
+const FavoriteController = require('./controller/FavoriteController')
 
-const { isAdmin, isAllLevel } = require('./middleware/IsAuthenticateByLevel')
+const { isAdmin, isUser, isAllLevel, isVolunteer } = require('./middleware/IsAuthenticateByLevel')
 
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -93,12 +95,12 @@ routes.post('/livro/alterar/:id', BookController.updateBook)
 routes.post('/livro/excluir', BookController.deleteeBook)
 
 //Route of Resumo
-routes.get('/resumo', (req, res) => res.render(views + "summary"))
+routes.get('/resumo', (req, res) => res.render(views + "summary", { messageError: false }))
 routes.post('/titulo', SummaryController.searchTitleBook)
 routes.get('/resumo/submit', (req, res) => res.render(views + "summarySubmit"))
 routes.post('/titulo/submit', SummaryController.createSummary)
 routes.get('/resumo/listaResumo', SummaryController.showAllSummary)
-routes.get('/resumo/listaResumo/:id', SummaryController.listSummary)
+routes.post('/resumo/listaResumo/:id', SummaryController.listSummary)
 routes.post('/resumo/alterar/:id', SummaryController.updateSummary)
 routes.post('/resumo/excluir', SummaryController.deleteSummary)
 
@@ -106,6 +108,8 @@ routes.post('/resumo/excluir', SummaryController.deleteSummary)
 //Rating Summaries
 routes.get('/resumo/avaliacao/:id', RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
+routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
+routes.get('/avaliacao/alterar/:id', RatingController.listRating)
 
 routes.get('/questao', QuestionAndAnswerController.searchTitleBook)
 routes.post('/questao', QuestionAndAnswerController.createQuestion)
@@ -114,15 +118,23 @@ routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQue
 routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
-routes.get('/usuario', (req , res) => res.render(views + "user"))
+routes.get('/usuario', (req , res) => res.render(views + "user", { message: false }))
 routes.post('/usuario', UserController.createVolunteer)
-routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
+routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
 routes.get('/perfil', ProfileController.showUserPage)
 routes.get('/usuario/:id', ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', UserController.updateVolunteer)
+routes.post('/usuario/excluir', UserController.deleteUser)
 
 routes.post('/nav', SearchController.searchSummary)
 
-routes.get('/login', (req, res) => res.render(views + "index"))
+routes.get('/login', (req, res) => res.render(views + "index", { error: false }))
+
+routes.get('/denuncia', ReportController.getInformationReport)
+routes.post('/denuncia', ReportController.createReport)
+routes.get('/denuncia/:id', ReportController.getReportByUser)
+routes.get('/denuncia/usuario/:id', ReportController.getAllReportByUser)
+
+routes.post('/favoritar', FavoriteController.createFavorite)
 
 module.exports = routes
