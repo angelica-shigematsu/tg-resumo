@@ -19,7 +19,7 @@ async function createReport(req, res) {
       const ratings = await Rating.findAll({
         raw: true
       })
-
+      
       res.render('listAllSummary', {
         summaries: summaries, 
         ratings: ratings, 
@@ -43,7 +43,7 @@ async function getAllReportByUser(req, res) {
     const reports = await Report.findAll({
       include: [{
         association: 'user',
-        attributes: ['fullName','email', 'id'],
+        attributes: ['fullName','email', 'id', 'createdAt'],
       }],
       where: {
         refUser: id
@@ -54,6 +54,7 @@ async function getAllReportByUser(req, res) {
 
     res.render('listAllReportToUser', { 
       reports: reports,
+      message: false
     })
 
   }catch(err){
@@ -120,4 +121,72 @@ async function getInformationReport(req, res) {
 }
 
 
-module.exports = { createReport, getInformationReport, getAllReportByUser, getReportByUser }
+async function updateReport(req, res) {
+  const { id } = req.params
+  const { active } = req.body
+
+  try{
+    await Report.update({
+      active
+    },{
+      where: {
+        id: id
+      }
+    })
+    
+    const reports = await Report.findAll({
+      include: [{
+        association: 'user',
+        attributes: ['fullName','email', 'id', 'createdAt'],
+      }],
+      where: {
+        refUser: id
+      },
+      raw: true,
+      nest: true
+    })
+
+      res.render('listAllReportToUser', { reports: reports, message: 'Atualizado com sucesso'})
+
+
+  }catch(err) {
+    res.json(err)
+  }
+}
+
+async function deleteReport(req, res) {
+  const { id, userId } = req.body
+
+  try{
+    await Report.destroy({
+      where: { id: id }
+    })
+
+    const reports = await Report.findAll({
+      include: [{
+        association: 'user',
+        attributes: ['fullName','email', 'id', 'createdAt'],
+      }],
+      where: {
+        refUser: userId
+      },
+      raw: true,
+      nest: true
+    })
+   
+    res.render('listAllReportToUser', { reports: reports, message: 'Excluído com sucesso'})
+
+  }catch(err) {
+    res.json()
+  }
+}
+
+
+module.exports = { 
+  createReport, 
+  getInformationReport, 
+  getAllReportByUser, 
+  getReportByUser,
+  updateReport,
+  deleteReport
+}

@@ -133,7 +133,9 @@ routes.get('/login', (req, res) => res.render(views + "index", { error: false })
 routes.get('/denuncia', ReportController.getInformationReport)
 routes.post('/denuncia', ReportController.createReport)
 routes.get('/denuncia/:id', ReportController.getReportByUser)
+routes.post('/denuncia/alterar/:id', ReportController.updateReport)
 routes.get('/denuncia/usuario/:id', ReportController.getAllReportByUser)
+routes.post('/denuncia/excluir', ReportController.deleteReport)
 
 routes.post('/favoritar', FavoriteController.createFavorite)
 

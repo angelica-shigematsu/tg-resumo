@@ -1,6 +1,12 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
 
+<% if (message) {%>
+  <div class="alert alert-success" role="alert">
+    <%=message%>
+  </div>
+<% } %>
+
 <% reports.forEach(report => { %>
   <div class="card w-75">
     <div class="card-body">
