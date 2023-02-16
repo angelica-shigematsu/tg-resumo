@@ -55,7 +55,7 @@ async function updateVolunteer(req, res) {
       res.redirect('/usuario')
     })
   }catch(error) {
-    res.json({error})
+    res.render('user', { messageError: 'Erro: Não criado'})
   }
 }
 
