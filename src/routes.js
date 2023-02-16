@@ -78,7 +78,7 @@ routes.post('/logout', function(req, res, next){
 routes.get('/menu', isAllLevel , (req, res) => res.render(views + "homepage"))
 
 //Routes of Writer não alterar (finalizado)
-routes.get('/autor', (req, res) => res.render(views + "registerWriter"))
+routes.get('/autor', (req, res) => res.render(views + "registerWriter", { message: false,  messageError: false }))
 routes.post('/autor', WriterController.createWriter)
 routes.get('/autor/listEscritor/:id', WriterController.listWriter)
 routes.get('/autor/listEscritor', WriterController.listAllWriter)
@@ -106,7 +106,7 @@ routes.post('/resumo/excluir', SummaryController.deleteSummary)
 
 
 //Rating Summaries
-routes.get('/resumo/avaliacao/:id', RatingController.listSummary)
+routes.get('/resumo/:id', RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
 routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
 routes.get('/avaliacao/alterar/:id', RatingController.listRating)
@@ -118,9 +118,9 @@ routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQue
 routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
-routes.get('/usuario', (req , res) => res.render(views + "user", { message: false }))
+routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
 routes.post('/usuario', UserController.createVolunteer)
-routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
+routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
 routes.get('/perfil', ProfileController.showUserPage)
 routes.get('/usuario/:id', ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', UserController.updateVolunteer)

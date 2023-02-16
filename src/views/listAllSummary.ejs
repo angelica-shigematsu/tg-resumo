@@ -1,18 +1,6 @@
-<% if (messageError) { %> 
-  <%- include('partials/header.ejs') %> 
-  <%- include('partials/nav.ejs')  %> 
-  <div class="alert alert-warning" role="alert">
-    <%=messageError%>
-  </div>
-  <%} else { %>
-    <%- include('partials/header.ejs') %> 
-    <%- include('partials/nav.ejs')  %> 
-    <% if (messageReport) {%>
-      <div class="alert alert-success" role="alert">
-        <%=messageReport%>
-      </div>
-    <% } %>
-    <% summaries.forEach(summary => { %>
+<%- include('partials/nav.ejs')  %> 
+<%- include('partials/header.ejs') %> 
+  <% summaries.forEach(summary => { %>
       <div class="card w-75">
         <div class="card-body">
           <h5 class="card-title">Livro: <%= summary.book.title %></h5>
@@ -30,9 +18,9 @@
         })%>
         <% if (isNaN(result)) {%> <%=0%> <%} else {%> <%=(result/lengthRate).toFixed(2)%> <%}%>
         </p>
-          <a href="/resumo/avaliacao/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+          <a href="/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
         </div>
       </div>
   <% }) %>
-<% } %>
+
 <%- include('partials/footer.ejs') %> 

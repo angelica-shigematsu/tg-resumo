@@ -1,6 +1,18 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
 
+<% if (message) {%>
+  <div class="alert alert-success" role="alert">
+    <%=message%>
+  </div>
+<% } %>
+
+<% if (messageError) {%> 
+  <div class="alert alert-warning" role="alert">
+    <%=messageError%>
+  </div>
+<% } %>
+
 <% writers.forEach(writers => { %>
   <div class="card w-75">
     <div class="card-body">
