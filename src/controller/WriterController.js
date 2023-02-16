@@ -5,22 +5,22 @@ async function createWriter(req, res) {
   const { dateBirthWriter } = req.body
 
   try{
-    if(!nameWriter && !dateBirthWriter) res.status(400).send('Campos inválido')
-    
+    const writers = await showAllWriters()
     await Writer.create({
     nameWriter,
     dateBirthWriter
-  }).then(() => res.status(200).redirect("/autor/listEscritor"))
+  }).then(() => res.render("listAllWriters", { writers: writers, message: 'Criado com sucesso', messageError: false}))
   }catch(error){
-    res.status(400).send('Erro ao criar escritor!')
+    res.json(error)
   }
 }
 
 async function listAllWriter(req, res) {
   const writers = await showAllWriters()
     res.render("listAllWriters", {
-        writers: writers
-
+        writers: writers,
+        message: false, 
+        messageError: false
   })
 } 
 
@@ -54,6 +54,7 @@ async function updateWriter(req, res) {
   if(!nameWriter && !dateBirthWriter )  res.render("listAllWriters")
 
   try{
+    const writers = await showAllWriters()
     await Writer.update({
       nameWriter,
       dateBirthWriter
@@ -61,7 +62,7 @@ async function updateWriter(req, res) {
       where: {
         idWriter: id
     }}).then(() => {
-      res.redirect("../../autor/listEscritor")
+      res.render('listAllWriters', {  writers: writers, message: 'Alterado com sucesso', messageError: false})
     })
   }catch(err) {
     res.status(400).send('Erro em atualizar os dados do Escritor')
@@ -72,10 +73,11 @@ async function deleteWriter( req, res) {
   const { id } = req.body
 
   try{
+    const writers = await showAllWriters()
     await Writer.destroy({
       where: { idWriter: id }
     }).then(() => {
-      return res.redirect("/autor/listEscritor")
+      return res.render("listAllWriters", {  writers: writers, message: 'Excluído com sucesso', messageError: false } )
     })
   }catch(err) {
     res.status(400).send('Não pode excluir dados do escritor! Tem dependência de livro cadastrado!')
