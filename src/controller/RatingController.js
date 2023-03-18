@@ -32,7 +32,8 @@ async function listSummary(req, res) {
   const { id } = req.params
 
   try{
-    
+    const refUserComment = await getUserInformation(req, res);
+
     Summary.belongsTo(Volunteer, {
       foreignKey: {
         name: 'id'
@@ -74,7 +75,9 @@ async function listSummary(req, res) {
         summary: summary,
         volunteer: summary.user.fullName, 
         writer: summary.writer.nameWriter, 
-        messageFavorite: false})
+        messageFavorite: false,
+        refUserComment: refUserComment
+      })
 
   }catch(err){
     res.json("Não contém cadastros")
@@ -123,6 +126,16 @@ async function listRating(req, res) {
   }catch(err){
     res.json("Não contém cadastros")
   } 
+}
+
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await Volunteer.findOne({
+        where: { email: email}
+    })
+    return profile
+  }
 }
 
 module.exports = { createRating, listSummary, listAllRatingByUser, listRating }

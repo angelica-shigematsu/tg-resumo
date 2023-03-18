@@ -7,24 +7,22 @@ const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
   const { title } = req.body
-  const profile = {}
   try{
-   console.log(req.session.user)
     let book = await Book.findOne({ attributes: ['refWriter', 'title', 'id'], where: { title: title }})
     let idWriter = book.refWriter
     let writer = await Writer.findOne({ where: { idWriter : idWriter }})
-  
-    // const profile = await getUserInformation(req, res)
+
+    const profile = await getUserInformation(req, res)
     res.render("summarySubmit", { 
       book: { 
         id: book.id, 
         title: book.title, 
-        refWriter: book.refWriter
+        refWriter: book.refWriter,
       }, 
       writer: {
         nameWriter: writer.nameWriter
       },
-      // profile: profile
+      profile: profile,
       messageErro: false
     })
   }catch(error){
@@ -106,7 +104,8 @@ async function listSummary(req, res) {
       book: summary.book.title , 
       volunteer: summary.user.fullName, 
       writer: summary.writer.nameWriter,
-      message: 'Alterado com sucesso'
+      message: 'Alterado com sucesso',
+      refUserComment: refUserComment
     })
   }catch(err){
     res.json(err)
@@ -184,6 +183,16 @@ async function deleteSummary(req, res) {
     })
   }catch(err) {
     res.redirect('/resumo/listaResumo')
+  }
+}
+
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await Volunteer.findOne({
+        where: { email: email}
+    })
+    return profile
   }
 }
 

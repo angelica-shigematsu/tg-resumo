@@ -96,17 +96,17 @@ routes.post('/livro/excluir', BookController.deleteeBook)
 
 //Route of Resumo
 routes.get('/resumo', (req, res) => res.render(views + "summary", { messageError: false }))
-routes.post('/titulo', SummaryController.searchTitleBook)
+routes.post('/titulo', isVolunteer, SummaryController.searchTitleBook)
 routes.get('/resumo/submit', (req, res) => res.render(views + "summarySubmit"))
 routes.post('/titulo/submit', SummaryController.createSummary)
-routes.get('/resumo/listaResumo', SummaryController.showAllSummary)
+routes.get('/resumo/listaResumo', isAllLevel, SummaryController.showAllSummary)
 routes.post('/resumo/listaResumo/:id', SummaryController.listSummary)
 routes.post('/resumo/alterar/:id', SummaryController.updateSummary)
 routes.post('/resumo/excluir', SummaryController.deleteSummary)
 
 
 //Rating Summaries
-routes.get('/resumo/:id', RatingController.listSummary)
+routes.get('/resumo/:id',isAllLevel, RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
 routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
 routes.get('/avaliacao/alterar/:id', RatingController.listRating)

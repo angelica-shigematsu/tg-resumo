@@ -3,7 +3,7 @@
 
   <div class="container-sm">
     <form class="mb-3" id="form-profile" enctype="application/x-www-form-urlencoded"
-    method="POST" action="/usuario/alterar/<%= profile.id%>">
+    method="POST" action="/usuario/alterar/<%= user.id%>">
       <h3>Seja mais um colaborador</h3>
       <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Nome Completo</label>
@@ -12,7 +12,7 @@
           minlength="3" id="full_name" 
           placeholder="Clarice Lispector"
           name="fullName"
-          value="<%= profile.fullName %>"
+          value="<%= user.fullName %>"
           required>
         </div>
       </div>
@@ -23,7 +23,7 @@
           minlength="11" maxlength="11" id="cpf" 
           placeholder="134.600.854-91"
           name="cpf"
-          value="<%= profile.cpf %>"
+          value="<%= user.cpf %>"
           required>
         </div>
       </div>
@@ -34,7 +34,7 @@
             <input type="date" class="form-control" 
             min="3"
             name="dateBirthUser"
-            value="<%= profile.dateBirthUser %>"
+            value="<%= user.dateBirthUser %>"
             required>
           </div>
         </div>
@@ -44,7 +44,7 @@
             <input type="text" class="form-control" 
             min="3"
             name="email"
-            value="<%= profile.email %>"
+            value="<%= user.email %>"
             required>
           </div>
         </div>
@@ -56,20 +56,20 @@
             <input type="password" class="form-control" 
             minlength="8" id="password" 
             name="password"
-            value="<%= profile.password %>"
+            value="<%= user.password %>"
             required>
           </div>
         </div>
         <select id="level" name="level" 
-          <% if (profile.level === 'Voluntario' || profile.level === 'Usuario') { %> disabled <%}%>>
-          <option value="<%=profile.level%>"><%= profile.level %> </option>
+          <% if (user.level === 'Voluntario' || user.level === 'Usuario') { %> disabled <%}%>>
+          <option value="<%=user.level%>"><%= user.level %> </option>
           <option value="Administrador">Administrador</option>
           <option value="Voluntario">Voluntário</option>
           <option value="Usuario">Usuário</option></option>
       </select>
       <select id="active" name="active"
-        <% if (profile.level === 'Voluntario' || profile.level === 'Usuario'){ %> disabled <%}%>>
-        <option><%= profile.active %> </option>
+        <% if (user.level === 'Voluntario' || user.level === 'Usuario'){ %> disabled <%}%>>
+        <option><%= user.active %> </option>
         <option>Ativo</option>
         <option>Não ativo</option>
       </select>
@@ -77,7 +77,7 @@
       <div class="mb-3 row">
         <label for="" class="col-sm-2 col-form-label">Motivo</label>
         <div class="col-sm-10">
-          <textarea class="form-control" minlength="30" name="reason" cols="30" rows="10" required><%=profile.reason%></textarea>
+          <textarea class="form-control" minlength="30" name="reason" cols="30" rows="10" required><%=user.reason%></textarea>
         </div>
       </div>
     </form>
@@ -85,7 +85,7 @@
         <button class="btn btnUpdate" type="submit" form="form-profile">Atualizar</button>
         <form class="mb-3" enctype="application/x-www-form-urlencoded"
           method="POST" action="/usuario/excluir">
-          <input type="text" value="<%= profile.id %>" name="id" hidden>
+          <input type="text" value="<%= user.id %>" name="id" hidden>
           <button class="btn btnCancel" type="submit">Excluir</button>
         </form>
       </div>

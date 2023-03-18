@@ -13,7 +13,7 @@
       <form action="/denuncia" id="form-report" method="POST">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
-          <input type="text" value="<%=1%>" name="refUser" hidden>
+          <input type="text" value="<%=refUserComment.id%>" name="refUser" hidden>
           <button type="submit" class="btn btn-danger" form="form-report">Denunciar</button>
         </div>
       </form>
@@ -22,7 +22,7 @@
         <form action="/favoritar" id="form-favorite" method="POST">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
-            <input type="text" value="<%=1%>" name="refUser" hidden>
+            <input type="text" value="<%=refUserComment.id%>" name="refUser" hidden>
             <button type="submit" class="btn btn-warning">Favoritar</button>
           </div>
         </form>

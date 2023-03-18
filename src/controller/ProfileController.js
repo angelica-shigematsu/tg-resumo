@@ -17,7 +17,7 @@ async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
       const profile = await Profile.findOne({
-      where: { email: email }
+        where: { email: email}
     })
     return profile
   }
@@ -25,7 +25,7 @@ async function getUserInformation(req, res) {
 
 async function showUserPage(req, res) {
   const profile = await getUserInformation(req, res)
-  res.render('profile', { profile: profile })
+  res.render('profile', { user: profile })
 }
 
 
