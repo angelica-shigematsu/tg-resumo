@@ -6,7 +6,7 @@
     <div class="card-body">
       <h5 class="card-title">Livro: <%= book.title.toUpperCase() %></h5>
       <p class="card-text">
-      <p>Autor: <%=writer%></p>
+      <p>Autor: <%=book.writer.nameWriter%></p>
       <a href="/livro/listaLivro/<%= book.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
     </div>
   </div>

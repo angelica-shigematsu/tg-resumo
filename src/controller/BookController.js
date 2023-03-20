@@ -13,15 +13,13 @@ async function getForeignKey(req, res){
 }
 
 async function createBook(req, res){
-  const { title, publishingCompany, genre, year, refWriter } = req.body
+  const { title, genre, refWriter } = req.body
 
   try{
     await Book.create({
       title,
       refWriter,
-      publishingCompany,
-      genre,
-      year
+      genre
     }).then(() => res.status(200).redirect("/livro/listaLivro"))
   }catch(err){
     res.json(err)
@@ -59,10 +57,10 @@ async function listAllBook(req, res) {
       include: [{
         association: 'writer',
         attributes: ['nameWriter']
-      }]
+      }],
+      nest: true
     }).then(books => {
-      let nameWriter = books[0]['writer.nameWriter']
-      res.render('listAllBook', { books: books, writer: nameWriter })
+      res.render('listAllBook', { books: books })
     })
   } catch (error) {
     res.json(error)
@@ -71,14 +69,12 @@ async function listAllBook(req, res) {
 
 async function updateBook(req, res) {
   const { id } =  req.params
-  const { title, publishingCompany, genre, year, refWriter } = req.body
+  const { title, genre, refWriter } = req.body
 
   try {
     await Book.update({
       title,
       publishingCompany,
-      genre,
-      year,
       refWriter
     }, {
       where: { id: id }
@@ -90,7 +86,7 @@ async function updateBook(req, res) {
   }
 }
 
-async function deleteeBook(req, res) {
+async function deleteBook(req, res) {
   const { id } = req.body
 
   try {
@@ -111,5 +107,5 @@ module.exports = {
   listAllBook, 
   listBook,
   updateBook,
-  deleteeBook
+  deleteBook
 }

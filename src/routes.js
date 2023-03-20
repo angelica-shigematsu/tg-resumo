@@ -92,7 +92,7 @@ routes.post('/livro', BookController.createBook)
 routes.get('/livro/listaLivro', BookController.listAllBook)
 routes.get('/livro/listaLivro/:id', BookController.listBook)
 routes.post('/livro/alterar/:id', BookController.updateBook)
-routes.post('/livro/excluir', BookController.deleteeBook)
+routes.post('/livro/excluir', BookController.deleteBook)
 
 //Route of Resumo
 routes.get('/resumo', (req, res) => res.render(views + "summary", { messageError: false }))

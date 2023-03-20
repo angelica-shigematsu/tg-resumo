@@ -19,20 +19,12 @@ const Book = connection.define('books', {
       key: 'idWriter'
     }
   },
-  publishingCompany: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
   genre: {
     type: Sequelize.STRING,
-    allowNull: false
-  },
-  year: {
-    type: Sequelize.INTEGER,
     allowNull: false
   }
 })
 
-Book.sync({force: false}).then(() => {})
+Book.sync({alter: true}).then(() => {})
 
 module.exports = Book
