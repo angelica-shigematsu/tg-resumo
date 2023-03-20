@@ -7,6 +7,10 @@ const Favorite = connection.define('favorites', {
     autoIncrement: true,
     primaryKey: true
   },
+  created_at: {
+    type: Sequelize.DATEONLY,
+    allowNull: false
+  },
   refSummary: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -25,6 +29,6 @@ const Favorite = connection.define('favorites', {
   }
 })
 
-Favorite.sync({force: false}).then(() => {})
+Favorite.sync({alter: true}).then(() => {})
 
 module.exports = Favorite
