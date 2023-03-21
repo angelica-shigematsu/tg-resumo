@@ -8,6 +8,7 @@
       <p class="card-text">
       <p>Denuciante: <%=report.user.fullName%></p>
       <p>Email:<%=report.user.email%></p>
+      <p>Avaliado: <%=report.status%></p>
       <form action="/resumo/listaResumo/<%=report.refSummary%>" id="form-report" method="POST">
         <input type="text" name="active" value="<%=false%>" hidden>
         <input type="text" name="reportId" value="<%=report.id%>" hidden>

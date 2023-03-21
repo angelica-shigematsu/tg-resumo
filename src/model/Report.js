@@ -7,8 +7,16 @@ const Report = connection.define('reports', {
     autoIncrement: true,
     primaryKey: true
   },
-  active: {
-    type: Sequelize.BOOLEAN,
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  reason: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  data: {
+    type: Sequelize.DATEONLY,
     allowNull: false
   },
   refSummary: {

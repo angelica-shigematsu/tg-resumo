@@ -7,10 +7,14 @@ const User = require('../model/User')
 
 async function createReport(req, res) {
   try {
-    const { refSummary, refUser } = req.body
-    let active = true
+    const { refSummary, refUser, reason } = req.body
+    const data = new Date()
+    let status = 'Não Avaliado'
+    
     await Report.create({
-      active,
+      status,
+      reason,
+      data,
       refSummary,
       refUser
     }).then(async() => {
