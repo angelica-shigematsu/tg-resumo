@@ -157,6 +157,5 @@ module.exports = {
   listAllRatingByUser, 
   listRating,
   getRating,
-  getSummary,
-  getUserInformation
+  getSummary
  }

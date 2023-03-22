@@ -3,35 +3,37 @@
   <div class="container-sm">
     <h3>Denuncias</h3>
     <form class="mb-3" id="form-report" enctype="application/x-www-form-urlencoded"
-      method="POST" action="/denuncia/alterar/<%=report.id%>">   
+      method="POST" action="/denuncia/avaliado/<%=report.id%>"> 
+      <input type="text" name="refReport" value="<%=report.id%>" hidden> 
       <h5><%=summary.book.title%></h3>
       <div class="mb-3 row">
+        <div class="mb-3 row">
+          <label for="" class="col-sm-2 col-form-label">Resumo</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" minlength="30" name="body" cols="30" rows="10" disabled><%=summary.body%></textarea>
+           </div>
+        </div>
         <label for="" class="col-sm-2 col-form-label">Denunciado</label>
         <div class="col-sm-10">
-          <select class="form-select" aria-label="Default select example" name="active">
-            <% if (report.active) {%>
-              <option selected <%=report.active%>>Sim</option>
-            <% } else { %>
-              <option selected <%=report.active%>>Não</option>
-            <% } %>
-          </option>
-          <option value="<%=0%>">Não</option>
-          <option value="<%=1%>">Sim</option>
+          <select class="form-select" aria-label="Default select example" name="status" required>
+            <option selected><%=status%></option>
+            <option>Recusado</option>
+            <option>Aprovado</option>
           </select>
-      </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="" class="col-sm-2 col-form-label">Observação</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" minlength="10" name="observation" cols="30" rows="10" required></textarea>
+           </div>
+        </div>
     </form>
-    <div class="mb-3 row">
-      <label for="" class="col-sm-2 col-form-label">Resumo</label>
-      <div class="col-sm-10">
-        <textarea class="form-control" minlength="30" name="body" cols="30" rows="10" disabled><%=report.summaryBook.body%></textarea>
-      </div>
-    </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <button class="btn btnProgress" type="submit" form="form-report">Atualizar</button>
+      <button class="btn btnProgress" type="submit" form="form-report">Atualizar a avaliação</button>
       <form class="mb-3" enctype="application/x-www-form-urlencoded"
         method="POST" action="/denuncia/excluir">
         <input type="text" value="<%=report.id%>" name="id" hidden>
-        <input type="text" value="<%=report.user.id%>" name="userId" hidden>
+        <input type="text" value="<%=summary.refVolunteer%>" name="userId" hidden>
         <button type="submit" class="btn btn-danger">Excluir</button>
       </form>
     </div>

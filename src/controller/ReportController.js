@@ -4,6 +4,7 @@ const Rating = require('../model/Rating')
 const Report = require('../model/Report')
 const Summary = require('../model/Summary')
 const User = require('../model/User')
+const MeasureReport = require('../model/MeasureReport')
 
 async function createReport(req, res) {
   try {
@@ -36,6 +37,31 @@ async function createReport(req, res) {
   }
 }
 
+async function updateReport(req, res) {
+  const { status, observation } = req.body
+  let { refReport } = req.body
+
+  try{
+    const refUserViewSummary = await getUserInformation(req, res);
+    const id = refUserViewSummary.id
+
+    const data = new Date()
+
+    await MeasureReport.create({
+      status,
+      observation,
+      data,
+      refUserViewSummary: id,
+      refReport
+    })
+
+    res.redirect('/denuncia');
+  }catch(error) {
+    res.json(error.message)
+  }
+  
+}
+
 async function getAllReportByUser(req, res) {
   const { id } = req.params
 
@@ -66,43 +92,45 @@ async function getAllReportByUser(req, res) {
   } 
 }
 
-async function getReportByUser(req, res) {
-  const { id } = req.params
+// async function getReportByUser(req, res) {
+//   const { id } = req.params
 
-  try{
-    Report.belongsTo(Summary,{
-      foreignKey: 'id'
-    })
+//   try{
+//     Report.belongsTo(Summary,{
+//       foreignKey: 'id'
+//     })
 
-    Summary.belongsTo(Book,{
-      foreignKey: 'id'
-    })
+//     Summary.belongsTo(Book,{
+//       foreignKey: 'id'
+//     })
 
-    const report = await Report.findOne({
-      where: { id: id },
-      include: [{
-        association: 'summaryBook',
-        key: 'id'
-      }]
-    })
 
-    const summary = await Summary.findOne({ 
-      where: { id: report.refSummary },
-      include: [{
-        association: 'book',
-        key: 'id'
-      }] 
-    })
+//     const report = await Report.findOne({
+//       where: { id: id },
+//       include: [{
+//         association: 'summaryBook',
+//         attributes: ['body']
+//       }]
+//     })
 
-    res.render('listReport', { 
-      report: report,
-      summary: summary
-    })
+//     const summary = await Summary.findOne({ 
+//       where: { id: report.refSummary },
+//       include: [{
+//         association: 'book',
+//         key: 'id'
+//       }]
+//     })
 
-  }catch(err){
-    res.json(err)
-  } 
-}
+//     console.log(s)
+//     // res.render('listReport', { 
+//     //   report: report,
+//     //   summary: summary
+//     // })
+
+//   }catch(err){
+//     res.json(err)
+//   } 
+// }
 
 async function getInformationReport(req, res) {
   Report.belongsTo(User, {
@@ -124,37 +152,38 @@ async function getInformationReport(req, res) {
   })
 }
 
-
-async function updateReport(req, res) {
+async function getReport(req, res) {
   const { id } = req.params
-  const { active } = req.body
 
   try{
-    await Report.update({
-      active
-    },{
-      where: {
-        id: id
-      }
+    Summary.belongsTo(User,{
+      foreignKey: 'id'
+    })
+
+    Summary.belongsTo(Book,{
+      foreignKey: 'id'
     })
     
-    const reports = await Report.findAll({
-      include: [{
-        association: 'user',
-        attributes: ['fullName','email', 'id', 'createdAt'],
-      }],
-      where: {
-        refUser: id
-      },
-      raw: true,
-      nest: true
+    Report.belongsTo(Summary, {
+      foreignKey: 'id'
     })
 
-      res.render('listAllReportToUser', { reports: reports, message: 'Atualizado com sucesso'})
+    const report = await Report.findOne({
+      where: { id: id }
+    })
 
-
+    const summary = await Summary.findOne({ 
+      where: { id: report.refSummary },
+      include: [{
+        association: 'book',
+        key: 'id'
+      }],
+      nested: true
+    })
+    console.log(report.status)
+    res.render('listReport', { report: report, status: report.status, summary: summary})
   }catch(err) {
-    res.json(err)
+    res.json("")
   }
 }
 
@@ -185,12 +214,22 @@ async function deleteReport(req, res) {
   }
 }
 
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await User.findOne({
+        where: { email: email}
+    })
+    return profile
+  }
+}
 
 module.exports = { 
   createReport, 
   getInformationReport, 
   getAllReportByUser, 
-  getReportByUser,
+  // getReportByUser,
   updateReport,
+  getReport,
   deleteReport
 }

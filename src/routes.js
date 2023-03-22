@@ -106,7 +106,7 @@ routes.post('/resumo/excluir', SummaryController.deleteSummary)
 
 
 //Rating Summaries
-routes.get('/resumo/:id',isAllLevel, RatingController.listSummary)
+routes.get('/resumo/:id', isAllLevel, RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
 routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
 routes.get('/avaliacao/alterar/:id', RatingController.listRating)
@@ -130,13 +130,15 @@ routes.post('/nav', SearchController.searchSummary)
 
 routes.get('/login', (req, res) => res.render(views + "index", { error: false }))
 
-routes.get('/denuncia', ReportController.getInformationReport)
-routes.post('/denuncia', ReportController.createReport)
-routes.get('/denuncia/:id', ReportController.getReportByUser)
-routes.post('/denuncia/alterar/:id', ReportController.updateReport)
+routes.get('/denuncia', isVolunteer, ReportController.getInformationReport)
+routes.post('/denuncia', isVolunteer, ReportController.createReport)
+// routes.get('/denuncia/:id', ReportController.getReportByUser)
+routes.post('/denuncia/avaliacao/:id', isVolunteer, ReportController.getReport)
+routes.post('/denuncia/avaliado/:id', isVolunteer, ReportController.updateReport)
+// routes.post('/denuncia/alterar/:id', ReportController.updateReport)
 routes.get('/denuncia/usuario/:id', ReportController.getAllReportByUser)
 routes.post('/denuncia/excluir', ReportController.deleteReport)
 
-routes.post('/favoritar', FavoriteController.createFavorite)
+routes.post('/favoritar', isAllLevel, FavoriteController.createFavorite)
 
 module.exports = routes
