@@ -6,8 +6,6 @@
     <div class="card-body">
       <h5 class="card-title">Data da denúncia: <%= report.createdAt.getDate() %>/<%= report.createdAt.getMonth()+1 %>/<%= report.createdAt.getFullYear() %> %></h5>
       <p class="card-text">
-      <p>Denuciante: <%=report.user.fullName%></p>
-      <p>Email:<%=report.user.email%></p>
       <p>Avaliado: <%=report.status%></p>
       <form action="/denuncia/avaliacao/<%=report.id%>" id="form-report" method="POST">
         <button type="submit" class="btn btn-primary" form="form-report">Verificar</button>
