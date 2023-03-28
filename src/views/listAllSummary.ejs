@@ -1,5 +1,11 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
+
+  <% if (messageError) { %>
+    <div class="alert alert-warning" role="alert">
+      <%=messageError%>
+    </div>
+  <%} else {%>
   <% summaries.forEach(summary => { %>
       <div class="card w-75">
         <div class="card-body">
@@ -22,5 +28,5 @@
         </div>
       </div>
   <% }) %>
-
+<% } %>
 <%- include('partials/footer.ejs') %> 

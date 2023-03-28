@@ -55,10 +55,7 @@ async function searchSummary(req, res) {
         }]
       })
 
-      // summaries = await Summary.findAll({
-      //   where: {
-      //     refWriter: writer.id
-      // }})
+      if (!summaries.id)  res.render('listAllSummary', { messageError: `Não existe resumo com o título ${fieldSearch}`, messageReport: false })
 
     const ratings = await Rating.findAll({
       raw: true
