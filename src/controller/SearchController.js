@@ -8,7 +8,6 @@ const Writer = require("../model/Writer")
 
 async function searchSummary(req, res) {
   const { fieldSearch } = req.body
-  let writer = []
   let summaries = []
 
   if (!fieldSearch) res.render('listAllSummary', {messageError: 'O campo está vazio!'})

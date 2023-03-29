@@ -39,7 +39,10 @@ const User = connection.define('users', {
     type: Sequelize.TEXT,
     allowNull: true
   }
-})
+}, {
+  tableName: 'users'
+}
+ )
 User.sync({force: false}).then(() => {})
 
 module.exports = User

@@ -11,6 +11,10 @@ const Summary = connection.define('summaryBooks', {
     type: Sequelize.TEXT,
     allowNull: false
   },
+  status: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
   refWriter: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -38,7 +42,8 @@ const Summary = connection.define('summaryBooks', {
       key: 'id'
     }
   }
-})
+}
+)
 
 Summary.sync({force: false}).then(() => {})
 

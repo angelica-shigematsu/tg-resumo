@@ -32,10 +32,11 @@ async function searchTitleBook(req, res) {
 
 async function createSummary(req, res) {
   const { body, refWriter, refVolunteer, refBook} = req.body
-
+  let status = 'Não avalidado'
   try{
     await Summary.create({
     body,
+    status,
     refWriter,
     refVolunteer,
     refBook
@@ -128,13 +129,10 @@ async function listAllSummary() {
         foreignKey: {
           name: 'id'
         }});  
-
+    
       const summary = await Summary.findAll({
-        attributes: ['body', 'id', 'refBook'],
+        attributes: ['body', 'id', 'refBook', 'refVolunteer'],
         include: [{
-        association: 'user',
-        attributes: ['fullName'],
-      },{
         association: 'writer',
         attributes: ['nameWriter'],
       },{
@@ -144,6 +142,7 @@ async function listAllSummary() {
     ],
       
     })
+
     return summary
   }catch(error){
     throw new Error(error)
@@ -157,6 +156,7 @@ async function updateSummary(req, res) {
   try{
     await Summary.update({
       body,
+      status,
       refWriter,
       refVolunteer,
       refBook
