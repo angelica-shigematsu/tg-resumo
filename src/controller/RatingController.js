@@ -32,6 +32,11 @@ async function listSummary(req, res) {
   const { id } = req.params
 
   const messageFavorite = false
+  
+  let profile = await getUserInformation(req, res);
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+
   try{
     const refUserComment = await getUserInformation(req, res);
 
@@ -46,7 +51,9 @@ async function listSummary(req, res) {
       volunteer: summary.user.fullName, 
       writer: summary.writer.nameWriter, 
       messageFavorite: false,
-      refUserComment: refUserComment
+      refUserComment: refUserComment,
+      menu: menu, 
+      admin: admin
     })
 
   }catch(err){
@@ -149,6 +156,20 @@ async function getUserInformation(req, res) {
     })
     return profile
   }
+}
+
+async function getlevelUser(profile) {
+  if (profile.level == 'Usuario')
+    return false
+  else
+    return true
+}
+
+async function getlevelAdmin(profile) {
+  if (profile.level == 'Administrador')
+    return false
+  else
+    return true
 }
 
 module.exports = { 

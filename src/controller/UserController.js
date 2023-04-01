@@ -16,7 +16,7 @@ async function createVolunteer(req, res) {
         level, 
         reason
       }).then(() => 
-        res.render('user', { message: 'Enviado com sucesso' })
+        res.render('user', { message: 'Enviado com sucesso', messageError: false })
       );
     }catch(err){
       res.json(err)
@@ -24,13 +24,23 @@ async function createVolunteer(req, res) {
 };
 
 async function listVolunteer(req, res) {
-  await User.findAll({raw: true, order: [
+  try {
+  const users = await User.findAll({raw: true, order: [
     ['fullName', 'ASC']
-  ]}).then(users => {
-    res.render("listAllUser", {
-      users: users
-    });
+    ]
   });
+    const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile)
+    let admin = await getlevelAdmin(profile)
+
+    res.render("listAllUser", {
+      users: users, 
+      menu: menu,
+      admin: admin
+    });
+  }catch(error) {
+    res.json('error')
+  }
 };
 
 async function updateVolunteer(req, res) {
@@ -67,5 +77,29 @@ async function deleteUser(req, res) {
   }).then(() => res.redirect(('/login')));
 
 };
+
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await User.findOne({
+        where: { email: email}
+    })
+    return profile
+  }
+}
+
+async function getlevelUser(profile) {
+  if (profile.level == 'Usuario')
+    return false
+  else
+    return true
+}
+
+async function getlevelAdmin(profile) {
+  if (profile.level == 'Administrador')
+    return false
+  else
+    return true
+}
 
 module.exports = { createVolunteer, listVolunteer, updateVolunteer, deleteUser }

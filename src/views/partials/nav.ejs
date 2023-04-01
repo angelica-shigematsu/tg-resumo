@@ -12,13 +12,14 @@
             Cadastros
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <% if (menu) {%>
             <li><a class="dropdown-item" href="/autor">Autor</a></li>
             <li><a class="dropdown-item" href="/livro">Livro</a></li>
             <li><a class="dropdown-item" href="/questao/listaQuestionario">Questionários</a></li>
-            <li><a class="dropdown-item" href="/usuario/listaUsuarios">Usuários</a></li>
-            <li><a class="dropdown-item" href="/resumo">Resumo</a></li>
+            <li><a class="dropdown-item" href="/autor/listEscritor">Autores</a></li>
             <li><a class="dropdown-item" href="/usuario">Usuário</a></li>
-            <li class="nav-item"><a class="nav-link" href="/denuncia">Denúncia</a></li>
+            <%}%>
+            <li><a class="dropdown-item" href="/resumo">Resumo</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -26,8 +27,11 @@
             Conteúdo
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="/resumo/listaResumo">Resumos</a></li>
-            <li><a class="dropdown-item" href="/autor/listEscritor">Autores</a></li>
+            <li><a class="dropdown-item" href="/resumo/listaResumo">Lista de Resumos</a></li>
+            <% if (admin) {%>
+              <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
+              <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
+            <%}%>
           </ul>
         </li>
         <li class="nav-item dropdown">

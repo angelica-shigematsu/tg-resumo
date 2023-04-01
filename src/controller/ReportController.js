@@ -70,11 +70,14 @@ async function updateReport(req, res) {
 }
 
 async function getAllReportByUser(req, res) {
-  const user = await getUserInformation(req, res);
+  const profile = await getUserInformation(req, res);
   try{
+    let menu = await getlevelUser(profile)
+    let admin = await getlevelAdmin(profile)
+
     const reports = await Report.findAll({
       where: {
-        refUser: user.id
+        refUser: profile.id
       },
       raw: true,
       nest: true
@@ -82,9 +85,11 @@ async function getAllReportByUser(req, res) {
 
     res.render('listAllReportToUser', { 
       reports: reports,
-      fullName: user.fullName,
-      email: user.email,
-      message: false
+      fullName: profile.fullName,
+      email: profile.email,
+      message: false,
+      menu: menu,
+      admin: admin
     })
 
   }catch(err){
@@ -94,15 +99,25 @@ async function getAllReportByUser(req, res) {
 
 async function getInformationReport(req, res) {
 
-  const reports = await Report.findAll({
-    order: [['createdAt', 'DESC']],
-    raw: true,
-    nest: true
-  })
+  try{
+      let profile = await getUserInformation(req, res)
+      let menu = await getlevelUser(profile)
+      let admin = await getlevelAdmin(profile)
 
-  res.render('listAllReport', {
-    reports: reports
-  })
+    const reports = await Report.findAll({
+      order: [['createdAt', 'DESC']],
+      raw: true,
+      nest: true
+    })
+
+    res.render('listAllReport', {
+      reports: reports,
+      menu: menu,
+      admin: admin
+    })
+  }catch(error) {
+    res.json(error.message)
+  }
 }
 
 async function getReport(req, res) {
@@ -176,6 +191,21 @@ async function getUserInformation(req, res) {
     return profile
   }
 }
+
+async function getlevelUser(profile) {
+  if (profile.level == 'Usuario')
+    return false
+  else
+    return true
+}
+
+async function getlevelAdmin(profile) {
+  if (profile.level == 'Administrador')
+    return false
+  else
+    return true
+}
+
 
 module.exports = { 
   createReport, 

@@ -75,7 +75,15 @@ routes.post('/logout', function(req, res, next){
   });
 });
 
-routes.get('/menu', isAllLevel , (req, res) => res.render(views + "homepage"))
+routes.get('/menu', isAllLevel, (req, res) => {
+  if(req.user.level == 'Usuario') {
+    res.render("homepage", { menu: false, admin: false })
+  }
+  if (req.user.level == 'Administrador') {
+    res.render("homepage", { menu: true, admin: true })
+  }
+  res.render("homepage", { menu: true, admin: false })
+})
 
 //Routes of Writer não alterar (finalizado)
 routes.get('/autor', (req, res) => res.render(views + "registerWriter", { message: false,  messageError: false }))
@@ -95,7 +103,7 @@ routes.post('/livro/alterar/:id', BookController.updateBook)
 routes.post('/livro/excluir', BookController.deleteBook)
 
 //Route of Resumo
-routes.get('/resumo', (req, res) => res.render(views + "summary", { messageError: false }))
+routes.get('/resumo', SummaryController.showSummary)
 routes.post('/titulo', isVolunteer, SummaryController.searchTitleBook)
 routes.get('/resumo/submit', (req, res) => res.render(views + "summarySubmit"))
 routes.post('/titulo/submit', SummaryController.createSummary)
@@ -120,8 +128,8 @@ routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
 routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
 routes.post('/usuario', UserController.createVolunteer)
-routes.get('/usuario/listaUsuarios', UserController.listVolunteer)
-routes.get('/perfil', ProfileController.showUserPage)
+routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
+routes.get('/perfil', isAllLevel, ProfileController.showUserPage)
 routes.get('/usuario/:id', ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', UserController.updateVolunteer)
 routes.post('/usuario/excluir', UserController.deleteUser)
@@ -130,9 +138,9 @@ routes.post('/nav', SearchController.searchSummary)
 
 routes.get('/login', (req, res) => res.render(views + "index", { error: false }))
 
-routes.get('/denuncia', isVolunteer, ReportController.getInformationReport)
-routes.post('/denuncia', isVolunteer, ReportController.createReport)
-// routes.get('/denuncia/:id', ReportController.getReportByUser)
+routes.get('/denuncia', isAdmin, ReportController.getInformationReport)
+routes.post('/denuncia', isAllLevel, ReportController.createReport)
+routes.get('/denuncia/usuario', isAdmin, ReportController.getAllReportByUser)
 routes.post('/denuncia/avaliacao/:id', isVolunteer, ReportController.getReport)
 routes.post('/denuncia/avaliado/:id', isVolunteer, ReportController.updateReport)
 // routes.post('/denuncia/alterar/:id', ReportController.updateReport)

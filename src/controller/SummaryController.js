@@ -13,6 +13,8 @@ async function searchTitleBook(req, res) {
     let writer = await Writer.findOne({ where: { idWriter : idWriter }})
 
     const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
     res.render("summarySubmit", { 
       book: { 
         id: book.id, 
@@ -23,10 +25,12 @@ async function searchTitleBook(req, res) {
         nameWriter: writer.nameWriter
       },
       profile: profile,
-      messageErro: false
+      messageErro: false,
+      menu: menu,
+      admin: admin     
     })
   }catch(error){
-    res.render('summary', {messageError: `Não existe este livro ${title}`})
+    res.render('summary', {messageError: `Não existe este livro ${title}`, menu: menu})
   }
 }
 
@@ -48,6 +52,9 @@ async function createSummary(req, res) {
 
 async function showAllSummary(req, res) {
   const summaries = await listAllSummary();
+  let profile = await getUserInformation(req, res);
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
 
   const ratings = await Rating.findAll({
     raw: true
@@ -57,7 +64,9 @@ async function showAllSummary(req, res) {
     summaries: summaries, 
     ratings: ratings, 
     messageError: false, 
-    messageReport: false
+    messageReport: false,
+    menu: menu,
+    admin: admin
   })
 }
 
@@ -196,6 +205,28 @@ async function getUserInformation(req, res) {
   }
 }
 
+async function getlevelUser(profile) {
+  if (profile.level == 'Usuario')
+    return false
+  else
+    return true
+}
+
+async function getlevelAdmin(profile) {
+  if (profile.level == 'Administrador')
+    return false
+  else
+    return true
+}
+
+async function showSummary(req, res) {
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelUser(profile)
+
+  res.render("summary", { messageError: false, menu: menu, admin: admin })
+}
+
 
 module.exports = { 
     searchTitleBook, 
@@ -203,6 +234,7 @@ module.exports = {
     listAllSummary, 
     listSummary, 
     showAllSummary,
+    showSummary,
     updateSummary,
     deleteSummary
   }
