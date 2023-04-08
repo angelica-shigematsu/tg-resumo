@@ -14,8 +14,9 @@ const QuestionAndAnswerController = require('./controller/QuestionAndAswerContro
 const SearchController = require('./controller/SearchController')
 const ReportController = require('./controller/ReportController')
 const FavoriteController = require('./controller/FavoriteController')
+const CheckSummarysController = require('./controller/CheckSummaryController')
 
-const { isAdmin, isUser, isAllLevel, isVolunteer } = require('./middleware/IsAuthenticateByLevel')
+const { isAdmin, isUser, isAllLevel, isVolunteer, isVolunteerOrAdmin } = require('./middleware/IsAuthenticateByLevel')
 
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -77,12 +78,15 @@ routes.post('/logout', function(req, res, next){
 
 routes.get('/menu', isAllLevel, (req, res) => {
   if(req.user.level == 'Usuario') {
-    res.render("homepage", { menu: false, admin: false })
+    res.render("homepage", { menu: false, admin: false, volunteer: false })
   }
   if (req.user.level == 'Administrador') {
-    res.render("homepage", { menu: true, admin: true })
+    res.render("homepage", { menu: true, admin: true, volunteer: false })
   }
-  res.render("homepage", { menu: true, admin: false })
+  if (req.user.level == 'Voluntario') {
+    res.render("homepage", { menu: true, admin: false, volunteer: true })
+  }
+  res.render("homepage", { menu: true, admin: false, volunteer: false })
 })
 
 //Routes of Writer não alterar (finalizado)
@@ -104,7 +108,7 @@ routes.post('/livro/excluir', BookController.deleteBook)
 
 //Route of Resumo
 routes.get('/resumo', SummaryController.showSummary)
-routes.post('/titulo', isVolunteer, SummaryController.searchTitleBook)
+routes.post('/titulo', isAllLevel, SummaryController.searchTitleBook)
 routes.get('/resumo/submit', (req, res) => res.render(views + "summarySubmit"))
 routes.post('/titulo/submit', SummaryController.createSummary)
 routes.get('/resumo/listaResumo', isAllLevel, SummaryController.showAllSummary)
@@ -146,6 +150,10 @@ routes.post('/denuncia/avaliado/:id', isVolunteer, ReportController.updateReport
 // routes.post('/denuncia/alterar/:id', ReportController.updateReport)
 routes.get('/denuncia/usuario/:id', ReportController.getAllReportByUser)
 routes.post('/denuncia/excluir', ReportController.deleteReport)
+
+routes.get('/correcao/resumo', isVolunteerOrAdmin, CheckSummarysController.showInformationAllSummary)
+routes.get('/correcao/resumo/:id', isVolunteerOrAdmin, CheckSummarysController.getInformationSummary)
+routes.post('/correcao/resumo/:id', isVolunteerOrAdmin, CheckSummarysController.createCheckedSummary)
 
 routes.post('/favoritar', isAllLevel, FavoriteController.createFavorite)
 

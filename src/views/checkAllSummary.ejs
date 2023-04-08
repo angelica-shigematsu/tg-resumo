@@ -1,0 +1,22 @@
+<%- include('partials/nav.ejs')  %> 
+<%- include('partials/header.ejs') %> 
+
+  <% if (messageError) { %>
+    <div class="alert alert-warning" role="alert">
+      <%=messageError%>
+    </div>
+  <%} else {%>
+  <% summaries.forEach(summary => { %>
+    <%if(summary.status !="Aprovado" && summary.status!="Reprovado") {%>
+      <div class="card w-75">
+        <div class="card-body">
+          <h5 class="card-title">Livro: <%= summary.book.title %></h5>
+          <p class="card-text">
+          <p><%=summary.status%></p>
+          <a href="/correcao/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Avaliar</a>
+        </div>
+      </div>
+    <%}%>
+  <% }) %>
+<% } %>
+<%- include('partials/footer.ejs') %> 
