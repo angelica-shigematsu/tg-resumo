@@ -28,6 +28,9 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/resumo/listaResumo">Lista de Resumos</a></li>
+            <% if(volunteer || admin) {%>
+            <li><a class="dropdown-item" href="/correcao/resumo">Correção de resumos</a></li>
+            <%}%>
             <% if (admin) {%>
               <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
               <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
