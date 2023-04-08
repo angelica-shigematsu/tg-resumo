@@ -32,11 +32,13 @@ async function listVolunteer(req, res) {
     const profile = await getUserInformation(req, res)
     let menu = await getlevelUser(profile)
     let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
 
     res.render("listAllUser", {
       users: users, 
       menu: menu,
-      admin: admin
+      admin: admin,
+      volunteer: volunteer
     });
   }catch(error) {
     res.json('error')
@@ -100,6 +102,13 @@ async function getlevelAdmin(profile) {
     return false
   else
     return true
+}
+
+async function getlevelVolunteer(profile) {
+  if (profile.level == 'Voluntario')
+    return true
+  else
+    return false
 }
 
 module.exports = { createVolunteer, listVolunteer, updateVolunteer, deleteUser }

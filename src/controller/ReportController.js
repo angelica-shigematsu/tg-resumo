@@ -74,6 +74,7 @@ async function getAllReportByUser(req, res) {
   try{
     let menu = await getlevelUser(profile)
     let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
 
     const reports = await Report.findAll({
       where: {
@@ -89,7 +90,8 @@ async function getAllReportByUser(req, res) {
       email: profile.email,
       message: false,
       menu: menu,
-      admin: admin
+      admin: admin, 
+      volunteer: volunteer
     })
 
   }catch(err){
@@ -100,9 +102,10 @@ async function getAllReportByUser(req, res) {
 async function getInformationReport(req, res) {
 
   try{
-      let profile = await getUserInformation(req, res)
-      let menu = await getlevelUser(profile)
-      let admin = await getlevelAdmin(profile)
+    let profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile)
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
 
     const reports = await Report.findAll({
       order: [['createdAt', 'DESC']],
@@ -113,7 +116,8 @@ async function getInformationReport(req, res) {
     res.render('listAllReport', {
       reports: reports,
       menu: menu,
-      admin: admin
+      admin: admin,
+      volunteer: volunteer
     })
   }catch(error) {
     res.json(error.message)
@@ -206,6 +210,12 @@ async function getlevelAdmin(profile) {
     return true
 }
 
+async function getlevelVolunteer(profile) {
+  if (profile.level == 'Voluntario')
+    return true
+  else
+    return false
+}
 
 module.exports = { 
   createReport, 

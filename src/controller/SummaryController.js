@@ -15,6 +15,8 @@ async function searchTitleBook(req, res) {
     const profile = await getUserInformation(req, res)
     let menu = await getlevelUser(profile);
     let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
+
     res.render("summarySubmit", { 
       book: { 
         id: book.id, 
@@ -27,7 +29,8 @@ async function searchTitleBook(req, res) {
       profile: profile,
       messageErro: false,
       menu: menu,
-      admin: admin     
+      admin: admin,
+      volunteer: volunteer 
     })
   }catch(error){
     res.render('summary', {messageError: `Não existe este livro ${title}`, menu: menu})
@@ -55,6 +58,7 @@ async function showAllSummary(req, res) {
   let profile = await getUserInformation(req, res);
   let menu = await getlevelUser(profile);
   let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
 
   const ratings = await Rating.findAll({
     raw: true
@@ -66,7 +70,8 @@ async function showAllSummary(req, res) {
     messageError: false, 
     messageReport: false,
     menu: menu,
-    admin: admin
+    admin: admin,
+    volunteer: volunteer
   })
 }
 
@@ -207,24 +212,37 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 async function getlevelAdmin(profile) {
   if (profile.level == 'Administrador')
-    return false
-  else
     return true
+  else
+    return false
+}
+
+async function getlevelVolunteer(profile) {
+  if (profile.level == 'Voluntario')
+    return true
+  else
+    return false
 }
 
 async function showSummary(req, res) {
   let profile = await getUserInformation(req, res)
   let menu = await getlevelUser(profile)
   let admin = await getlevelUser(profile)
+  let volunteer = await getlevelVolunteer(profile)
 
-  res.render("summary", { messageError: false, menu: menu, admin: admin })
+  res.render("summary", { 
+    messageError: false, 
+    menu: menu, 
+    admin: admin, 
+    volunteer: volunteer
+  })
 }
 
 

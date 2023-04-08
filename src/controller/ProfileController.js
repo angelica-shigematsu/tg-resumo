@@ -6,11 +6,17 @@ async function listProfile(req, res) {
   try{
     let menu = getlevelUser(profile)
     let admin = getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
 
     const profile = await Profile.findOne({
       where: { id: id }}
     );
-    res.render('profile', { profile: profile, menu: menu, admin: admin})
+    res.render('profile', { 
+      profile: profile, 
+      menu: menu, 
+      admin: admin,
+      volunteer: volunteer
+    })
   }catch(error) {
     throw new Error(error)
   }
@@ -40,12 +46,25 @@ async function getlevelAdmin(profile) {
     return true
 }
 
+async function getlevelVolunteer(profile) {
+  if (profile.level == 'Voluntario')
+    return true
+  else
+    return false
+}
+
 async function showUserPage(req, res) {
   const profile = await getUserInformation(req, res)
   let menu = await getlevelUser(profile);
   let admin = await getlevelAdmin(profile);
+  let volunteer = await getlevelVolunteer(profile)
   
-  res.render('profile', { user: profile, menu: menu, admin: admin })
+  res.render('profile', { 
+    user: profile, 
+    menu: menu, 
+    admin: admin, 
+    volunteer: volunteer 
+  });
 }
 
 
