@@ -22,21 +22,12 @@
           </select>
         </div>
       </div>
-        <div class="mb-3 row">
-          <label for="" class="col-sm-2 col-form-label">Voluntário</label>
-          <div class="col-sm-10">
-          <select class="form-select col-sm-6" aria-label="Default select example" name="refVolunteer" required>
-            <option value="<%=profile.id%>"><%=profile.fullName%></option>
-          </select>
+      <div class="mb-3 row">
+        <label for="" class="col-sm-2 col-form-label">Resumo</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" minlength="30" name="body" cols="30" rows="10" required></textarea>
         </div>
       </div>
-    <div class="mb-3 row">
-      <label for="" class="col-sm-2 col-form-label">Resumo</label>
-      <div class="col-sm-10">
-        <textarea class="form-control" minlength="30" name="body" cols="30" rows="10" required></textarea>
-      </div>
-    </div>
-    
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button class="btn btnProgress" type="submit" form="form-summary-submit">Cadastrar</button>
       </div>
