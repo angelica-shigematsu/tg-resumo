@@ -7,6 +7,7 @@
     </div>
   <%} else {%>
   <% summaries.forEach(summary => { %>
+    <%if((summary.status == "Aprovado") && (profile.id != summary.user.id )) {%>
       <div class="card w-75">
         <div class="card-body">
           <h5 class="card-title">Livro: <%= summary.book.title %></h5>
@@ -26,6 +27,7 @@
           <a href="/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
         </div>
       </div>
+      <%}%>
   <% }) %>
 <% } %>
 <%- include('partials/footer.ejs') %> 

@@ -55,6 +55,7 @@ async function createSummary(req, res) {
 
 async function showAllSummary(req, res) {
   const summaries = await listAllSummary();
+
   let profile = await getUserInformation(req, res);
   let menu = await getlevelUser(profile);
   let admin = await getlevelAdmin(profile)
@@ -71,7 +72,8 @@ async function showAllSummary(req, res) {
     messageReport: false,
     menu: menu,
     admin: admin,
-    volunteer: volunteer
+    volunteer: volunteer,
+    profile: profile
   })
 }
 
@@ -145,16 +147,18 @@ async function listAllSummary() {
         }});  
     
       const summary = await Summary.findAll({
-        attributes: ['body', 'id', 'refBook', 'refVolunteer'],
+        attributes: ['body', 'id', 'refBook', 'refVolunteer', 'status'],
         include: [{
         association: 'writer',
         attributes: ['nameWriter'],
       },{
         association: 'book',
         attributes: ['title'],
-      }, 
-    ],
-      
+      },{
+        association: 'user',
+        attributes: ['id']
+      }
+    ]   
     })
 
     return summary

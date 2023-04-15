@@ -56,11 +56,20 @@ async function getInformationAllSummary(req, res) {
         name: 'id'
       }
     })
+
+    Summary.belongsTo(User, {
+      foreignKey: {
+        name: 'id'
+      }
+    })
     
     const summaries = await Summary.findAll({
       include: [{
         association: 'book',
         atributes: ['title']
+      },{
+        association: 'user',
+        attributes: ['id']
       }]
     })
     return summaries
@@ -83,7 +92,8 @@ async function showInformationAllSummary(req, res) {
     menu: menu,
     admin: admin, 
     messageError: false,
-    volunteer: volunteer
+    volunteer: volunteer,
+    profile: profile
   })
 }
 
