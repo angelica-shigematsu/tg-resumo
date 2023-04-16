@@ -77,16 +77,14 @@ routes.post('/logout', function(req, res, next){
 });
 
 routes.get('/menu', isAllLevel, (req, res) => {
-  if(req.user.level == 'Usuario') {
+  if(req.user.level == 'Usuario') 
     res.render("homepage", { menu: false, admin: false, volunteer: false })
-  }
-  if (req.user.level == 'Administrador') {
+  
+  if (req.user.level == 'Administrador') 
     res.render("homepage", { menu: true, admin: true, volunteer: false })
-  }
-  if (req.user.level == 'Voluntario') {
+
+  if (req.user.level == 'Voluntario') 
     res.render("homepage", { menu: true, admin: false, volunteer: true })
-  }
-  res.render("homepage", { menu: true, admin: false, volunteer: false })
 })
 
 //Routes of Writer não alterar (finalizado)
@@ -138,7 +136,7 @@ routes.get('/usuario/:id', ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', UserController.updateVolunteer)
 routes.post('/usuario/excluir', UserController.deleteUser)
 
-routes.post('/nav', SearchController.searchSummary)
+routes.post('/nav', isAllLevel, SearchController.searchSummary)
 
 routes.get('/login', (req, res) => res.render(views + "index", { error: false }))
 
