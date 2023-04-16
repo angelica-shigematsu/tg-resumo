@@ -27,10 +27,10 @@ async function searchTitleBook(req, res) {
         nameWriter: writer.nameWriter
       },
       profile: profile,
-      messageErro: false,
       menu: menu,
       admin: admin,
-      volunteer: volunteer 
+      volunteer: volunteer,
+      messageErro: false,
     })
   }catch(error){
     res.render('summary', {messageError: `Não existe este livro ${title}`, menu: menu})
@@ -82,6 +82,11 @@ async function listSummary(req, res) {
   const { id } = req.params
   let { active, reportId } = req.body
 
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
   await Report.update({
     active
   }, {
@@ -121,6 +126,10 @@ async function listSummary(req, res) {
       book: summary.book.title , 
       volunteer: summary.user.fullName, 
       writer: summary.writer.nameWriter,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile,
       message: 'Alterado com sucesso',
       refUserComment: refUserComment
     })

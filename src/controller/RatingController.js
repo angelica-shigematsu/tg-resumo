@@ -46,7 +46,7 @@ async function listSummary(req, res) {
   let menu = await getlevelUser(profile)
   let admin = await getlevelAdmin(profile)
   let volunteer = await getlevelVolunteer(profile)
-  console.log(profile.level)
+
   try{
     const refUserComment = await getUserInformation(req, res);
 

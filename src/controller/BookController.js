@@ -45,6 +45,11 @@ async function listBook(req, res) {
 
 async function listAllBook(req, res) {
   try {
+    const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
+
     Book.belongsTo(Writer, {
       foreignKey: {
         name: 'id'
@@ -60,7 +65,13 @@ async function listAllBook(req, res) {
       }],
       nest: true
     }).then(books => {
-      res.render('listAllBook', { books: books })
+      res.render('listAllBook', { 
+        books: books,
+        profile: profile,
+        menu: menu,
+        admin: admin,
+        volunteer: volunteer,
+       })
     })
   } catch (error) {
     res.json(error)
