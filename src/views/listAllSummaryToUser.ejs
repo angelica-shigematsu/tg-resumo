@@ -2,6 +2,7 @@
 <%- include('partials/header.ejs') %> 
 
 <% summaries.forEach(summary => { %>
+  <% if(summaries.status == 'Aprovado')%>
   <div class="card w-75">
     <div class="card-body">
       <h5 class="card-title">Livro: <%= summary.book.title.toUpperCase() %></h5>

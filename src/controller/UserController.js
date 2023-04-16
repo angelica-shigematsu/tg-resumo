@@ -92,16 +92,16 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 async function getlevelAdmin(profile) {
   if (profile.level == 'Administrador')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 async function getlevelVolunteer(profile) {

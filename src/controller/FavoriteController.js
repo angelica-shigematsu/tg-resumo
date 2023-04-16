@@ -41,7 +41,6 @@ async function getUserInformation(req, res) {
       const profile = await Volunteer.findOne({
         where: { email: email}
     })
-    console.log(profile)
     return profile
   }
 }

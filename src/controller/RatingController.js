@@ -8,6 +8,10 @@ const Volunteer = require('../model/User')
 async function createRating(req, res) {
   const { ratingStar, note, refUser, refSummary} = req.body
   try{
+    let profile = await getUserInformation(req, res);
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
     const summaries = await ListAllSummary.listAllSummary()
 
     await Rating.create({
@@ -21,7 +25,14 @@ async function createRating(req, res) {
       raw: true
     })
   
-    res.render('listAllSummary', { summaries: summaries, ratings: ratings, messageError: false })
+    res.render('listAllSummary', { 
+      summaries: summaries, 
+      ratings: ratings, 
+      menu,
+      admin,
+      volunteer,
+      messageError: false 
+    })
 
   }catch(err) {
     res.json('erro')
@@ -30,14 +41,12 @@ async function createRating(req, res) {
 
 async function listSummary(req, res) {
   const { id } = req.params
-
-  const messageFavorite = false
   
   let profile = await getUserInformation(req, res)
   let menu = await getlevelUser(profile)
   let admin = await getlevelAdmin(profile)
   let volunteer = await getlevelVolunteer(profile)
-
+  console.log(profile.level)
   try{
     const refUserComment = await getUserInformation(req, res);
 
@@ -53,6 +62,7 @@ async function listSummary(req, res) {
       writer: summary.writer.nameWriter, 
       messageFavorite: false,
       refUserComment: refUserComment,
+      profile,
       menu: menu, 
       admin: admin,
       volunteer: volunteer
@@ -110,6 +120,10 @@ async function listAllRatingByUser(req, res) {
   const { id } = req.params
 
   try{
+    let profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile)
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
     
      Summary.belongsTo(Volunteer, {
       foreignKey: {
@@ -125,6 +139,10 @@ async function listAllRatingByUser(req, res) {
       })
 
     res.render('listRatingByUser', { 
+      profile,
+      menu,
+      admin,
+      volunteer,
       ratings: ratings,
     })
 
@@ -162,9 +180,9 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 async function getlevelVolunteer(profile) {
@@ -176,9 +194,9 @@ async function getlevelVolunteer(profile) {
 
 async function getlevelAdmin(profile) {
   if (profile.level == 'Administador')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 module.exports = { 

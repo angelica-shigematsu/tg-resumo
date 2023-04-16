@@ -9,29 +9,46 @@ const MeasureReport = require('../model/MeasureReport')
 async function createReport(req, res) {
   try {
     const { refSummary, refUser, reason } = req.body
+    let profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile)
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
     const data = new Date()
     let status = 'Não Avaliado'
-    
+
+    const summaries = await SummaryController.listAllSummary();
+
+    const ratings = await Rating.findAll({
+      raw: true
+    })
+
+    if (profile.id == refUser) 
+      return res.render('listAllSummary', { 
+        summaries: summaries, 
+        ratings: ratings, 
+        menu,
+        admin,
+        volunteer,
+        messageError: "Não pode denunciar seu próprio resumo!" })
+
     await Report.create({
       status,
       reason,
       data,
       refSummary,
       refUser
-    }).then(async() => {
-      const summaries = await SummaryController.listAllSummary();
-
-      const ratings = await Rating.findAll({
-        raw: true
-      })
-      
-      res.render('listAllSummary', {
-        summaries: summaries, 
-        ratings: ratings, 
-        messageError: false, 
-        messageReport: 'Denunciado com sucesso'
-      })
     })
+
+    res.render('listAllSummary', {
+      summaries: summaries, 
+      ratings: ratings, 
+      menu,
+      admin,
+      volunteer,
+      messageError: false, 
+      messageReport: 'Denunciado com sucesso'
+    })
+
   } catch (error) {
     res.json(error)
   }
@@ -198,16 +215,16 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 async function getlevelAdmin(profile) {
   if (profile.level == 'Administrador')
-    return false
-  else
     return true
+  else
+    return false
 }
 
 async function getlevelVolunteer(profile) {
