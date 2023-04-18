@@ -97,25 +97,25 @@ routes.post('/autor/excluir', WriterController.deleteWriter)
 //
 
 //Routes of Book
-routes.get('/livro', BookController.getForeignKey)
-routes.post('/livro', BookController.createBook)
-routes.get('/livro/listaLivro', BookController.listAllBook)
-routes.get('/livro/listaLivro/:id', BookController.listBook)
-routes.post('/livro/alterar/:id', BookController.updateBook)
-routes.post('/livro/excluir', BookController.deleteBook)
+routes.get('/livro', isVolunteerOrAdmin, BookController.getForeignKey)
+routes.post('/livro', isVolunteerOrAdmin, BookController.createBook)
+routes.get('/livro/listaLivro', isVolunteerOrAdmin, BookController.listAllBook)
+routes.get('/livro/listaLivro/:id', isVolunteerOrAdmin, BookController.listBook)
+routes.post('/livro/alterar/:id', isVolunteerOrAdmin, BookController.updateBook)
+routes.post('/livro/excluir', isVolunteerOrAdmin, BookController.deleteBook)
 
 //Route of Resumo
-routes.get('/resumo', SummaryController.showSummary)
+routes.get('/resumo', isAllLevel, SummaryController.showSummary)
 routes.post('/titulo', isAllLevel, SummaryController.searchTitleBook)
-routes.get('/resumo/submit', (req, res) => res.render(views + "summarySubmit"))
-routes.post('/titulo/submit', SummaryController.createSummary)
+routes.get('/resumo/submit',isAllLevel, (req, res) => res.render(views + "summarySubmit"))
+routes.post('/titulo/submit', isAllLevel,  SummaryController.createSummary)
 routes.get('/resumo/listaResumo', isAllLevel, SummaryController.showAllSummary)
-routes.post('/resumo/listaResumo/:id', SummaryController.listSummary)
-routes.post('/resumo/alterar/:id', SummaryController.updateSummary)
-routes.post('/resumo/excluir', SummaryController.deleteSummary)
+routes.post('/resumo/listaResumo/:id', isAllLevel,  SummaryController.listSummary)
+routes.post('/resumo/alterar/:id', isAllLevel, SummaryController.updateSummary)
+routes.post('/resumo/excluir', isAllLevel, SummaryController.deleteSummary)
+routes.get('/resumo/admin', isVolunteerOrAdmin, SummaryController.showAllSummaryVolunteerToUp);
 
-
-//Rating Summaries
+// //Rating Summaries
 routes.get('/resumo/:id', isAllLevel, RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
 routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
