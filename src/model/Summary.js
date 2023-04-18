@@ -24,7 +24,7 @@ const Summary = connection.define('summaryBooks', {
       key: 'idWriter'
     }
   },
-  refVolunteer: {
+  refUser: {
     type: Sequelize.INTEGER,
     allowNull: false,
     onDelete: 'CASCADE',

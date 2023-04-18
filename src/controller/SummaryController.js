@@ -1,8 +1,8 @@
-const Book = require('../model/Book')
+const Book = require('../model/Book.js')
 const Rating = require('../model/Rating')
 const Report = require('../model/Report')
-const Summary = require('../model/Summary')
-const Volunteer = require('../model/User')
+const Summary = require('../model/Summary.js')
+const Volunteer = require('../model/User.js')
 const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
@@ -38,19 +38,22 @@ async function searchTitleBook(req, res) {
 }
 
 async function createSummary(req, res) {
-  const { body, refWriter, refVolunteer, refBook} = req.body
+  const { body, refWriter, refBook} = req.body
+  let profile = await getUserInformation(req,res);
+  let refUser = profile.id;
   let status = 'Não avalidado'
+
   try{
     await Summary.create({
     body,
     status,
     refWriter,
-    refVolunteer,
+    refUser,
     refBook
   }).then(() => showAllSummary(req, res))
-  }catch(error){
-    res.status(400).send('Erro ao criar resumo!')
-  } 
+  }catch(err) {
+    res.jons(err)
+  }
 }
 
 async function showAllSummary(req, res) {
@@ -66,6 +69,30 @@ async function showAllSummary(req, res) {
   })
 
   res.render('listAllSummary', {  
+    summaries: summaries, 
+    ratings: ratings, 
+    messageError: false, 
+    messageReport: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+  })
+}
+
+async function showAllSummaryVolunteerToUp(req, res) {
+  const summaries = await listAllSummary();
+
+  let profile = await getUserInformation(req, res);
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  const ratings = await Rating.findAll({
+    raw: true
+  })
+  console.log(summaries)
+  res.render('listAllSummaryToUser', {  
     summaries: summaries, 
     ratings: ratings, 
     messageError: false, 
@@ -93,7 +120,7 @@ async function listSummary(req, res) {
     where: { id : reportId }
   })
 
-    Summary.belongsTo(Volunteer, {
+  Summary.belongsTo(Volunteer, {
     foreignKey: {
       name: 'id'
     }})
@@ -156,18 +183,16 @@ async function listAllSummary() {
         }});  
     
       const summary = await Summary.findAll({
-        attributes: ['body', 'id', 'refBook', 'refVolunteer', 'status'],
         include: [{
         association: 'writer',
         attributes: ['nameWriter'],
-      },{
+        },{
         association: 'book',
         attributes: ['title'],
-      },{
+        },{
         association: 'user',
         attributes: ['id']
-      }
-    ]   
+      }]   
     })
 
     return summary
@@ -178,14 +203,14 @@ async function listAllSummary() {
 
 async function updateSummary(req, res) {
   const { id } = req.params
-  const { body, refWriter, refVolunteer, refBook } = req.body
+  const { body, refWriter, refUser, refBook } = req.body
 
   try{
     await Summary.update({
       body,
       status,
       refWriter,
-      refVolunteer,
+      refUser,
       refBook
     },{
       where: {
@@ -265,6 +290,7 @@ module.exports = {
     listAllSummary, 
     listSummary, 
     showAllSummary,
+    showAllSummaryVolunteerToUp,
     showSummary,
     updateSummary,
     deleteSummary

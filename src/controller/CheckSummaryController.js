@@ -100,6 +100,7 @@ async function showInformationAllSummary(req, res) {
 async function createCheckedSummary(req, res) {
   const { comment, refSummary, status} = req.body
 
+  const { id } = req.params
   const refVolunteer = await getUserInformation(req, res)
   const date = new Date();
 

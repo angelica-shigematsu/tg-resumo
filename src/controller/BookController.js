@@ -1,13 +1,24 @@
 const Writer = require('../model/Writer')
 const Book = require('../model/Book')
 const WriterController = require('./WriterController')
+const Volunteer = require('../model/User.js')
 
 async function getForeignKey(req, res){
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  console.log(profile.level)
   await Writer.findAll({ raw : true, order: [
     ['nameWriter', 'ASC']//ordem decrescente
   ]}).then(writers => {
     res.render("book", {
-        writers: writers
+        writers: writers,
+        profile: profile,
+        menu: menu,
+        admin: admin,
+        volunteer: volunteer
     })
   })
 }
@@ -85,7 +96,7 @@ async function updateBook(req, res) {
   try {
     await Book.update({
       title,
-      publishingCompany,
+      genre,
       refWriter
     }, {
       where: { id: id }
@@ -110,7 +121,36 @@ async function deleteBook(req, res) {
     res.json(error)
   }
 }
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await Volunteer.findOne({
+        where: { email: email}
+    })
+    return profile
+  }
+}
 
+async function getlevelUser(profile) {
+  if (profile.level == 'Usuario')
+    return false
+  else
+    return true
+}
+
+async function getlevelAdmin(profile) {
+  if (profile.level == 'Administrador')
+    return true
+  else
+    return false
+}
+
+async function getlevelVolunteer(profile) {
+  if (profile.level == 'Voluntario')
+    return true
+  else
+    return false
+}
 
 module.exports = { 
   getForeignKey, 
