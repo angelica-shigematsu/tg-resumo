@@ -66,10 +66,12 @@ async function getInformationAllSummary(req, res) {
     const summaries = await Summary.findAll({
       include: [{
         association: 'book',
-        atributes: ['title']
+        atributes: ['title'],
+        required: true
       },{
         association: 'user',
-        attributes: ['id']
+        attributes: ['id'],
+        required: true
       }]
     })
     return summaries

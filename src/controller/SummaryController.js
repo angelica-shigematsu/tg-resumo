@@ -91,7 +91,7 @@ async function showAllSummaryVolunteerToUp(req, res) {
   const ratings = await Rating.findAll({
     raw: true
   })
-  console.log(summaries)
+
   res.render('listAllSummaryToUser', {  
     summaries: summaries, 
     ratings: ratings, 
@@ -139,7 +139,7 @@ async function listSummary(req, res) {
       where: { id: id },
       include: [{
         association: 'user',
-        attributes: ['fullName'],
+        attributes: ['fullName', 'id'],
       },{
         association: 'writer',
         attributes: ['nameWriter'],
@@ -170,28 +170,35 @@ async function listAllSummary() {
     Summary.belongsTo(Volunteer, {
       foreignKey: {
         name: 'id'
-      }})
+      }
+    })
 
     Summary.belongsTo(Writer, {
         foreignKey: {
           name: 'id'
-        }})
+        }
+    })
 
     Summary.belongsTo(Book, {
         foreignKey: {
           name: 'id'
-        }});  
+        }
+    });  
     
-      const summary = await Summary.findAll({
-        include: [{
+    const summary = await Summary.findAll({
+      include: [{
         association: 'writer',
         attributes: ['nameWriter'],
-        },{
+        required: true
+      },{
         association: 'book',
         attributes: ['title'],
-        },{
+        required: true
+      },{
         association: 'user',
-        attributes: ['id']
+        attributes: ['id'],
+        required: true
+
       }]   
     })
 
@@ -205,6 +212,7 @@ async function updateSummary(req, res) {
   const { id } = req.params
   const { body, refWriter, refUser, refBook } = req.body
 
+  let status = 'Não Avaliado'
   try{
     await Summary.update({
       body,
@@ -250,9 +258,9 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return true
-  else
     return false
+  else
+    return true
 }
 
 async function getlevelAdmin(profile) {
