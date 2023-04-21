@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize")
 const connection = require("./config")
+const Summary = require("./Summary")
 
 const Writer = connection.define('writers', {
   idWriter: {
@@ -15,6 +16,10 @@ const Writer = connection.define('writers', {
     type: Sequelize.DATEONLY,
     allowNull: false
   }
+})
+
+Writer.hasMany(Summary, {
+  foreignKey: 'refWriter'
 })
 
 Writer.sync({force: false}).then(() => {})

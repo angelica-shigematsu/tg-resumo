@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize")
 const connection = require("./config")
+const Summary = require("./Summary")
 
 const Book = connection.define('books', {
   id: {
@@ -24,7 +25,9 @@ const Book = connection.define('books', {
     allowNull: false
   }
 })
-
-Book.sync({alter: true}).then(() => {})
+Book.hasMany(Summary, {
+  foreignKey: 'refBook'
+})
+Book.sync({force: false}).then(() => {})
 
 module.exports = Book
