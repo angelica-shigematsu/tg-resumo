@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const connection = require("./config")
+const Summary = require('./Summary')
 
 const User = connection.define('users', {
   id: {
@@ -41,8 +42,7 @@ const User = connection.define('users', {
   }
 }, {
   tableName: 'users'
-}
- )
+})
 User.sync({force: false}).then(() => {})
 
 module.exports = User

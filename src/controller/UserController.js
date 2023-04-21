@@ -71,15 +71,6 @@ async function updateVolunteer(req, res) {
   }
 }
 
-async function deleteUser(req, res) {
-  const { id } = req.body;
-
-  await User.destroy({
-     where: { id: id}
-  }).then(() => res.redirect(('/login')));
-
-};
-
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -111,4 +102,8 @@ async function getlevelVolunteer(profile) {
     return false
 }
 
-module.exports = { createVolunteer, listVolunteer, updateVolunteer, deleteUser }
+module.exports = { 
+  createVolunteer, 
+  listVolunteer, 
+  updateVolunteer 
+}

@@ -4,15 +4,20 @@ async function listProfile(req, res) {
   const { id } = req.params
 
   try{
+
+    const user = await Profile.findOne({
+      where: { id: id }}
+    );
+  
+    let profile = await getUserInformation(req, res)
+
     let menu = getlevelUser(profile)
     let admin = getlevelAdmin(profile)
     let volunteer = await getlevelVolunteer(profile)
 
-    const profile = await Profile.findOne({
-      where: { id: id }}
-    );
     res.render('profile', { 
-      profile: profile, 
+      profile: profile,
+      user: user, 
       menu: menu, 
       admin: admin,
       volunteer: volunteer
@@ -41,7 +46,7 @@ async function getlevelUser(profile) {
 
 async function getlevelAdmin(profile) {
   if (profile.level == 'Administrador')
-    return false
+    return true
   else
     return true
 }
