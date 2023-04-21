@@ -78,13 +78,13 @@ routes.post('/logout', function(req, res, next){
 
 routes.get('/menu', isAllLevel, (req, res) => {
   if(req.user.level == 'Usuario') 
-    res.render("homepage", { menu: false, admin: false, volunteer: false })
+    res.render("homepage", { menu: false, admin: false, volunteer: false, profile: req.user})
   
   if (req.user.level == 'Administrador') 
-    res.render("homepage", { menu: true, admin: true, volunteer: false })
+    res.render("homepage", { menu: true, admin: true, volunteer: false, profile: req.user })
 
   if (req.user.level == 'Voluntario') 
-    res.render("homepage", { menu: true, admin: false, volunteer: true })
+    res.render("homepage", { menu: true, admin: false, volunteer: true, profile: req.user })
 })
 
 //Routes of Writer não alterar (finalizado)
@@ -115,7 +115,7 @@ routes.post('/resumo/alterar/:id', isAllLevel, SummaryController.updateSummary)
 routes.post('/resumo/excluir', isAllLevel, SummaryController.deleteSummary)
 routes.get('/resumo/admin', isVolunteerOrAdmin, SummaryController.showAllSummaryVolunteerToUp);
 
-// //Rating Summaries
+//Rating Summaries
 routes.get('/resumo/:id', isAllLevel, RatingController.listSummary)
 routes.post('/resumo/avaliacao', RatingController.createRating)
 routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
@@ -128,13 +128,12 @@ routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQue
 routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
-routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
-routes.post('/usuario', UserController.createVolunteer)
+routes.get('/usuario', isAllLevel, (req , res) => res.render(views + "user", { message: false, messageError: false }))
+routes.post('/usuario', isAllLevel, UserController.createVolunteer)
 routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
 routes.get('/perfil', isAllLevel, ProfileController.showUserPage)
-routes.get('/usuario/:id', ProfileController.listProfile)
-routes.post('/usuario/alterar/:id', UserController.updateVolunteer)
-routes.post('/usuario/excluir', UserController.deleteUser)
+routes.get('/usuario/:id', isAllLevel, ProfileController.listProfile)
+routes.post('/usuario/alterar/:id', isAllLevel, UserController.updateVolunteer)
 
 routes.post('/nav', isAllLevel, SearchController.searchSummary)
 
