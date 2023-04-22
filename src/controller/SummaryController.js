@@ -2,7 +2,7 @@ const Book = require('../model/Book.js')
 const Rating = require('../model/Rating')
 const Report = require('../model/Report')
 const Summary = require('../model/Summary.js')
-const Volunteer = require('../model/User.js')
+const User = require('../model/User.js')
 const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
@@ -167,39 +167,43 @@ async function listSummary(req, res) {
 
 async function listAllSummary() {
   try{
-    Summary.belongsTo(Volunteer, {
+    Summary.belongsTo(User, {
       foreignKey: {
-        name: 'id'
+        name: 'refUser'
       }
-    })
+  })
 
     Summary.belongsTo(Writer, {
         foreignKey: {
-          name: 'id'
+          name: 'refWriter'
         }
     })
 
     Summary.belongsTo(Book, {
         foreignKey: {
-          name: 'id'
+          name: 'refBook'
         }
     });  
     
     const summary = await Summary.findAll({
+      where: {
+        
+      },
       include: [{
         association: 'writer',
         attributes: ['nameWriter'],
-        required: true
+        key: 'refWriter'
       },{
         association: 'book',
         attributes: ['title'],
-        required: true
-      },{
+        key: 'refBook'
+      },
+      {
         association: 'user',
-        attributes: ['id'],
-        required: true
-
-      }]   
+        attributes: ['id', 'fullName'],
+        key: 'refUser'
+      }],
+      nested: true  
     })
 
     return summary
@@ -249,7 +253,7 @@ async function deleteSummary(req, res) {
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
-      const profile = await Volunteer.findOne({
+      const profile = await User.findOne({
         where: { email: email}
     })
     return profile
