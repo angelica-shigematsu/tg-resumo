@@ -14,12 +14,12 @@ async function getInformationSummary(req, res) {
 
     Summary.belongsTo(User, {
       foreignKey: {
-        name: 'id'
+        name: 'refUser'
       }
     })
     Summary.belongsTo(Book, {
       foreignKey: {
-        name: 'id'
+        name: 'refBook'
       }
     })
 
@@ -29,10 +29,12 @@ async function getInformationSummary(req, res) {
       },
       include: [{
         association: 'book',
-        atributes: ['title']
+        atributes: ['title'],
+        key: 'refBook'
       }, {
         association: 'user',
-        atributes: ['fullName']
+        atributes: ['fullName'],
+        key: 'refUser'
       }]
     })
 
@@ -53,13 +55,13 @@ async function getInformationAllSummary(req, res) {
 
     Summary.belongsTo(Book, {
       foreignKey: {
-        name: 'id'
+        name: 'refBook'
       }
     })
 
     Summary.belongsTo(User, {
       foreignKey: {
-        name: 'id'
+        name: 'refUser'
       }
     })
     
@@ -67,11 +69,11 @@ async function getInformationAllSummary(req, res) {
       include: [{
         association: 'book',
         atributes: ['title'],
-        required: true
+        key: 'refBook'
       },{
         association: 'user',
-        attributes: ['id'],
-        required: true
+        attributes: ['id', 'fullName'],
+        key: 'refUser'
       }]
     })
     return summaries

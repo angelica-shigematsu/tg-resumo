@@ -11,7 +11,7 @@
       <div class="card w-75">
         <div class="card-body">
           <h5 class="card-title">Livro: <%= summary.book.title %></h5>
-          <p class="card-text">
+          <p>Escritor do resumo: <%=summary.user.fullName%></p>
           <p><%=summary.status%></p>
           <a href="/correcao/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Avaliar</a>
         </div>
