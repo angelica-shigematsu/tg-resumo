@@ -61,17 +61,17 @@
           </div>
         </div>
         <select id="level" name="level" 
-          <% if (user.level === 'Voluntario' || user.level === 'Usuario') { %> disabled <%}%>>
-          <option value="<%=user.level%>"><%= user.level %> </option>
+          <% if (profile.level === 'Voluntario' || profile.level === 'Usuario') { %> disabled <%}%>>
+          <option value="<%=profile.level%>"><%= profile.level %> </option>
           <option value="Administrador">Administrador</option>
           <option value="Voluntario">Voluntário</option>
           <option value="Usuario">Usuário</option></option>
       </select>
       <select id="active" name="active"
-        <% if (user.level === 'Voluntario' || user.level === 'Usuario'){ %> disabled <%}%>>
+        <% if (profile.level === 'Voluntario' || profile.level === 'Usuario'){ %> disabled <%}%>>
         <option><%= user.active %> </option>
-        <option>Ativo</option>
-        <option>Não ativo</option>
+        <option>ativo</option>
+        <option>inativo</option>
       </select>
       </div>
       <div class="mb-3 row">

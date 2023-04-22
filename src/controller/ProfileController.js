@@ -48,7 +48,7 @@ async function getlevelAdmin(profile) {
   if (profile.level == 'Administrador')
     return true
   else
-    return true
+    return false
 }
 
 async function getlevelVolunteer(profile) {
@@ -65,6 +65,7 @@ async function showUserPage(req, res) {
   let volunteer = await getlevelVolunteer(profile)
   
   res.render('profile', { 
+    profile: profile,
     user: profile, 
     menu: menu, 
     admin: admin, 

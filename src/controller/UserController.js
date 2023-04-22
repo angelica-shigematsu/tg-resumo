@@ -2,7 +2,7 @@ const User = require('../model/User')
 
 async function createVolunteer(req, res) {
   const { fullName , userName, cpf, dateBirthUser, email, password, level, reason } = req.body;
-  const active = 'inativo';
+  const active = 'ativo';
 
   try{
     await User.create({
@@ -38,7 +38,8 @@ async function listVolunteer(req, res) {
       users: users, 
       menu: menu,
       admin: admin,
-      volunteer: volunteer
+      volunteer: volunteer, 
+      profile: profile
     });
   }catch(error) {
     res.json('error')
@@ -83,9 +84,9 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return true
-  else
     return false
+  else
+    return true
 }
 
 async function getlevelAdmin(profile) {

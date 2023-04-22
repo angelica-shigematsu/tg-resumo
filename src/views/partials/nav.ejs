@@ -38,14 +38,6 @@
             <%}%>
           </ul>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Configurações
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-          </ul>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Sobre</a>
         </li>
@@ -61,13 +53,24 @@
               <button class="btn btn-outline-success col" form="form-search" type="submit">Search</button>
             </div>
           </div>
-        </form>
-        <div class="nav-item">
-          <form action="/logout"  method="POST">
-            <button type="submit" class="btn btn-light">Logout</button>
           </form>
         </div>
-      </div>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <%=profile.fullName%>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a class="dropdown-item" href="/perfil">Perfil</a></li>
+          <li>
+            <div class="nav-item">
+              <form action="/logout"  method="POST">
+                <button type="submit" class="btn btn-light">Logout</button>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </li>
     </div>
   </div>
 </nav>
