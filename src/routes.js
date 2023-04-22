@@ -77,6 +77,8 @@ routes.post('/logout', function(req, res, next){
 });
 
 routes.get('/menu', isAllLevel, (req, res) => {
+  if(req.user.active == 'inativo')
+    res.redirect("/login")
   if(req.user.level == 'Usuario') 
     res.render("homepage", { menu: false, admin: false, volunteer: false, profile: req.user})
   
@@ -128,8 +130,8 @@ routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQue
 routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
 
-routes.get('/usuario', isAllLevel, (req , res) => res.render(views + "user", { message: false, messageError: false }))
-routes.post('/usuario', isAllLevel, UserController.createVolunteer)
+routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
+routes.post('/usuario', UserController.createVolunteer)
 routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
 routes.get('/perfil', isAllLevel, ProfileController.showUserPage)
 routes.get('/usuario/:id', isAllLevel, ProfileController.listProfile)
