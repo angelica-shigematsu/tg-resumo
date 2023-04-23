@@ -8,8 +8,8 @@ const MeasureReport = require('../model/MeasureReport')
 
 async function createReport(req, res) {
   try {
-    const { refSummary, refUser, reason } = req.body
-    let profile = await getUserInformation(req, res)
+    const { refSummary, refUser, reason, refUserSummary} = req.body
+    const profile = await getUserInformation(req, res)
     let menu = await getlevelUser(profile)
     let admin = await getlevelAdmin(profile)
     let volunteer = await getlevelVolunteer(profile)
@@ -22,10 +22,11 @@ async function createReport(req, res) {
       raw: true
     })
 
-    if (profile.id == refUser) 
+    if (profile.id == refUserSummary) 
       return res.render('listAllSummary', { 
         summaries: summaries, 
-        ratings: ratings, 
+        ratings: ratings,
+        profile, 
         menu,
         admin,
         volunteer,
@@ -42,6 +43,7 @@ async function createReport(req, res) {
     res.render('listAllSummary', {
       summaries: summaries, 
       ratings: ratings, 
+      profile: profile,
       menu,
       admin,
       volunteer,
@@ -87,8 +89,8 @@ async function updateReport(req, res) {
 }
 
 async function getAllReportByUser(req, res) {
-  const profile = await getUserInformation(req, res);
   try{
+    const profile = await getUserInformation(req, res);
     let menu = await getlevelUser(profile)
     let admin = await getlevelAdmin(profile)
     let volunteer = await getlevelVolunteer(profile)
@@ -106,6 +108,7 @@ async function getAllReportByUser(req, res) {
       fullName: profile.fullName,
       email: profile.email,
       message: false,
+      profile,
       menu: menu,
       admin: admin, 
       volunteer: volunteer
@@ -132,6 +135,7 @@ async function getInformationReport(req, res) {
 
     res.render('listAllReport', {
       reports: reports,
+      profile,
       menu: menu,
       admin: admin,
       volunteer: volunteer
@@ -144,17 +148,22 @@ async function getInformationReport(req, res) {
 async function getReport(req, res) {
   const { id } = req.params
 
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
   try{
     Summary.belongsTo(User,{
-      foreignKey: 'id'
+      foreignKey: 'refUser'
     })
 
     Summary.belongsTo(Book,{
-      foreignKey: 'id'
+      foreignKey: 'refBook'
     })
     
     Report.belongsTo(Summary, {
-      foreignKey: 'id'
+      foreignKey: 'refSummary'
     })
 
     const report = await Report.findOne({
@@ -165,12 +174,20 @@ async function getReport(req, res) {
       where: { id: report.refSummary },
       include: [{
         association: 'book',
-        key: 'id'
+        key: 'refBook'
       }],
       nested: true
     })
-    console.log(report.status)
-    res.render('listReport', { report: report, status: report.status, summary: summary})
+
+    res.render('listReport', { 
+      report: report, 
+      status: report.status, 
+      summary: summary,
+      profile,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer
+    })
   }catch(err) {
     res.json("")
   }
@@ -215,9 +232,9 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return true
-  else
     return false
+  else
+    return true
 }
 
 async function getlevelAdmin(profile) {

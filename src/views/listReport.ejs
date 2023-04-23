@@ -27,9 +27,9 @@
             <textarea class="form-control" minlength="10" name="observation" cols="30" rows="10" required></textarea>
            </div>
         </div>
-    </form>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button class="btn btnProgress" type="submit" form="form-report">Atualizar a avaliação</button>
+    </form>
       <form class="mb-3" enctype="application/x-www-form-urlencoded"
         method="POST" action="/denuncia/excluir">
         <input type="text" value="<%=report.id%>" name="id" hidden>
