@@ -3,7 +3,7 @@ const Writer = require('../model/Writer')
 const Rating = require('../model/Rating')
 const ListAllSummary = require('../controller/SummaryController')
 const Summary = require('../model/Summary')
-const Volunteer = require('../model/User')
+const User = require('../model/User')
 
 async function createRating(req, res) {
   const { ratingStar, note, refUser, refSummary} = req.body
@@ -12,7 +12,7 @@ async function createRating(req, res) {
     let menu = await getlevelUser(profile);
     let admin = await getlevelAdmin(profile)
     let volunteer = await getlevelVolunteer(profile)
-    const summaries = await ListAllSummary.listAllSummary()
+    const summaries = await ListAllSummary.listAllSummary(req, res)
 
     await Rating.create({
       ratingStar,
@@ -31,6 +31,7 @@ async function createRating(req, res) {
       menu,
       admin,
       volunteer,
+      profile,
       messageError: false 
     })
 
@@ -74,34 +75,37 @@ async function listSummary(req, res) {
 }
 
 async function getSummary(id) {
-  Summary.belongsTo(Volunteer, {
+  Summary.belongsTo(User, {
     foreignKey: {
-      name: 'id'
+      name: 'refUser'
     }})
     Summary.belongsTo(Writer, {
       foreignKey: {
-        name: 'id'
+        name: 'refWriter'
       }})
 
     Summary.belongsTo(Book, {
       foreignKey: {
-        name: 'id'
+        name: 'refBook'
       }});  
 
     const summary = await Summary.findOne({
       where: { id: id },
       include: [{
       association: 'user',
-      attributes: ['fullName'],
+      attributes: ['fullName', 'id'],
+      key: 'refUser'
     },{
       association: 'writer',
       attributes: ['nameWriter'],
+      key: 'refWriter'
     },{
       association: 'book',
       attributes: ['title'],
-    }]
-    
+      key: 'refBook'
+    }] 
   })
+
   return summary
 }
 
@@ -171,7 +175,7 @@ async function listRating(req, res) {
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
-      const profile = await Volunteer.findOne({
+      const profile = await User.findOne({
         where: { email: email}
     })
     return profile
@@ -180,9 +184,9 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return true
-  else
     return false
+  else
+    return true
 }
 
 async function getlevelVolunteer(profile) {
