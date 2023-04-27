@@ -106,63 +106,80 @@ async function showAllSummaryVolunteerToUp(req, res) {
 
 async function listSummary(req, res) {
   try{
-  const { id } = req.params
-  let { active, reportId } = req.body
-
-  const profile = await getUserInformation(req, res)
-  let menu = await getlevelUser(profile);
-  let admin = await getlevelAdmin(profile)
-  let volunteer = await getlevelVolunteer(profile)
-
-  await Report.update({
-    active
-  }, {
-    where: { id : reportId }
-  })
-
-  Summary.belongsTo(Volunteer, {
-    foreignKey: {
-      name: 'id'
-    }})
-
-    Summary.belongsTo(Writer, {
-      foreignKey: {
-        name: 'id'
-      }})
+    const { id } = req.params
+    const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
 
     Summary.belongsTo(Book, {
       foreignKey: {
-        name: 'id'
-      }});  
+        name: 'refBook'
+      }
+    })
+
+    Summary.belongsTo(User, {
+      foreignKey: {
+        name: 'refUser'
+      }
+    })
+
+    Summary.belongsTo(Writer, {
+      foreignKey: 'refWriter'
+    })
 
     const summary = await Summary.findOne({
       where: { id: id },
       include: [{
         association: 'user',
         attributes: ['fullName', 'id'],
+        key: 'refUser'
       },{
         association: 'writer',
         attributes: ['nameWriter'],
+        key: 'refWriter'
       },{
         association: 'book',
         attributes: ['title'],
-    }]
-  })
-     res.render('listSummary', { 
-      summary: summary,
-      book: summary.book.title , 
-      volunteer: summary.user.fullName, 
-      writer: summary.writer.nameWriter,
-      menu: menu,
-      admin: admin,
-      volunteer: volunteer,
-      profile: profile,
-      message: 'Alterado com sucesso',
-      refUserComment: refUserComment
+        key: 'refBook'
+      }],
+      nested: true 
     })
-  }catch(err){
-    res.json(err)
-  } 
+
+    res.render('listSummary', { 
+    summary: summary, 
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+    })
+  }catch(error){
+    res.json(error)
+  }
+}
+
+async function listSummariesForEachUser(req, res) {
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  const summaries = await listAllSummary(req, res)
+
+  const ratings = await Rating.findAll({
+    raw: true
+  })
+  
+  res.render('listSummariesForEachUser', {  
+    summaries: summaries, 
+    ratings: ratings, 
+    messageError: false, 
+    messageReport: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+  })
 }
 
 async function listAllSummary() {
@@ -186,9 +203,6 @@ async function listAllSummary() {
     });  
     
     const summary = await Summary.findAll({
-      where: {
-        
-      },
       include: [{
         association: 'writer',
         attributes: ['nameWriter'],
@@ -303,6 +317,7 @@ module.exports = {
     listSummary, 
     showAllSummary,
     showAllSummaryVolunteerToUp,
+    listSummariesForEachUser,
     showSummary,
     updateSummary,
     deleteSummary

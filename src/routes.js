@@ -112,10 +112,12 @@ routes.post('/titulo', isAllLevel, SummaryController.searchTitleBook)
 routes.get('/resumo/submit',isAllLevel, (req, res) => res.render(views + "summarySubmit"))
 routes.post('/titulo/submit', isAllLevel,  SummaryController.createSummary)
 routes.get('/resumo/listaResumo', isAllLevel, SummaryController.showAllSummary)
+routes.get('/resumo/listaResumo/:id', isAllLevel, SummaryController.listSummary)
 routes.post('/resumo/listaResumo/:id', isAllLevel,  SummaryController.listSummary)
 routes.post('/resumo/alterar/:id', isAllLevel, SummaryController.updateSummary)
 routes.post('/resumo/excluir', isAllLevel, SummaryController.deleteSummary)
 routes.get('/resumo/admin', isVolunteerOrAdmin, SummaryController.showAllSummaryVolunteerToUp);
+routes.get('/resumo/usuario', isAllLevel, SummaryController.listSummariesForEachUser)
 
 //Rating Summaries
 routes.get('/resumo/:id', isAllLevel, RatingController.listSummary)
