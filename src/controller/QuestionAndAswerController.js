@@ -1,19 +1,27 @@
 const Book = require('../model/Book')
 const QuestionAndAnswer = require('../model/QuestionAndAnswer')
+const User = require('../model/User')
 
 async function searchTitleBook(req, res) {
-  try {
-    await Book.findAll({
-      raw : true, 
-      order: [
-         ['title', 'ASC']
-      ]
-    }).then((books) => {
-      res.render('registerQuestion', { books: books })
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  await Book.findAll({
+    raw : true, 
+    order: [
+        ['title', 'ASC']
+    ]
+  }).then((books) => {
+    res.render('registerQuestion', { 
+      books: books,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile  
     })
-  } catch (error) {
-    res.json()
-  }
+  })
 }
 
 async function showTitleBookByQuestion(id) {
@@ -48,40 +56,70 @@ async function createQuestion(req, res) {
 
 async function listAllQuestions(req, res) {
 
-  try{
+    const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
+
     QuestionAndAnswer.belongsTo(Book, {
       foreignKey: {
-        name: 'id'
+        name: 'refBook'
       }
     })
 
-    await QuestionAndAnswer.findAll({
+    const questions = await QuestionAndAnswer.findAll({
       attributes: ['id', 'question', 'answer'],
       include: [{
         association: 'book',
-        attributes: ['title', 'id']
+        attributes: ['title', 'id'],
+        key: 'refBook'
       }]
-    }).then(questions => {
-      res.render('listAllQuestion', { questions: questions })
     })
-  }catch(error) {
-    res.json(error)
-  }
 
+    res.render('listAllQuestion', { 
+      questions: questions,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile 
+    })
 }
 
 async function listQuestion(req, res) {
   const { id } = req.params
 
   try{
-    const question = await QuestionAndAnswer.findOne({
-      where: { id: id }
-    })
-  
-    const book = await showTitleBookByQuestion(question.refBook)
-    console.log(question.answer)
+    const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
 
-    res.render('listQuestion', { question: question, book: book})
+    QuestionAndAnswer.belongsTo(User, {
+      foreignKey: {
+        name: 'refVolunteer'
+      }
+    })
+
+    const question = await QuestionAndAnswer.findOne({
+      where: { id: id },
+      include: [{
+        association: 'user',
+        attributes: ['fullName'],
+        key: 'refVolunteer'
+      }],
+      nested: true
+    })
+    console.log(question)
+    const book = await showTitleBookByQuestion(question.refBook)
+
+    res.render('listQuestion', { 
+      question: question, 
+      book: book,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile 
+    })
   }catch(error) {
     res.json(error)
   }
@@ -124,4 +162,42 @@ async function deleteQuestion(req, res) {
   }
 }
 
-module.exports = { createQuestion, listQuestion, searchTitleBook, listAllQuestions, updateQuestion, deleteQuestion }
+async function getUserInformation(req, res) {
+  if (req.isAuthenticated()) {
+      const  { email } = req.user
+      const profile = await User.findOne({
+        where: { email: email}
+    })
+    return profile
+  }
+}
+
+async function getlevelUser(profile) {
+  if (profile.level == 'Usuario')
+    return false
+  else
+    return true
+}
+
+async function getlevelAdmin(profile) {
+  if (profile.level == 'Administrador')
+    return true
+  else
+    return false
+}
+
+async function getlevelVolunteer(profile) {
+  if (profile.level == 'Voluntario')
+    return true
+  else
+    return false
+}
+
+module.exports = { 
+  createQuestion, 
+  listQuestion, 
+  searchTitleBook, 
+  listAllQuestions, 
+  updateQuestion, 
+  deleteQuestion 
+}
