@@ -90,12 +90,12 @@ routes.get('/menu', isAllLevel, (req, res) => {
 })
 
 //Routes of Writer não alterar (finalizado)
-routes.get('/autor', (req, res) => res.render(views + "registerWriter", { message: false,  messageError: false }))
-routes.post('/autor', WriterController.createWriter)
-routes.get('/autor/listEscritor/:id', WriterController.listWriter)
-routes.get('/autor/listEscritor', WriterController.listAllWriter)
-routes.post('/autor/alterar/:id', WriterController.updateWriter)
-routes.post('/autor/excluir', WriterController.deleteWriter)
+routes.get('/autor', isVolunteer, WriterController.getInformationMenu)
+routes.post('/autor', isVolunteer, WriterController.createWriter)
+routes.get('/autor/listEscritor/:id', isVolunteer, WriterController.listWriter)
+routes.get('/autor/listEscritor', isVolunteer, WriterController.listAllWriter)
+routes.post('/autor/alterar/:id', isVolunteer, WriterController.updateWriter)
+routes.post('/autor/excluir', isVolunteer, WriterController.deleteWriter)
 //
 
 //Routes of Book
@@ -121,16 +121,16 @@ routes.get('/resumo/usuario', isAllLevel, SummaryController.listSummariesForEach
 
 //Rating Summaries
 routes.get('/resumo/:id', isAllLevel, RatingController.listSummary)
-routes.post('/resumo/avaliacao', RatingController.createRating)
-routes.get('/resumo/listaAvaliacao/:id', RatingController.listAllRatingByUser)
-routes.get('/avaliacao/alterar/:id', RatingController.listRating)
+routes.post('/resumo/avaliacao', isAllLevel, RatingController.createRating)
+routes.get('/resumo/listaAvaliacao/:id', isAllLevel, RatingController.listAllRatingByUser)
+routes.get('/avaliacao/alterar/:id', isAllLevel, RatingController.listRating)
 
-routes.get('/questao', QuestionAndAnswerController.searchTitleBook)
-routes.post('/questao', QuestionAndAnswerController.createQuestion)
-routes.get('/questao/listaQuestionario', QuestionAndAnswerController.listAllQuestions)
-routes.get('/questao/listaQuestionario/:id', QuestionAndAnswerController.listQuestion)
-routes.post('/questao/alterar/:id', QuestionAndAnswerController.updateQuestion)
-routes.post('/questao/excluir', QuestionAndAnswerController.deleteQuestion)
+routes.get('/questao', isVolunteer, QuestionAndAnswerController.searchTitleBook)
+routes.post('/questao', isVolunteer, QuestionAndAnswerController.createQuestion)
+routes.get('/questao/listaQuestionario', isAllLevel, QuestionAndAnswerController.listAllQuestions)
+routes.get('/questao/listaQuestionario/:id', isAllLevel, QuestionAndAnswerController.listQuestion)
+routes.post('/questao/alterar/:id',isVolunteer, QuestionAndAnswerController.updateQuestion)
+routes.post('/questao/excluir',isVolunteer, QuestionAndAnswerController.deleteQuestion)
 
 routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
 routes.post('/usuario', UserController.createVolunteer)
