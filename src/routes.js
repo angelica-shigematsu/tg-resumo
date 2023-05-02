@@ -15,6 +15,7 @@ const SearchController = require('./controller/SearchController')
 const ReportController = require('./controller/ReportController')
 const FavoriteController = require('./controller/FavoriteController')
 const CheckSummarysController = require('./controller/CheckSummaryController')
+const SuggestionContoller = require('./controller/SuggestionController')
 
 const { isAdmin, isUser, isAllLevel, isVolunteer, isVolunteerOrAdmin } = require('./middleware/IsAuthenticateByLevel')
 
@@ -157,5 +158,7 @@ routes.get('/correcao/resumo/:id', isVolunteerOrAdmin, CheckSummarysController.g
 routes.post('/correcao/resumo/:id', isVolunteerOrAdmin, CheckSummarysController.createCheckedSummary)
 
 routes.post('/favoritar', isAllLevel, FavoriteController.createFavorite)
+
+routes.post('/sugestao', isAllLevel, SuggestionContoller.createSuggestion)
 
 module.exports = routes
