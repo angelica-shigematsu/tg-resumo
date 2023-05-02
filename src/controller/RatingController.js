@@ -75,34 +75,40 @@ async function listSummary(req, res) {
 }
 
 async function getSummary(id) {
+
   Summary.belongsTo(User, {
     foreignKey: {
       name: 'refUser'
-    }})
-    Summary.belongsTo(Writer, {
-      foreignKey: {
-        name: 'refWriter'
-      }})
+    }
+  })
+  
+  Summary.belongsTo(Writer, {
+    foreignKey: {
+      name: 'refWriter'
+    }
+  })
 
-    Summary.belongsTo(Book, {
-      foreignKey: {
-        name: 'refBook'
-      }});  
+  Summary.belongsTo(Book, {
+    foreignKey: {
+      name: 'refBook'
+    }
+  });  
 
-    const summary = await Summary.findOne({
-      where: { id: id },
-      include: [{
+  const summary = await Summary.findOne({
+    where: { id: id },
+
+    include: [{
       association: 'user',
       attributes: ['fullName', 'id'],
       key: 'refUser'
-    },{
-      association: 'writer',
-      attributes: ['nameWriter'],
-      key: 'refWriter'
-    },{
-      association: 'book',
-      attributes: ['title'],
-      key: 'refBook'
+      },{
+        association: 'writer',
+        attributes: ['nameWriter'],
+        key: 'refWriter'
+      },{
+        association: 'book',
+        attributes: ['title'],
+        key: 'refBook'
     }] 
   })
 
@@ -129,7 +135,7 @@ async function listAllRatingByUser(req, res) {
     let admin = await getlevelAdmin(profile)
     let volunteer = await getlevelVolunteer(profile)
     
-     Summary.belongsTo(Volunteer, {
+     Summary.belongsTo(User, {
       foreignKey: {
         name: 'id'
       }})

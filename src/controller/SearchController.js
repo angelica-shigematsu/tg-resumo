@@ -113,9 +113,9 @@ async function getUserInformation(req, res) {
 
 async function getlevelUser(profile) {
   if (profile.level == 'Usuario')
-    return true
-  else
     return false
+  else
+    return true
 }
 
 async function getlevelAdmin(profile) {
