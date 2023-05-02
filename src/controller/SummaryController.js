@@ -1,8 +1,9 @@
-const Book = require('../model/Book.js')
+const Book = require('../model/Book')
 const Rating = require('../model/Rating')
 const Report = require('../model/Report')
-const Summary = require('../model/Summary.js')
-const User = require('../model/User.js')
+const Suggestion = require('../model/Suggestion')
+const Summary = require('../model/Summary')
+const User = require('../model/User')
 const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
@@ -105,6 +106,7 @@ async function showAllSummaryVolunteerToUp(req, res) {
 }
 
 async function listSummary(req, res) {
+
   try{
     const { id } = req.params
     const profile = await getUserInformation(req, res)
@@ -146,15 +148,23 @@ async function listSummary(req, res) {
       nested: true 
     })
 
+    const suggestions = await Suggestion.findAll({
+      raw: true,
+      where: {
+        refSummary: id
+      }
+    })
+
     res.render('listSummary', { 
     summary: summary, 
+    suggestions,
     menu: menu,
     admin: admin,
     volunteer: volunteer,
     profile: profile
     })
   }catch(error){
-    res.json(error)
+    throw new Error(error)
   }
 }
 

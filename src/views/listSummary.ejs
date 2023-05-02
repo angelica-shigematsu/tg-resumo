@@ -33,7 +33,7 @@
           <textarea class="form-control" minlength="30" name="body" cols="30" rows="10" ><%= summary.body %></textarea>
         </div>
       </div>
-</form>
+  </form>
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <button class="btn btnUpdate" type="submit" form="form-summary">Atualizar</button>
     <form class="mb-3" enctype="application/x-www-form-urlencoded"
@@ -43,6 +43,15 @@
     </form>
   </div>
 </div>
+
+<% suggestions.forEach(suggestion => {%>
+  <div class="mb-3 row">
+    <h5>Sugestões</h5>
+    <div class="col-sm-10 ">
+    <p>Usuário: <%= suggestion.observation %></p> 
+  </div>
+  <hr>
+<%})%>
 
 <%- include('partials/footer.ejs') %> 
     
