@@ -79,7 +79,8 @@ routes.post('/logout', function(req, res, next){
 
 routes.get('/menu', isAllLevel, (req, res) => {
   if(req.user.active == 'inativo')
-    res.redirect("/login")
+    return res.render("index", {error: 'Sua conta foi desativada'})
+
   if(req.user.level == 'Usuario') 
     res.render("homepage", { menu: false, admin: false, volunteer: false, profile: req.user})
   
