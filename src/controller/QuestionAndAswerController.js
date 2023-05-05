@@ -85,6 +85,39 @@ async function listAllQuestions(req, res) {
     })
 }
 
+async function listAllQuestionsByUser(req, res) {
+
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  QuestionAndAnswer.belongsTo(Book, {
+    foreignKey: {
+      name: 'refBook'
+    }
+  })
+
+  const questions = await QuestionAndAnswer.findAll({
+    where: { refVolunteer: profile.id},
+    attributes: ['id', 'question', 'answer'],
+    include: [{
+      association: 'book',
+      attributes: ['title', 'id'],
+      key: 'refBook'
+    }]
+  })
+
+  res.render('listAllQuestion', { 
+    questions: questions,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile 
+  })
+}
+
+
 async function listQuestion(req, res) {
   const { id } = req.params
 
@@ -109,7 +142,7 @@ async function listQuestion(req, res) {
       }],
       nested: true
     })
-    console.log(question)
+
     const book = await showTitleBookByQuestion(question.refBook)
 
     res.render('listQuestion', { 
@@ -197,7 +230,8 @@ module.exports = {
   createQuestion, 
   listQuestion, 
   searchTitleBook, 
-  listAllQuestions, 
+  listAllQuestions,
+  listAllQuestionsByUser, 
   updateQuestion, 
   deleteQuestion 
 }

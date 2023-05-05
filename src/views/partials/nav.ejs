@@ -38,7 +38,6 @@
               <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
               <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
             <%}%>
-            <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
           </ul>
         </li>
         <li class="nav-item">
@@ -65,12 +64,16 @@
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <li>
             <a class="dropdown-item" href="/perfil">Perfil</a></li>
+          </li>
+          <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
+          <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
           <li>
             <div class="nav-item">
               <form action="/logout"  method="POST">
                 <button type="submit" class="btn btn-light">Logout</button>
               </form>
             </div>
+            </li>
           </li>
         </ul>
       </li>

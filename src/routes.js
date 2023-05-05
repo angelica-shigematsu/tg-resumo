@@ -24,7 +24,6 @@ const session = require('express-session')
 const flash = require('connect-flash')
 
 const passport = require('passport')
-const { message } = require('statuses')
 
 require('events').EventEmitter.prototype._maxListeners = 70;
 require('events').defaultMaxListeners = 70;
@@ -135,6 +134,8 @@ routes.get('/questao/listaQuestionario', isAllLevel, QuestionAndAnswerController
 routes.get('/questao/listaQuestionario/:id', isAllLevel, QuestionAndAnswerController.listQuestion)
 routes.post('/questao/alterar/:id',isVolunteer, QuestionAndAnswerController.updateQuestion)
 routes.post('/questao/excluir',isVolunteer, QuestionAndAnswerController.deleteQuestion)
+
+routes.get('/questao/usuario/listaQuestionario/', isAllLevel, QuestionAndAnswerController.listAllQuestionsByUser)
 
 routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
 routes.post('/usuario', UserController.createVolunteer)
