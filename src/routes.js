@@ -16,6 +16,7 @@ const ReportController = require('./controller/ReportController')
 const FavoriteController = require('./controller/FavoriteController')
 const CheckSummarysController = require('./controller/CheckSummaryController')
 const SuggestionContoller = require('./controller/SuggestionController')
+const ResetPasswordController = require('./controller/ResetPasswordController')
 
 const { isAdmin, isUser, isAllLevel, isVolunteer, isVolunteerOrAdmin } = require('./middleware/IsAuthenticateByLevel')
 
@@ -23,6 +24,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 
 const passport = require('passport')
+const { message } = require('statuses')
 
 require('events').EventEmitter.prototype._maxListeners = 70;
 require('events').defaultMaxListeners = 70;
@@ -161,5 +163,8 @@ routes.post('/correcao/resumo/:id', isVolunteerOrAdmin, CheckSummarysController.
 routes.post('/favoritar', isAllLevel, FavoriteController.createFavorite)
 
 routes.post('/sugestao', isAllLevel, SuggestionContoller.createSuggestion)
+
+routes.get('/modificarsenha', (req, res) => { res.render("resetPassword", { message: false, messageError: false } )})
+routes.post('/modificarsenha', ResetPasswordController.resetPawword)
 
 module.exports = routes
