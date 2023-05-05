@@ -63,7 +63,7 @@ async function listAllBook(req, res) {
 
     Book.belongsTo(Writer, {
       foreignKey: {
-        name: 'id'
+        name: 'refWriter'
       }
     })
 
@@ -72,7 +72,8 @@ async function listAllBook(req, res) {
       order: [['title', 'ASC']],
       include: [{
         association: 'writer',
-        attributes: ['nameWriter']
+        attributes: ['nameWriter'],
+        key: 'refWriter'
       }],
       nest: true
     }).then(books => {
