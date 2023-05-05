@@ -41,9 +41,10 @@ async function getInformationSummary(req, res) {
     res.render('checkSummary', { 
       summary: summary,
       message: 'Alterado com sucesso',
-      menu: menu,
-      admin: admin,
-      volunteer: volunteer
+      profile,
+      menu,
+      admin,
+      volunteer
     })
   }catch(error) {
     res.status(400).send('Erro ao mostrar informações do resumo!')

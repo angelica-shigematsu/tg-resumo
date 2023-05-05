@@ -1,4 +1,5 @@
 const Book = require('../model/Book')
+const CheckSummary = require('../model/CheckSummary')
 const Rating = require('../model/Rating')
 const Report = require('../model/Report')
 const Suggestion = require('../model/Suggestion')
@@ -155,8 +156,15 @@ async function listSummary(req, res) {
       }
     })
 
+    const checkSummary = await CheckSummary.findOne({
+      where: {
+        refSummary: id
+      }
+    })
+
     res.render('listSummary', { 
     summary: summary, 
+    checkSummary: checkSummary,
     suggestions,
     menu: menu,
     admin: admin,
