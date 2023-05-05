@@ -313,9 +313,10 @@ async function showSummary(req, res) {
 
   res.render("summary", { 
     messageError: false, 
-    menu: menu, 
-    admin: admin, 
-    volunteer: volunteer
+    profile,
+    menu,
+    admin, 
+    volunteer
   })
 }
 
