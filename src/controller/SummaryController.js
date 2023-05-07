@@ -9,15 +9,16 @@ const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
   const { title } = req.body
+
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
   try{
     let book = await Book.findOne({ attributes: ['refWriter', 'title', 'id'], where: { title: title }})
     let idWriter = book.refWriter
     let writer = await Writer.findOne({ where: { idWriter : idWriter }})
-
-    const profile = await getUserInformation(req, res)
-    let menu = await getlevelUser(profile);
-    let admin = await getlevelAdmin(profile)
-    let volunteer = await getlevelVolunteer(profile)
 
     res.render("summarySubmit", { 
       book: { 
@@ -35,7 +36,13 @@ async function searchTitleBook(req, res) {
       messageErro: false,
     })
   }catch(error){
-    res.render('summary', {messageError: `Não existe este livro ${title}`, menu: menu})
+    res.render('summary', {
+      messageError: `Não existe este livro ${title}`, 
+      profile,
+      menu, 
+      admin,
+      volunteer
+    })
   }
 }
 

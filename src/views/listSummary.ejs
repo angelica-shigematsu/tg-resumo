@@ -44,12 +44,14 @@
   </div>
 </div>
 
+<%if(checkSummary){%>
 <div class="mb-3 row">
   <label for="" class="col-sm-2 col-form-label">Comentário do Voluntário</label>
   <div class="col-sm-10">
     <textarea class="form-control" minlength="5" name="comment" cols="30" rows="10" disabled><%=checkSummary.comment%></textarea>
   </div>
 </div>
+<%}%>
 
 <% suggestions.forEach(suggestion => {%>
   <div class="mb-3 row">
