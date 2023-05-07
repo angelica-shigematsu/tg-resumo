@@ -113,7 +113,7 @@ async function createCheckedSummary(req, res) {
   
   Summary.belongsTo(User, {
     foreignKey: {
-      name: 'id'
+      name: 'refUser'
     }
   })
 
@@ -123,7 +123,8 @@ async function createCheckedSummary(req, res) {
       },
       include: [{
         association: 'user',
-        atributes: ['id']
+        atributes: ['id'],
+        key: 'refUser'
       }]
     })
 

@@ -27,17 +27,17 @@ async function searchSummary(req, res) {
 
     Summary.belongsTo(Volunteer, {
       foreignKey: {
-        name: 'id'
+        name: 'refUser'
       }})
   
       Summary.belongsTo(Writer, {
         foreignKey: {
-          name: 'id'
+          name: 'refWriter'
         }})
   
       Summary.belongsTo(Book, {
         foreignKey: {
-          name: 'id'
+          name: 'refBook'
         }});  
 
       const book = await Book.findOne({
@@ -54,18 +54,21 @@ async function searchSummary(req, res) {
 
       summaries = await Summary.findAll({
         where: {
-          id: book.id,
+          refBook: book.id,
           status: "Aprovado"
         },
           include: [{
           association: 'writer',
           attributes: ['nameWriter'],
+          key: 'refWriter'
         },{
           association: 'book',
           attributes: ['title'],
+          key: 'refBook'
         },{
           association: 'user',
-          attributes: ['id']
+          attributes: ['id', 'fullName'],
+          key: 'refUser'
         }]   
       })
 
@@ -75,9 +78,9 @@ async function searchSummary(req, res) {
         admin,
         volunteer,
         messageError: `Não existe resumo com o título ${fieldSearch}`, 
-        messageReport: false })
+        messageReport: false 
+      })
 
-    console.log(summaries[0])
     let ratings = await Rating.findAll({
       raw: true
     })
@@ -90,7 +93,8 @@ async function searchSummary(req, res) {
       admin,
       volunteer,
       messageError: false, 
-      messageReport: false })
+      messageReport: false 
+    })
  }catch(error) {
   res.render('listAllSummary', {
     profile: profile,
