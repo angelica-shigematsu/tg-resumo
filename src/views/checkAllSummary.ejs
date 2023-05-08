@@ -7,7 +7,7 @@
     </div>
   <%} else {%>
   <% summaries.forEach(summary => { %>
-    <%if(summary.status !="Aprovado" && summary.status!="Recusado" && profile.id != summary.user.id) {%>
+    <%if(summary.status !="Aprovado" && summary.status!="Recusado" summary.status!="Devolvido" && profile.id != summary.user.id) {%>
       <div class="card w-75">
         <div class="card-body">
           <h5 class="card-title">Livro: <%= summary.book.title %></h5>
