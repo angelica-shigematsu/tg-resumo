@@ -41,36 +41,60 @@ async function searchSummary(req, res) {
         }});  
 
       const book = await Book.findOne({
-        attributes: ['id', 'title'],
         where: { 
           title: { [Op.like]: `%${fieldSearch}%` }
-        }
-      })
-
-      // let writer = await Writer.findOne({
-      //   where: { nameWriter: { [Op.like]: `%${fieldSearch}%`}},
-      //   attributes: ['id'],
-      // })
-
-      summaries = await Summary.findAll({
-        where: {
-          refBook: book.id,
-          status: "Aprovado"
         },
-          include: [{
-          association: 'writer',
-          attributes: ['nameWriter'],
-          key: 'refWriter'
-        },{
-          association: 'book',
-          attributes: ['title'],
-          key: 'refBook'
-        },{
-          association: 'user',
-          attributes: ['id', 'fullName'],
-          key: 'refUser'
-        }]   
+        attributes: ['id', 'title'],
       })
+
+      if (!book) {
+        const writer = await Writer.findOne({
+          where: { 
+            nameWriter: {  [Op.like]: `%${fieldSearch}%` }
+          },
+          attributes: ['idWriter', 'nameWriter'],
+        })
+        
+        summaries = await Summary.findAll({
+          where: {
+            refWriter: writer.idWriter,
+            status: "Aprovado"
+          },
+            include: [{
+            association: 'writer',
+            attributes: ['nameWriter'],
+            key: 'refWriter'
+          },{
+            association: 'book',
+            attributes: ['title'],
+            key: 'refBook'
+          },{
+            association: 'user',
+            attributes: ['id', 'fullName'],
+            key: 'refUser'
+          }]   
+        })
+      } else {
+        summaries = await Summary.findAll({
+          where: {
+            refBook: book.id,
+            status: "Aprovado"
+          },
+            include: [{
+            association: 'writer',
+            attributes: ['nameWriter'],
+            key: 'refWriter'
+          },{
+            association: 'book',
+            attributes: ['title'],
+            key: 'refBook'
+          },{
+            association: 'user',
+            attributes: ['id', 'fullName'],
+            key: 'refUser'
+          }]   
+        })
+      }
 
       if (!summaries[0].id) return res.render('listAllSummary', { 
         profile,
