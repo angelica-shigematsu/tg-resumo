@@ -228,6 +228,7 @@ async function listAllSummary() {
     });  
     
     const summary = await Summary.findAll({
+      order: [['createdAt', 'DESC']],
       include: [{
         association: 'writer',
         attributes: ['nameWriter'],
@@ -242,7 +243,7 @@ async function listAllSummary() {
         attributes: ['id', 'fullName'],
         key: 'refUser'
       }],
-      nested: true  
+      nested: true, 
     })
 
     return summary
