@@ -37,12 +37,12 @@
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <%if (summary.status != "Aprovado") {%>
     <button class="btn btnUpdate" type="submit" form="form-summary">Atualizar</button>
-    <%}%>
     <form class="mb-3" enctype="application/x-www-form-urlencoded"
       method="POST" action="/resumo/excluir">
       <input type="text" value="<%= summary.id %>" name="id" hidden>
       <button class="btn btnCancel" type="submit">Excluir</button>
     </form>
+    <%}%>
   </div>
 </div>
 
