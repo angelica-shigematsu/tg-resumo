@@ -40,12 +40,7 @@ async function searchSummary(req, res) {
           name: 'refBook'
         }});  
 
-      const book = await Book.findOne({
-        where: { 
-          title: { [Op.like]: `%${fieldSearch}%` }
-        },
-        attributes: ['id', 'title'],
-      })
+      let book = await findBook(fieldSearch)
 
       if (!book) {
         const writer = await Writer.findOne({
@@ -129,6 +124,119 @@ async function searchSummary(req, res) {
  } 
 }
 
+async function searchByTitle(req, res) {
+  const { searchSummary } = req.body
+  let summaries = []
+
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+
+  Summary.belongsTo(Volunteer, {
+    foreignKey: {
+      name: 'refUser'
+    }
+  })
+
+  Summary.belongsTo(Writer, {
+      foreignKey: {
+        name: 'refWriter'
+      }
+  })
+
+  Summary.belongsTo(Book, {
+      foreignKey: {
+        name: 'refBook'
+      }
+  });  
+    
+  let book = await findBook(searchSummary)
+
+  if (!book) {
+    const writer = await Writer.findOne({
+      where: { 
+        nameWriter: {  [Op.like]: `%${searchSummary}%` }
+      },
+      attributes: ['idWriter', 'nameWriter'],
+    })
+    
+    summaries = await Summary.findAll({
+      where: {
+        refWriter: writer.idWriter
+      },
+        include: [{
+        association: 'writer',
+        attributes: ['nameWriter'],
+        key: 'refWriter'
+      },{
+        association: 'book',
+        attributes: ['title'],
+        key: 'refBook'
+      },{
+        association: 'user',
+        attributes: ['id', 'fullName'],
+        key: 'refUser'
+      }]   
+    })
+  } else {
+    summaries = await Summary.findAll({
+      where: {
+        refBook: book.id,
+        status: "Aprovado"
+      },
+        include: [{
+        association: 'writer',
+        attributes: ['nameWriter'],
+        key: 'refWriter'
+      },{
+        association: 'book',
+        attributes: ['title'],
+        key: 'refBook'
+      },{
+        association: 'user',
+        attributes: ['id', 'fullName'],
+        key: 'refUser'
+      }]   
+    })
+  }
+
+  if (!summaries[0].id) return res.render('listAllSummary', { 
+    profile,
+    menu,
+    admin,
+    volunteer,
+    messageError: `Não existe resumo com o título ${fieldSearch}`, 
+    messageReport: false 
+  })
+
+  const ratings = await Rating.findAll({
+    raw: true
+  })
+
+  res.render('listSummariesForEachUser', {  
+    summaries: summaries, 
+    ratings: ratings, 
+    messageError: false, 
+    messageReport: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+  })
+}
+
+async function findBook(fieldSearch) {
+  const book = await Book.findOne({
+    where: { 
+      title: { [Op.like]: `%${fieldSearch}%` }
+    },
+    attributes: ['id', 'title'],
+  })
+  return book
+}
+
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -160,4 +268,7 @@ async function getlevelVolunteer(profile) {
     return false
 }
 
-module.exports = { searchSummary }
+module.exports = { 
+  searchSummary,
+  searchByTitle
+ }
