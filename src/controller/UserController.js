@@ -4,15 +4,21 @@ async function createVolunteer(req, res) {
   const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules } = req.body;
   const active = 'ativo';
 
+  let dateBirth = new Date(dateBirthUser)
+
+  let age = await getAge(dateBirth.getFullYear());
+
   if(rules == undefined) return  res.render('user', { message: false, messageError: "Precisa aceitar os termos" })
 
-  const existsUser = User.findOne({
+  if(level == "Voluntario" && age < 18) return  res.render('user', { message: false, messageError: "Menor de 18 não pode ser voluntário" })
+
+  const existsUser = await User.findOne({
     where: {
       email: email
     }
   })
 
-  if(existsUser) return  res.render('user', { message: false, messageError: "Já tem cadastro com essa conta" })
+  if(existsUser) return res.render('user', { message: false, messageError: "Já tem cadastro com essa conta" })
 
   try{
     await User.create({
@@ -32,6 +38,12 @@ async function createVolunteer(req, res) {
       res.json(err)
     }
 };
+
+async function getAge(yearBirth) {
+  let date = new Date().getFullYear();
+
+  return yearBirth - date
+}
 
 async function listVolunteer(req, res) {
   try {
