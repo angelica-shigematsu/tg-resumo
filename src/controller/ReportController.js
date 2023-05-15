@@ -193,33 +193,6 @@ async function getReport(req, res) {
   }
 }
 
-async function deleteReport(req, res) {
-  const { id, userId } = req.body
-
-  try{
-    await Report.destroy({
-      where: { id: id }
-    })
-
-    const reports = await Report.findAll({
-      include: [{
-        association: 'user',
-        attributes: ['fullName','email', 'id', 'createdAt'],
-      }],
-      where: {
-        refUser: userId
-      },
-      raw: true,
-      nest: true
-    })
-   
-    res.render('listAllReportToUser', { reports: reports, message: 'Excluído com sucesso'})
-
-  }catch(err) {
-    res.json()
-  }
-}
-
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -256,6 +229,5 @@ module.exports = {
   getInformationReport, 
   getAllReportByUser, 
   updateReport,
-  getReport,
-  deleteReport
+  getReport
 }

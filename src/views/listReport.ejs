@@ -34,15 +34,9 @@
            </div>
         </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <button class="btn btnProgress" type="submit" form="form-report">Atualizar a avaliação</button>
-    </form>
-      <form class="mb-3" enctype="application/x-www-form-urlencoded"
-        method="POST" action="/denuncia/excluir">
-        <input type="text" value="<%=report.id%>" name="id" hidden>
-        <input type="text" value="<%=summary.refVolunteer%>" name="userId" hidden>
-        <button type="submit" class="btn btn-danger">Excluir</button>
-      </form>
+      <button class="btn btnProgress" type="submit" form="form-report">Atualizar</button>
     </div>
+    </form>
   </div>
   
 <%- include('partials/footer.ejs') %> 
