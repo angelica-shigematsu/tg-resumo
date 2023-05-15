@@ -96,7 +96,7 @@ routes.get('/menu', isAllLevel, (req, res) => {
 routes.get('/autor', isVolunteer, WriterController.getInformationMenu)
 routes.post('/autor', isVolunteer, WriterController.createWriter)
 routes.get('/autor/listEscritor/:id', isVolunteer, WriterController.listWriter)
-routes.get('/autor/listEscritor', isVolunteer, WriterController.listAllWriter)
+routes.get('/autor/listEscritor', isVolunteerOrAdmin, WriterController.listAllWriter)
 routes.post('/autor/alterar/:id', isVolunteer, WriterController.updateWriter)
 routes.post('/autor/excluir', isVolunteer, WriterController.deleteWriter)
 //
