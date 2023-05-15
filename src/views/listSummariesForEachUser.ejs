@@ -91,25 +91,44 @@
   <%} else {%>
   <% summaries.forEach(summary => { %>
     <%if (summary.refUser == profile.id){%>
-      <div class="card w-75">
+      <div class="card w-50">
         <div class="card-body">
-          <h5 class="card-title">Livro: <%= summary.book.title %></h5>
+          <div class="row">
+            <div class="col">
+              <h4 class="card-title">Criado: <%= summary.createdAt.getDate() %>/<%= summary.createdAt.getMonth()+1 %>/<%= summary.createdAt.getFullYear() %></h4>
+            </div>
+            <div class="col">
+              <h5>Livro: <%= summary.book.title %></h5>
+            </div>
+          </div>
           <p class="card-text">
-          <p>Autor do Livro: <%=summary.writer.nameWriter%></p>
-          <p>Escritor do resumo: <%=summary.user.fullName%></p>
-          <p><%=summary.status%></p>
-          <p>Avaliação:
-            <% let result = 0
-            let lengthRate = 0 %>
-            <%ratings.forEach(listRate=>  {
-            if (listRate.refSummary === summary.id) {
-            result+= listRate.ratingStar
-              lengthRate++
-          }
-        })%>
-        <% if (isNaN(result)) {%> <%=0%> <%} else {%> <%=(result/lengthRate).toFixed(2)%> <%}%>
-        </p>
-          <a href="/resumo/listaResumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+          <div class="row">
+            <div class="col">
+              <p>Autor do Livro: <%=summary.writer.nameWriter%></p>
+            </div>
+            <div class="col">
+              <p>Escritor do resumo: <%=summary.user.fullName%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col"> 
+              <p>Status:<%=summary.status%></p>
+            </div>
+            <div class="col"> 
+              <p>Avaliação:
+                <% let result = 0
+                   let lengthRate = 0
+                  ratings.forEach(listRate=>  {
+                    if (listRate.refSummary === summary.id) {
+                      result += listRate.ratingStar
+                      lengthRate++
+                    }
+                  })
+                if (!isNaN(result)) {%><%=(result/lengthRate).toFixed(2)%><%}%>
+              </p>
+            </div>
+          </div>
+          <a href="/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
         </div>
       </div>
       <%}%>
