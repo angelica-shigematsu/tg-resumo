@@ -121,6 +121,7 @@ routes.post('/resumo/alterar/:id', isAllLevel, SummaryController.updateSummary)
 routes.post('/resumo/excluir', isAllLevel, SummaryController.deleteSummary)
 routes.get('/resumo/admin', isVolunteerOrAdmin, SummaryController.showAllSummaryVolunteerToUp);
 routes.get('/resumo/usuario', isAllLevel, SummaryController.listSummariesForEachUser)
+routes.get('/resumo/favorito', isAllLevel, FavoriteController.listAllFavorite)
 
 //Rating Summaries
 routes.get('/resumo/:id', isAllLevel, RatingController.listSummary)
@@ -145,12 +146,15 @@ routes.get('/usuario/:id', isAllLevel, ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', isAllLevel, UserController.updateVolunteer)
 
 routes.post('/nav', isAllLevel, SearchController.searchSummary)
+// routes.post('/resumo/favorito', isAllLevel, SearchController.searchByFavorite)
+routes.post('/nav/favorito', isAllLevel, SearchController.searchSummary)
 routes.post('/usuario/nav', isAllLevel, SearchController.searchByTitle)
 
 routes.get('/login', (req, res) => res.render(views + "index", { error: false }))
 
 routes.get('/denuncia', isAdmin, ReportController.getInformationReport)
 routes.post('/denuncia', isAllLevel, ReportController.createReport)
+routes.get('/denuncia/resumo/:id', ReportController.listFormsToReport)
 routes.get('/denuncia/usuario', isAdmin, ReportController.getAllReportByUser)
 routes.post('/denuncia/avaliacao/:id', isAdmin, ReportController.getReport)
 routes.post('/denuncia/avaliado/:id', isAdmin, ReportController.updateReport)

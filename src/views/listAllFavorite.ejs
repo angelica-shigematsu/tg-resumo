@@ -1,0 +1,73 @@
+<%- include('partials/nav.ejs') %>
+<%- include('partials/header.ejs') %> 
+
+<div class="d-lg-flex justify-content-end col">
+  <form id="form-search" enctype="application/x-www-form-urlencoded"
+    method="POST" action="/nav/favorito">
+    <div class="mb-3 row">
+      <div class="col-sm-8">
+        <input class="form-control me-2" type="search" placeholder="Procure livros" name="fieldSearch" aria-label="Search"/>
+      </div>
+      <div class="col-sm-3">
+        <button class="btn btn-outline-success col" form="form-search" type="submit">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+  <% let arraySummaryFavorite = [] %>
+  <%favorites.forEach(favorite => {
+     arraySummaryFavorite.push(favorite.refSummary)
+  })%>
+
+  <% if (messageError) { %>
+    <div class="alert alert-warning" role="alert">
+      <%=messageError%>
+    </div>
+  <%} else {%>
+  <% summaries.forEach(summary => { %>
+    <%if (arraySummaryFavorite.includes(summary.id)){%>
+      <div class="card w-50">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h4 class="card-title">Criado: <%= summary.createdAt.getDate() %>/<%= summary.createdAt.getMonth()+1 %>/<%= summary.createdAt.getFullYear() %></h4>
+            </div>
+            <div class="col">
+              <h5>Livro: <%= summary.book.title %></h5>
+            </div>
+          </div>
+          <p class="card-text">
+          <div class="row">
+            <div class="col">
+              <p>Autor do Livro: <%=summary.writer.nameWriter%></p>
+            </div>
+            <div class="col">
+              <p>Escritor do resumo: <%=summary.user.fullName%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col"> 
+              <p>Status:<%=summary.status%></p>
+            </div>
+            <div class="col"> 
+              <p>Avaliação:
+                <% let result = 0
+                   let lengthRate = 0
+                  ratings.forEach(listRate=>  {
+                    if (listRate.refSummary === summary.id) {
+                      result += listRate.ratingStar
+                      lengthRate++
+                    }
+                  })
+                if (!isNaN(result)) {%><%=(result/lengthRate).toFixed(2)%><%}%>
+              </p>
+            </div>
+          </div>
+          <a href="/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+        </div>
+      </div>
+      <% } %>
+    <% }) %>
+  <% } %>
+<%- include('partials/footer.ejs') %> 
+

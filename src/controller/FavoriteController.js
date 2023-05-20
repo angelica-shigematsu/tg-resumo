@@ -1,5 +1,11 @@
+const Book = require('../model/Book');
 const Favorite = require('../model/Favorite');
-const Volunteer = require('../model/User')
+const Rating = require('../model/Rating');
+const Summary = require('../model/Summary');
+const User = require('../model/User');
+const Volunteer = require('../model/User');
+const Writer = require('../model/Writer');
+const sequelize = require('sequelize');
 const { getSummary, getRating } = require('./RatingController');
 
 async function createFavorite(req, res) {
@@ -66,6 +72,104 @@ async function createFavorite(req, res) {
   }
 }
 
+async function listAllFavorite(req, res) {
+  let favoriteSummaryId = []
+  let summaries = []
+  let ratings = []
+
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  Favorite.belongsTo(Summary, {
+    foreignKey: {
+      name: 'refSummary'
+    }
+  })
+
+  Summary.belongsTo(Book, {
+    foreignKey: {
+      name: 'refBook'
+    }
+  })
+
+  Summary.belongsTo(User, {
+    foreignKey: {
+      name: 'refUser'
+    }
+  })
+
+  Summary.belongsTo(Writer, {
+    foreignKey: 'refWriter'
+  })
+
+  const qtFavoriteSummaries = await Favorite.count({
+    where: {
+      refUser: profile.id
+    }
+  });
+
+  const favorites = await Favorite.findAll({
+    where: { 
+      refUser: profile.id,
+    }
+  })
+
+  ratings = await Rating.findAll({
+    raw: true
+  })
+
+  if (qtFavoriteSummaries == 0 ) {
+    await res.render('listAllFavorite', { 
+    favorites: favorites, 
+    summaries: summaries, 
+    ratings: ratings, 
+    messageError: 'Você não tem nenhum resumo favoritado', 
+    messageReport: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+   })
+  }
+  
+  for(let index = 0; index < qtFavoriteSummaries; index++) {
+    favoriteSummaryId.push(favorites[index].id)
+  }
+
+  summaries = await Summary.findAll({
+    where: {
+      id: favoriteSummaryId
+    },
+    include: [{
+      association: 'writer',
+      attributes: ['nameWriter'],
+      key: 'refWriter'
+      },{
+      association: 'book',
+      attributes: ['title'],
+      key: 'refBook'
+      },{
+      association: 'user',
+      attributes: ['id', 'fullName'],
+      key: 'refUser'
+    }]   
+  })
+    
+  await res.render('listAllFavorite', { 
+    favorites: favorites, 
+    summaries: summaries, 
+    ratings: ratings, 
+    messageError: false, 
+    messageReport: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+  })
+}
+
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -98,4 +202,7 @@ async function getlevelAdmin(profile) {
 }
 
 
-module.exports = { createFavorite }
+module.exports = { 
+  createFavorite,
+  listAllFavorite
+ }
