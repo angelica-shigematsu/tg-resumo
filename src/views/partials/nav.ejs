@@ -44,19 +44,7 @@
           <a class="nav-link" href="#">Sobre</a>
         </li>
       </ul>
-      <div class="d-lg-flex justify-content-end col">
-        <form id="form-search" enctype="application/x-www-form-urlencoded"
-          method="POST" action="/nav">
-          <div class="mb-3 row">
-            <div class="col-sm-8">
-              <input class="form-control me-2" type="search" placeholder="Procure livros" name="fieldSearch" aria-label="Search"/>
-            </div>
-            <div class="col-sm-3">
-              <button class="btn btn-outline-success col" form="form-search" type="submit">Search</button>
-            </div>
-          </div>
-          </form>
-        </div>
+      <%- include('searchSummary.ejs')  %> 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <%=profile.fullName%>
