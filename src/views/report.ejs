@@ -1,0 +1,21 @@
+<%- include('partials/header.ejs') %> 
+<%- include('partials/nav.ejs')  %> 
+<form action="/denuncia" id="form-report" method="POST">
+  <div class="container-sm">
+    <input type="text" value="<%=summaryId%>" name="refSummary" hidden>
+    <input type="text" value="<%=profile.id%>" name="refUser" hidden>
+
+    <div class="mb-3 row">
+      <label for="" class="col-sm-2 col-form-label">Motivo</label>
+      <div class="col-sm-10">
+        <select class="form-select" aria-label="Default select example" name="reason" required>
+          <option selected value="eticaemoral">Violação ética e moral</option>
+          <option selected value="plagio">Plágio</option>
+          <option selected value="preconceito">Preconceito ou Racismo</option>
+          <option selected value="outro">Outro</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-danger" form="form-report">Denunciar</button>
+  </form>
+<%- include('partials/footer.ejs') %> 

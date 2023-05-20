@@ -8,7 +8,7 @@ const MeasureReport = require('../model/MeasureReport')
 
 async function createReport(req, res) {
   try {
-    const { refSummary, refUser, reason, refUserSummary} = req.body
+    const { refSummary, refUser, reason } = req.body
     const profile = await getUserInformation(req, res)
     let menu = await getlevelUser(profile)
     let admin = await getlevelAdmin(profile)
@@ -21,16 +21,6 @@ async function createReport(req, res) {
     const ratings = await Rating.findAll({
       raw: true
     })
-
-    if (profile.id == refUserSummary) 
-      return res.render('listAllSummary', { 
-        summaries: summaries, 
-        ratings: ratings,
-        profile, 
-        menu,
-        admin,
-        volunteer,
-        messageError: "Não pode denunciar seu próprio resumo!" })
 
     await Report.create({
       status,
@@ -54,6 +44,23 @@ async function createReport(req, res) {
   } catch (error) {
     res.json(error)
   }
+}
+
+async function listFormsToReport(req, res) {
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  const { id } = req.params
+
+  res.render('report', {
+    summaryId: id,
+    profile: profile,
+    menu,
+    admin,
+    volunteer
+  })
 }
 
 async function updateReport(req, res) {
@@ -227,7 +234,8 @@ async function getlevelVolunteer(profile) {
 module.exports = { 
   createReport, 
   getInformationReport, 
-  getAllReportByUser, 
+  getAllReportByUser,
+  listFormsToReport, 
   updateReport,
   getReport
 }

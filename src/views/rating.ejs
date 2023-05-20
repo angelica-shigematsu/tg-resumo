@@ -6,40 +6,20 @@
     <%=messageFavorite%>
   </div>
 <% } %>
-  <div class="container-sm">
-    <h3>Avaliação do Resumo</h3>
-      <div class="col"  <%if(profile.id == summary.refUser){%> hidden <%}%>>
-      <form action="/denuncia" id="form-report" method="POST">
-        <div class="d-grid d-md-flex justify-content-md-end">
-          <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
-          <input type="text" value="<%=refUserComment.id%>" name="refUser" hidden>
-          <input type="text" value="<%=summary.user.id%>" name="refUserSummary" hidden>
-
-          <div class="mb-3 row">
-            <label for="" class="col-sm-2 col-form-label">Motivo</label>
-            <div class="col-sm-10">
-              <select class="form-select" aria-label="Default select example" name="reason" required>
-                <option selected value="eticaemoral">Violação ética e moral</option>
-                <option selected value="plagio">Plágio</option>
-                <option selected value="preconceito">Preconceito ou Racismo</option>
-                <option selected value="outro">Outro</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-danger" form="form-report">Denunciar</button>
-        </form>
-      </div>
-      <div class="col">
-        <form action="/favoritar" id="form-favorite" method="POST">
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
-            <input type="text" value="<%=refUserComment.id%>" name="refUser" hidden>
-            <button type="submit" class="btn btn-warning">Favoritar</button>
-          </div>
-        </form>
-      </div>
+  <h3>Avaliação do Resumo</h3>
+    <div class="col">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end"  <%if(profile.id == summary.refUser){%> hidden <%}%>>
+      <a href="/denuncia/resumo/<%=summary.id%>" class="btn btn-danger">Denunciar</a>
     </div>
-
+    <form action="/favoritar" id="form-favorite" method="POST">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
+        <input type="text" value="<%=refUserComment.id%>" name="refUser" hidden>
+        <button type="submit" class="btn btn-warning">Favoritar</button>
+      </div>
+    </form>
+    </div>
+    <div class="container-sm">
     <form class="mb-3" id="form-rating" enctype="application/x-www-form-urlencoded"
     method="POST" action="/resumo/avaliacao">
     <div class="mb-3 row">
@@ -116,6 +96,7 @@
       <hr>
       <%})%>
     </div>
+  </div>
   </div>
   
 <%- include('partials/footer.ejs') %> 
