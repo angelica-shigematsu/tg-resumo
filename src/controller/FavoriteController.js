@@ -135,7 +135,7 @@ async function listAllFavorite(req, res) {
   }
   
   for(let index = 0; index < qtFavoriteSummaries; index++) {
-    favoriteSummaryId.push(favorites[index].id)
+    favoriteSummaryId.push(favorites[index].refSummary)
   }
 
   summaries = await Summary.findAll({
