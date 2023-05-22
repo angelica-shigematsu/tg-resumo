@@ -1,6 +1,6 @@
 const User = require('../model/User')
 
-async function resetPawword (req, res) {
+async function resetPassword (req, res) {
   const { email, newPassword, repeatPassword } = req.body
 
   if (newPassword != repeatPassword) res.render("resetPassword", { message: false, messageError: 'As senhas estão incompatíveis'})
@@ -23,13 +23,12 @@ async function resetPawword (req, res) {
       email: email
     }
   }).then(() => {
-    res.render("resetPassword", {
-      message: "Senha modificada",
-      messageError: false
+    res.render("index", {
+      error: "Senha modificada",
     })
   })
 }
 
 module.exports = {
-  resetPawword
+  resetPassword
 }

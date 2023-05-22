@@ -14,12 +14,12 @@ async function sendMail(req, res) {
     to: email,
     from: emailOng.email,
     subject:'ColabBook - Redefinição de senha',
-    text: `Segue o link de redefinição de senha: `
+    text: `Segue o link de redefinição de senha: http://localhost:8090/modificarsenha?email=${email} `
   }
 
   sendGridMail
     .send(message)
-    .then((res) => { return res.render("index", { error: "Redefinido a senha com sucesso. Verifique seu email!"})})
+    .then(() => { return res.render("index", { error: "Redefinido a senha com sucesso. Verifique seu email!"})})
     .catch((error) => console.log("Error: " + error))
 }
 
@@ -34,6 +34,17 @@ async function noExitsMail(email) {
   return true
 }
 
+async function getMail(req, res) {
+  const { email } = req.query
+
+  res.render("resetPassword", {
+    email,
+    message: false, 
+    messageError: false 
+  })
+}
+
 module.exports = {
-  sendMail
+  sendMail,
+  getMail
 }
