@@ -146,8 +146,7 @@ routes.get('/usuario/:id', isAllLevel, ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', isAllLevel, UserController.updateVolunteer)
 
 routes.post('/nav', isAllLevel, SearchController.searchSummary)
-// routes.post('/resumo/favorito', isAllLevel, SearchController.searchByFavorite)
-routes.post('/nav/favorito', isAllLevel, SearchController.searchSummary)
+routes.post('/nav/favorito', isAllLevel, SearchController.searchSummaryFavorite)
 routes.post('/usuario/nav', isAllLevel, SearchController.searchByTitle)
 
 routes.get('/login', (req, res) => res.render(views + "index", { error: false }))

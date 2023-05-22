@@ -1,0 +1,83 @@
+<body>
+  <nav class="navbar navbar-expand-lg navBarColor">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/menu">ColabBook</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Cadastros
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <% if (menu) {%>
+              <li><a class="dropdown-item" href="/autor">Autor</a></li>
+              <li><a class="dropdown-item" href="/livro">Livro</a></li>
+              <li><a class="dropdown-item" href="/questao">Questionários</a></li>
+              <li><a class="dropdown-item" href="/usuario">Usuário</a></li>
+              <li><a class="dropdown-item" href="/resumo/usuario">Meus Resumos</a></li>
+              <%}%>
+              <li><a class="dropdown-item" href="/resumo">Resumo</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Conteúdo
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/resumo/listaResumo">Todos os Resumos</a></li>
+              <li><a class="dropdown-item" href="/questao/listaQuestionario">Questões de Concursos</a></li>
+              <% if(volunteer || admin) {%>
+              <li><a class="dropdown-item" href="/autor/listEscritor"> Lista de Autores de Livros</a></li>
+              <li><a class="dropdown-item" href="/resumo/admin">Lista Todos os Resumos</a></li>
+              <li><a class="dropdown-item" href="/correcao/resumo">Correção de Resumos</a></li>
+              <%}%>
+              <% if (admin) {%>
+                <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
+                <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
+              <%}%>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sobre</a>
+          </li>
+        </ul>
+        <div class="d-lg-flex justify-content-end col">
+          <form id="form-search" enctype="application/x-www-form-urlencoded"
+            method="POST" action="/nav/favorito">
+            <div class="mb-3 row">
+              <div class="col-sm-8">
+                <input class="form-control me-2" type="search" placeholder="Procure livros" name="fieldSearch" aria-label="Search"/>
+              </div>
+              <div class="col-sm-3">
+                <button class="btn btn-outline-success col" form="form-search" type="submit">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%=profile.fullName%>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li>
+              <a class="dropdown-item" href="/perfil">Perfil</a></li>
+            </li>
+            <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
+            <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
+            <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
+            <li>
+              <div class="nav-item">
+                <form action="/logout"  method="POST">
+                  <button type="submit" class="btn btn-light">Logout</button>
+                </form>
+              </div>
+              </li>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </nav>

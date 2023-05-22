@@ -4,7 +4,8 @@ const Book = require('../model/Book')
 const Rating = require('../model/Rating')
 const Summary = require('../model/Summary')
 const Volunteer = require('../model/User')
-const Writer = require('../model/Writer')
+const Writer = require('../model/Writer');
+const Favorite = require('../model/Favorite');
 
 async function searchSummary(req, res) {
   const { fieldSearch } = req.body
@@ -16,7 +17,7 @@ async function searchSummary(req, res) {
   let volunteer = await getlevelVolunteer(profile)
 
   try {
-    if (!fieldSearch) 
+    if (!fieldSearch) {
     return res.render('listAllSummary', {
       profile,
       menu,
@@ -24,7 +25,7 @@ async function searchSummary(req, res) {
       volunteer,
       messageError: 'O campo está vazio!'
     })
-
+  }
     Summary.belongsTo(Volunteer, {
       foreignKey: {
         name: 'refUser'
@@ -237,6 +238,146 @@ async function findBook(fieldSearch) {
   return book
 }
 
+async function searchSummaryFavorite(req, res) {
+  let favoriteSummaryId = []
+  const { fieldSearch } = req.body
+  let summaries = []
+
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  const favorites = await Favorite.findAll({
+    where: { 
+      refUser: profile.id,
+    }
+  })
+  
+  try {
+    if (!fieldSearch) {
+      return res.render('listAllFavorite', {
+        profile,
+        menu,
+        admin,
+        volunteer,
+        messageError: 'O campo está vazio!'
+      })
+    }
+
+    Summary.belongsTo(Volunteer, {
+      foreignKey: {
+        name: 'refUser'
+      }})
+  
+      Summary.belongsTo(Writer, {
+        foreignKey: {
+          name: 'refWriter'
+        }})
+  
+      Summary.belongsTo(Book, {
+        foreignKey: {
+          name: 'refBook'
+        }});  
+
+      const qtFavoriteSummaries = await Favorite.count({
+        where: {
+          refUser: profile.id
+        }
+      });
+
+      for(let index = 0; index < qtFavoriteSummaries; index++) {
+        favoriteSummaryId.push(favorites[index].refSummary)
+      }
+
+      let book = await findBook(fieldSearch)
+
+      if (!book) {
+        const writer = await Writer.findOne({
+          where: { 
+            nameWriter: {  [Op.like]: `%${fieldSearch}%` }
+          },
+          attributes: ['idWriter', 'nameWriter'],
+        })
+        
+        summaries = await Summary.findAll({
+          where: {
+            id: favoriteSummaryId,
+            refWriter: writer.idWriter,
+            status: "Aprovado"
+          },
+            include: [{
+            association: 'writer',
+            attributes: ['nameWriter'],
+            key: 'refWriter'
+          },{
+            association: 'book',
+            attributes: ['title'],
+            key: 'refBook'
+          },{
+            association: 'user',
+            attributes: ['id', 'fullName'],
+            key: 'refUser'
+          }]   
+        })
+      } else {
+        summaries = await Summary.findAll({
+          where: {
+            id: favoriteSummaryId,
+            refBook: book.id,
+            status: "Aprovado"
+          },
+            include: [{
+            association: 'writer',
+            attributes: ['nameWriter'],
+            key: 'refWriter'
+          },{
+            association: 'book',
+            attributes: ['title'],
+            key: 'refBook'
+          },{
+            association: 'user',
+            attributes: ['id', 'fullName'],
+            key: 'refUser'
+          }]   
+        })
+      }
+
+      if (!summaries[0].id) return res.render('listAllFavorite', { 
+        profile,
+        menu,
+        admin,
+        volunteer,
+        messageError: `Não existe resumo com o título ${fieldSearch}`, 
+        messageReport: false 
+      })
+
+    let ratings = await Rating.findAll({
+      raw: true
+    })
+
+    res.render('listAllFavorite', { 
+      favorites: favorites,
+      summaries: summaries, 
+      ratings, 
+      profile: profile,
+      menu,
+      admin,
+      volunteer,
+      messageError: false, 
+      messageReport: false 
+    })
+ }catch(error) {
+  res.render('listAllFavorite', {
+    favorites: favorites,
+    profile: profile,
+    menu,
+    admin,
+    volunteer,
+    messageError: `Não existe: ${fieldSearch}`})
+ } 
+}
+
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -270,5 +411,6 @@ async function getlevelVolunteer(profile) {
 
 module.exports = { 
   searchSummary,
-  searchByTitle
+  searchByTitle,
+  searchSummaryFavorite
  }
