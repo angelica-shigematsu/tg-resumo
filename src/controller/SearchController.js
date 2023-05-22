@@ -6,6 +6,7 @@ const Summary = require('../model/Summary')
 const Volunteer = require('../model/User')
 const Writer = require('../model/Writer');
 const Favorite = require('../model/Favorite');
+const User = require('../model/User');
 
 async function searchSummary(req, res) {
   const { fieldSearch } = req.body
@@ -378,6 +379,44 @@ async function searchSummaryFavorite(req, res) {
  } 
 }
 
+async function searchByUser(req, res) {
+  const { searchUser } = req.body
+  let summaries = []
+
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+    
+  const users = await User.findAll({
+    where: { 
+      fullName: {  [Op.like]: `%${searchUser}%` }
+    }
+  })
+
+  if (!users) {
+    res.render('listAllUser', { 
+      users, 
+      messageError: "Usuário não encontrado", 
+      messageReport: false,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile
+    })
+  }
+  
+  res.render('listAllUser', { 
+    users, 
+    messageError: false, 
+    messageReport: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+  })
+}
+
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -412,5 +451,6 @@ async function getlevelVolunteer(profile) {
 module.exports = { 
   searchSummary,
   searchByTitle,
-  searchSummaryFavorite
+  searchSummaryFavorite,
+  searchByUser
  }
