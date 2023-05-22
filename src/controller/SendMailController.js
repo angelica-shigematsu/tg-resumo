@@ -8,18 +8,18 @@ async function sendMail(req, res) {
 
   sendGridMail.setApiKey(API_KEY)
 
-  if (noExitsMail(email)) return res.render("index", { messageError: "Não existe esse email cadastrado"})
+  if (await noExitsMail(email)) { return res.render("index", { error: "Não existe esse email cadastrado"}) }
 
   const message = {
     to: email,
     from: emailOng.email,
     subject:'ColabBook - Redefinição de senha',
-    text: 'Segue o link de redefinição de senha: '
+    text: `Segue o link de redefinição de senha: `
   }
 
   sendGridMail
     .send(message)
-    .then((res) => {return res.render("index", { messageError: "Redefinido a senha com sucesso. Verifique seu email!"})})
+    .then((res) => { return res.render("index", { error: "Redefinido a senha com sucesso. Verifique seu email!"})})
     .catch((error) => console.log("Error: " + error))
 }
 
@@ -28,10 +28,10 @@ async function noExitsMail(email) {
   const profile = await User.findOne({
     where: { email: email}
   })
-  
-  if (!profile) return true
 
-  return false
+  if (profile) return false
+
+  return true
 }
 
 module.exports = {

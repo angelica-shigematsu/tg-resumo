@@ -17,6 +17,7 @@ const FavoriteController = require('./controller/FavoriteController')
 const CheckSummarysController = require('./controller/CheckSummaryController')
 const SuggestionContoller = require('./controller/SuggestionController')
 const ResetPasswordController = require('./controller/ResetPasswordController')
+const SendMailController = require('./controller/SendMailController')
 
 const { isAdmin, isUser, isAllLevel, isVolunteer, isVolunteerOrAdmin } = require('./middleware/IsAuthenticateByLevel')
 
@@ -169,7 +170,10 @@ routes.post('/favoritar', isAllLevel, FavoriteController.createFavorite)
 
 routes.post('/sugestao', isAllLevel, SuggestionContoller.createSuggestion)
 
-routes.get('/modificarsenha', (req, res) => { res.render("resetPassword", { message: false, messageError: false } )})
+routes.get('/modificarsenha', (req, res) => { res.render(views + "resetPassword", { message: false, messageError: false } )})
 routes.post('/modificarsenha', ResetPasswordController.resetPawword)
+
+routes.get('/enviarMensagem', (req, res) => { res.render(views + "sendResetPassword", { messageError: false, message: false }) })
+routes.post('/enviarMensagem', SendMailController.sendMail)
 
 module.exports = routes
