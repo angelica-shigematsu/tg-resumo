@@ -26,18 +26,18 @@
               Conteúdo
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="/resumo/listaResumo">Resumos</a></li>
-              <li><a class="dropdown-item" href="/questao/listaQuestionario">Lista de questionários</a></li>
+              <li><a class="dropdown-item" href="/resumo/listaResumo">Todos os Resumos</a></li>
+              <li><a class="dropdown-item" href="/questao/listaQuestionario">Questões de Concursos</a></li>
               <% if(volunteer || admin) {%>
-              <li><a class="dropdown-item" href="/autor/listEscritor"> Lista de autores</a></li>
-              <li><a class="dropdown-item" href="/resumo/admin">Lista todos os resumos</a></li>
-              <li><a class="dropdown-item" href="/autor/listEscritor">Lista de escritores</a></li>
-              <li><a class="dropdown-item" href="/correcao/resumo">Correção de resumos</a></li>
+              <li><a class="dropdown-item" href="/autor/listEscritor"> Lista de Autores de Livros</a></li>
+              <li><a class="dropdown-item" href="/resumo/admin">Lista Todos os Resumos</a></li>
+              <li><a class="dropdown-item" href="/correcao/resumo">Correção de Resumos</a></li>
               <%}%>
               <% if (admin) {%>
                 <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
                 <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
               <%}%>
+              <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -54,6 +54,7 @@
             </li>
             <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
             <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
+            <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
             <li>
               <div class="nav-item">
                 <form action="/logout"  method="POST">
@@ -124,8 +125,11 @@
                       lengthRate++
                     }
                   })
-                if (!isNaN(result)) {%><%=(result/lengthRate).toFixed(2)%><%}%>
-              </p>
+                if (result == 0) {%>
+                  0
+                <%}
+                else {%><%=(result/lengthRate).toFixed(2)%><%}%>
+                </p>
             </div>
           </div>
           <a href="/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
