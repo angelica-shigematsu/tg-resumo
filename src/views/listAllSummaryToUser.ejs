@@ -14,17 +14,23 @@
           <p>Autor do Livro: <%=summary.writer.nameWriter%></p>
           <p>Escritor do resumo: <%=summary.user.fullName%></p>
           <p><%=summary.status%></p>
-          <p>Avaliação:
-            <% let result = 0
-            let lengthRate = 0 %>
-            <%ratings.forEach(listRate=>  {
-            if (listRate.refSummary === summary.id) {
-            result+= listRate.ratingStar
-              lengthRate++
-          }
-        })%>
-        <% if (isNaN(result)) {%> <%=0%> <%} else {%> <%=(result/lengthRate).toFixed(2)%> <%}%>
-        </p>
+          <div class="col"> 
+            <p>Avaliação:
+              <% let result = 0
+                 let lengthRate = 0
+                ratings.forEach(listRate=>  {
+                  if (listRate.refSummary === summary.id) {
+                    result += listRate.ratingStar
+                    lengthRate++
+                  }
+                })
+              if (result == 0) {%>
+                0
+              <%}
+              else {%><%=(result/lengthRate).toFixed(2)%><%}%>
+              </p>
+          </div>
+
           <a href="/resumo/<%= summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
         </div>
       </div>

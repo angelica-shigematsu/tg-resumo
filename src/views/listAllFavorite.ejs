@@ -45,7 +45,10 @@
                       lengthRate++
                     }
                   })
-                if (!isNaN(result)) {%><%=(result/lengthRate).toFixed(2)%><%}%>
+                  if (result == 0) {%>
+                   0
+                  <%}
+                  else {%><%=(result/lengthRate).toFixed(2)%><%}%>
               </p>
             </div>
           </div>
