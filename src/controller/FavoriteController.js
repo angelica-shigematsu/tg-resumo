@@ -195,7 +195,7 @@ async function getlevelVolunteer(profile) {
 }
 
 async function getlevelAdmin(profile) {
-  if (profile.level == 'Administador')
+  if (profile.level == 'Administrador')
     return true
   else
     return false

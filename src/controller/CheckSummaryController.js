@@ -89,11 +89,11 @@ async function showInformationAllSummary(req, res) {
   let menu = await getlevelUser(profile)
   let admin = await getlevelAdmin(profile)
   let volunteer = await getlevelVolunteer(profile)
+
   let summaries = await getInformationAllSummary(req, res)
 
   res.render('checkAllSummary', { 
-    summaries: summaries,
-    message: 'Alterado com sucesso',
+    summaries,
     menu: menu,
     admin: admin, 
     messageError: false,
@@ -168,7 +168,7 @@ async function getlevelUser(profile) {
 }
 
 async function getlevelVolunteer(profile) {
-  if (profile.level == 'Administrador')
+  if (profile.level == 'Voluntario')
     return true
   else
     return false
