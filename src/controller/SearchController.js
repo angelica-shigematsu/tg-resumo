@@ -24,6 +24,7 @@ async function searchSummary(req, res) {
       menu,
       admin,
       volunteer,
+      message: false,
       messageError: 'O campo está vazio!'
     })
   }
@@ -98,6 +99,7 @@ async function searchSummary(req, res) {
         menu,
         admin,
         volunteer,
+        message: false,
         messageError: `Não existe resumo com o título ${fieldSearch}`, 
         messageReport: false 
       })
@@ -113,6 +115,7 @@ async function searchSummary(req, res) {
       menu,
       admin,
       volunteer,
+      message: false,
       messageError: false, 
       messageReport: false 
     })
@@ -122,6 +125,7 @@ async function searchSummary(req, res) {
     menu,
     admin,
     volunteer,
+    message: false,
     messageError: `Não existe: ${fieldSearch}`})
  } 
 }
@@ -209,6 +213,7 @@ async function searchByTitle(req, res) {
     menu,
     admin,
     volunteer,
+    message: false,
     messageError: `Não existe resumo com o título ${fieldSearch}`, 
     messageReport: false 
   })

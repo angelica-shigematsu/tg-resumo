@@ -37,6 +37,7 @@ async function createReport(req, res) {
       menu,
       admin,
       volunteer,
+      message: false,
       messageError: false, 
       messageReport: 'Denunciado com sucesso'
     })

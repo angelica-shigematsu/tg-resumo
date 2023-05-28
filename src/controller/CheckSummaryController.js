@@ -111,43 +111,46 @@ async function createCheckedSummary(req, res) {
 
   let profile = await getUserInformation(req,res)
   
-  Summary.belongsTo(User, {
-    foreignKey: {
-      name: 'refUser'
-    }
-  })
-
-  const summary = await Summary.findOne({
-      where: {
-        id: id
-      },
-      include: [{
-        association: 'user',
-        atributes: ['id'],
-        key: 'refUser'
-      }]
-    })
-
-    if(summary.user.id === profile.id) 
-      showInformationAllSummary(req, res)
-
-    await CheckSummarys.create({
-      status,
-      comment,
-      date,
-      refSummary,
-      refVolunteer: refVolunteer.id
-    })
-
-    await Summary.update({
-      status: status,
-      },{
-        where: {
-          id: refSummary
+  try{
+    Summary.belongsTo(User, {
+      foreignKey: {
+        name: 'refUser'
       }
     })
 
-  res.redirect('/correcao/resumo')
+    const summary = await Summary.findOne({
+        where: {
+          id: id
+        },
+        include: [{
+          association: 'user',
+          atributes: ['id'],
+          key: 'refUser'
+        }]
+      })
+
+      if(summary.user.id === profile.id) 
+        showInformationAllSummary(req, res)
+
+      await CheckSummarys.create({
+        status,
+        comment,
+        date,
+        refSummary,
+        refVolunteer: refVolunteer.id
+      })
+
+      await Summary.update({
+        status: status,
+        },{
+          where: {
+            id: refSummary
+        }
+      })
+      res.redirect('/correcao/resumo')
+  }catch(error) {
+    res.json(error)
+  }
 }
 
 async function getUserInformation(req, res) {

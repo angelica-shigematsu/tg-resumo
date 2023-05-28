@@ -94,12 +94,12 @@ routes.get('/menu', isAllLevel, (req, res) => {
 })
 
 //Routes of Writer não alterar (finalizado)
-routes.get('/autor', isVolunteer, WriterController.getInformationMenu)
-routes.post('/autor', isVolunteer, WriterController.createWriter)
-routes.get('/autor/listEscritor/:id', isVolunteer, WriterController.listWriter)
+routes.get('/autor', isVolunteerOrAdmin, WriterController.getInformationMenu)
+routes.post('/autor', isVolunteerOrAdmin, WriterController.createWriter)
+routes.get('/autor/listEscritor/:id', isVolunteerOrAdmin, WriterController.listWriter)
 routes.get('/autor/listEscritor', isVolunteerOrAdmin, WriterController.listAllWriter)
-routes.post('/autor/alterar/:id', isVolunteer, WriterController.updateWriter)
-routes.post('/autor/excluir', isVolunteer, WriterController.deleteWriter)
+routes.post('/autor/alterar/:id', isVolunteerOrAdmin, WriterController.updateWriter)
+routes.post('/autor/excluir', isVolunteerOrAdmin, WriterController.deleteWriter)
 //
 
 //Routes of Book
@@ -130,8 +130,8 @@ routes.post('/resumo/avaliacao', isAllLevel, RatingController.createRating)
 routes.get('/resumo/listaAvaliacao/:id', isAllLevel, RatingController.listAllRatingByUser)
 routes.get('/avaliacao/alterar/:id', isAllLevel, RatingController.listRating)
 
-routes.get('/questao', isVolunteer, QuestionAndAnswerController.searchTitleBook)
-routes.post('/questao', isVolunteer, QuestionAndAnswerController.createQuestion)
+routes.get('/questao', isVolunteerOrAdmin, QuestionAndAnswerController.searchTitleBook)
+routes.post('/questao', isVolunteerOrAdmin, QuestionAndAnswerController.createQuestion)
 routes.get('/questao/listaQuestionario', isAllLevel, QuestionAndAnswerController.listAllQuestions)
 routes.get('/questao/listaQuestionario/:id', isAllLevel, QuestionAndAnswerController.listQuestion)
 routes.post('/questao/alterar/:id',isVolunteer, QuestionAndAnswerController.updateQuestion)

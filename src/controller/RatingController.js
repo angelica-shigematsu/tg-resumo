@@ -32,6 +32,7 @@ async function createRating(req, res) {
       admin,
       volunteer,
       profile,
+      message: false,
       messageError: false 
     })
 

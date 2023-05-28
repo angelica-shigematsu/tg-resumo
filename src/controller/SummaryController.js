@@ -50,7 +50,7 @@ async function createSummary(req, res) {
   const { body, refWriter, refBook} = req.body
   let profile = await getUserInformation(req,res);
   let refUser = profile.id;
-  let status = 'Não avalidado'
+  let status = 'Não avaliado'
 
   try{
     await Summary.create({
@@ -79,7 +79,8 @@ async function showAllSummary(req, res) {
 
   res.render('listAllSummary', {  
     summaries: summaries, 
-    ratings: ratings, 
+    ratings: ratings,
+    message: "Enviado para avaliação", 
     messageError: false, 
     messageReport: false,
     menu: menu,
@@ -278,15 +279,44 @@ async function updateSummary(req, res) {
 
 async function deleteSummary(req, res) {
   const { id } = req.body
+  const summaries = await listAllSummary();
+
+  let profile = await getUserInformation(req, res);
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  const ratings = await Rating.findAll({
+    raw: true
+  })
 
   try{
     await Summary.destroy({
       where: { id: id }
-    }).then(() => {
-      res.redirect('/resumo/listaResumo')
     })
-  }catch(err) {
-    res.redirect('/resumo/listaResumo')
+      res.render('listAllSummary', {  
+        summaries: summaries, 
+        ratings: ratings,
+        message: "Excluído com sucesso", 
+        messageError: false, 
+        messageReport: false,
+        menu: menu,
+        admin: admin,
+        volunteer: volunteer,
+        profile: profile
+    })
+  }catch(error) {
+    res.render('listAllSummary', {  
+      summaries: summaries, 
+      ratings: ratings,
+      message: false, 
+      messageError: "Não foi possível excluir depois de aprovado", 
+      messageReport: false,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile
+  })
   }
 }
 
