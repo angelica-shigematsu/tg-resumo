@@ -1,64 +1,67 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
 
-<body>
-  <div class="container-sm">
-    <form class="mb-3" id="form-question" enctype="application/x-www-form-urlencoded"
-    method="POST" action="/questao/alterar/<%= question.id %>">
-      <h3>Cadastro de Pergunta e resposta</h3>
-      <div class="mb-3 row">
-        <div class="col-sm-10">
-          <label for="" class="col-sm-2 col-form-label">Livro</label>
-          <select class="form-select col-sm-6" aria-label="Default select example" name="refBook">
-            <option value="<%=book.id %>" name="refBook"><%= book.title %></option>
-          </select>
-        </div>
-        <div class="col-sm-10">
-          <label for="" class="col-sm-2 col-form-label">Voluntário</label>
-          <select class="form-select col-sm-6" aria-label="Default select example" name="refVolunteer" required>
-            <option value="<%=question.refVolunteer%>"><%=question.user.fullName%></option>
+<div class="container-sm">
+  <form class="mb-3" id="form-question" enctype="application/x-www-form-urlencoded"
+  method="POST" action="/questao/alterar/<%= question.id %>">
+    <h3>Cadastro de Pergunta e resposta</h3>
+    <div class="mb-3">
+      <div class="col-sm-10">
+        <label for="" class="col-sm-2 col-form-label">Livro</label>
+        <select class="form-select col-sm-6" aria-label="Default select example" name="refBook">
+          <option value="<%=book.id %>" name="refBook"><%= book.title %></option>
         </select>
-        </div>
+      </div>
+      <div class="col-sm-10">
+        <label for="" class="col-sm-2 col-form-label">Voluntário</label>
+        <select class="form-select col-sm-6" aria-label="Default select example" name="refVolunteer" required>
+          <option value="<%=question.refVolunteer%>"><%=question.user.fullName%></option>
+      </select>
+      </div>
+      <div class="col-sm-10">
+        <label for="" class="col-sm-2 col-form-label">Pergunta</label>
+          <input type="text" class="form-control" minlength="10" 
+          name="question" 
+          value="<%=question.question%>" 
+          required
+          <%if (profile.level != 'Voluntario' && profile.id != question.refVolunteer){%>
+            disabled
+          <%}%>>
+      </div>
+      <div class="col-sm-10">
+        <label for="" class="col-sm-2 col-form-label">Resposta</label>
         <div class="col-sm-10">
-          <label for="" class="col-sm-2 col-form-label">Pergunta</label>
-            <input type="text" class="form-control" minlength="10" 
-            name="question" 
-            value="<%=question.question%>" 
+          <textarea class="form-control" 
+            minlength="10" cols="30" 
+            rows="20" name="answer"
             required
             <%if (profile.level != 'Voluntario' && profile.id != question.refVolunteer){%>
               disabled
             <%}%>>
+            <%=question.answer%>
+          </textarea>
         </div>
-        <div class="col-sm-10">
-          <label for="" class="col-sm-2 col-form-label">Resposta</label>
-          <div class="col-sm-10">
-            <textarea class="form-control" 
-              minlength="10" cols="30" 
-              rows="20" name="answer"
-              required
-              <%if (profile.level != 'Voluntario' && profile.id != question.refVolunteer){%>
-                disabled
-              <%}%>>
-              <%=question.answer%>
-            </textarea>
-          </div>
-        </div>
-      </form>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btnUpdate" type="submit" form="form-question"
+      </div>
+    </form>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <div class="col-sm-1">
+        <button class="btn btnUpdate" type="submit" form="form-question"
+        <%if (profile.level != 'Voluntario' && profile.id != question.refVolunteer){%>
+          hidden 
+        <%}%>>Atualizar</button>
+      </div>
+      <div class="col-sm-1">
+        <form class="mb-3" enctype="application/x-www-form-urlencoded"
+          method="POST" action="/questao/excluir">
+          <input type="text" value="<%= question.id %>" name="id" hidden>
+          <button class="btn btnCancel" type="submit"
           <%if (profile.level != 'Voluntario' && profile.id != question.refVolunteer){%>
             hidden 
-          <%}%>>Atualizar</button>
-          <form class="mb-3" enctype="application/x-www-form-urlencoded"
-            method="POST" action="/questao/excluir">
-            <input type="text" value="<%= question.id %>" name="id" hidden>
-            <button class="btn btnCancel" type="submit"
-            <%if (profile.level != 'Voluntario' && profile.id != question.refVolunteer){%>
-              hidden 
-            <%}%>>Excluir</button>
-          </form>
-        </div>
-  </div>
+          <%}%>>Excluir</button>
+        </form>
+      </div>
+    </div>
+</div>
   
 <%- include('partials/footer.ejs') %> 
     

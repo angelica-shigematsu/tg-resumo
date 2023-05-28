@@ -1,22 +1,22 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
-
-  <% if (messageError) { %>
-    <div class="alert alert-warning" role="alert">
-      <%=messageError%>
-    </div>
-  <%} else {%>
-    <% summaries.forEach(summary => { %>
-      <%if(summary.status == "Não Avaliado" && profile.id != summary.user.id) {%>
-        <div class="card w-75">
-          <div class="card-body">
-            <h5 class="card-title">Livro: <%= summary.book.title %></h5>
-            <p>Escritor do resumo: <%=summary.user.fullName%></p>
-            <p><%=summary.status%></p>
-            <a href="/correcao/resumo/<%=summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Avaliar</a>
-          </div>
+<%const status = ["Não Avaliado", "Devolvido"]%>
+<% if (messageError) { %>
+  <div class="alert alert-warning" role="alert">
+    <%=messageError%>
+  </div>
+<%} else {
+  summaries.forEach(summary => { %>
+    <%if(status.includes(summary.status) && profile.id != summary.user.id) {%>
+      <div class="card w-75">
+        <div class="card-body">
+          <h5 class="card-title">Livro: <%= summary.book.title %></h5>
+          <p>Escritor do resumo: <%=summary.user.fullName%></p>
+          <p><%=summary.status%></p>
+          <a href="/correcao/resumo/<%=summary.id%>" class="btn btn-primary" type="submit" form="form-autor">Avaliar</a>
         </div>
-      <%}%>
-    <% }) %>
+      </div>
+    <%}%>
+  <% }) %>
 <% } %>
 <%- include('partials/footer.ejs') %> 
