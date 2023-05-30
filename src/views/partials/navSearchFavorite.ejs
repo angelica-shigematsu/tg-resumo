@@ -65,7 +65,9 @@
             <li>
               <a class="dropdown-item" href="/perfil">Perfil</a></li>
             </li>
-            <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
+            <% if(volunteer || admin) {%>
+              <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
+              <%}%>
             <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
             <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
             <li>

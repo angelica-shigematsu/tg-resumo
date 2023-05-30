@@ -1,12 +1,14 @@
 const User = require('../model/User')
 
 async function createVolunteer(req, res) {
-  const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules } = req.body;
+  const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules, emailRepeat } = req.body;
   const active = 'ativo';
 
   let dateBirth = new Date(dateBirthUser)
 
   let age = await getAge(dateBirth.getFullYear());
+
+  if (emailRepeat != email) res.render('user', { message: false, messageError: "O email não estão iguais" })
 
   if(rules == undefined) return  res.render('user', { message: false, messageError: "Precisa aceitar os termos" })
 
