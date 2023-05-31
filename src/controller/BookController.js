@@ -39,6 +39,12 @@ async function createBook(req, res){
 
 async function listBook(req, res) {
   const { id } = req.params
+
+  const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile);
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
+    
   try {
     const book = await Book.findOne({
       include: [{
@@ -48,7 +54,11 @@ async function listBook(req, res) {
       where: { id: id }
     })
     const writers = await WriterController.showAllWriters()
-    res.render('listBook', { book: book, writers: writers })
+    res.render('listBook', {
+      book: book, writers: writers,  profile: profile,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer })
   } catch (error) {
     res.json(error)
   }

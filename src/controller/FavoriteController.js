@@ -39,7 +39,7 @@ async function createFavorite(req, res) {
         summary: summary,
         volunteer: summary.user.fullName, 
         writer: summary.writer.nameWriter, 
-        messageFavorite: 'Já foi adiconado como favorito',
+        messageFavorite: 'Já foi adicionado como favorito',
         refUserComment: refUserComment,
         profile,
         menu: menu, 

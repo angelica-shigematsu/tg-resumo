@@ -1,6 +1,6 @@
 const User = require('../model/User')
 
-async function createVolunteer(req, res) {
+async function createVolunteer(req, res, next) {
   const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules, emailRepeat } = req.body;
   const active = 'ativo';
 
@@ -33,9 +33,9 @@ async function createVolunteer(req, res) {
         active,
         level, 
         reason
-      }).then(() => 
-        res.render('user', { message: 'Enviado com sucesso', messageError: false })
-      );
+      })
+        
+    next();
     }catch(err){
       res.json(err)
     }

@@ -7,19 +7,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/menu">Home</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Cadastros
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <% if (menu) {%>
-              <li><a class="dropdown-item" href="/autor">Autor</a></li>
-              <li><a class="dropdown-item" href="/livro">Livro</a></li>
-              <li><a class="dropdown-item" href="/questao">Questionários</a></li>
-              <li><a class="dropdown-item" href="/usuario">Usuário</a></li>
-              <%}%>
-              <li><a class="dropdown-item" href="/resumo">Resumo</a></li>
-            </ul>
+              <% if (menu) {%>
+                <li><a class="dropdown-item" href="/autor">Autor</a></li>
+                <li><a class="dropdown-item" href="/livro">Livro</a></li>
+                <li><a class="dropdown-item" href="/questao">Questionários</a></li>
+                <li><a class="dropdown-item" href="/usuario">Usuário</a></li>
+                <%}%>
+                <li><a class="dropdown-item" href="/resumo/usuario">Meus Resumos</a></li>
+                <li><a class="dropdown-item" href="/resumo">Resumo</a></li>
+              </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,7 +41,7 @@
                 <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
                 <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
               <%}%>
-              <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
+              <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -54,7 +58,7 @@
             </li>
             <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
             <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
-            <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
+            <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
             <li>
               <div class="nav-item">
                 <form action="/logout"  method="POST">

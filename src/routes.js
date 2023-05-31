@@ -140,7 +140,15 @@ routes.post('/questao/excluir',isVolunteer, QuestionAndAnswerController.deleteQu
 routes.get('/questao/usuario/listaQuestionario/', isAllLevel, QuestionAndAnswerController.listAllQuestionsByUser)
 
 routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
-routes.post('/usuario', UserController.createVolunteer)
+routes.post('/usuario', UserController.createVolunteer, (req, res, next) => {
+  passport.authenticate('local',{
+    successRedirect: "/menu",
+    failureRedirect: "/login",
+    failureFlash: true,
+    failureMessage: true
+  }
+  )(req, res, next)
+})
 routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
 routes.get('/perfil', isAllLevel, ProfileController.showUserPage)
 routes.get('/usuario/:id', isAllLevel, ProfileController.listProfile)
