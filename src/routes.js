@@ -164,11 +164,14 @@ routes.get('/login', (req, res) => res.render(views + "index", { error: false })
 routes.get('/denuncia', isAdmin, ReportController.getInformationReport)
 routes.post('/denuncia', isAllLevel, ReportController.createReport)
 routes.get('/denuncia/resumo/:id', ReportController.listFormsToReport)
-routes.get('/denuncia/usuario', isAdmin, ReportController.getAllReportByUser)
 routes.post('/denuncia/avaliacao/:id', isAdmin, ReportController.getReport)
 routes.post('/denuncia/avaliado/:id', isAdmin, ReportController.updateReport)
-// routes.post('/denuncia/alterar/:id', ReportController.updateReport)
-routes.get('/denuncia/usuario/:id', ReportController.getAllReportByUser)
+
+routes.get('/denuncia/usuario', isAllLevel, ReportController.getAllReportByUser)
+routes.get('/denuncia/usuario/:id', isAllLevel, ReportController.getReportToUser)
+routes.post('/denuncia/alterar/:id', isAllLevel, ReportController.updateReportToUser)
+routes.post('/denuncia/excluir', ReportController.deleteSummary)
+
 
 routes.get('/correcao/resumo', isVolunteerOrAdmin, CheckSummarysController.showInformationAllSummary)
 routes.get('/correcao/resumo/:id', isVolunteerOrAdmin, CheckSummarysController.getInformationSummary)

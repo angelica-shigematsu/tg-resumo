@@ -92,8 +92,26 @@ async function updateReport(req, res) {
     res.redirect('/denuncia');
   }catch(error) {
     res.json(error.message)
-  }
-  
+  } 
+}
+
+async function updateReportToUser(req, res) {
+  const { id } = req.params
+  const { reason } = req.body
+
+  try{
+    await Report.update({
+      reason
+    },{
+      where: {
+        id: id
+      }
+    })
+
+    res.redirect('/denuncia/usuario');
+  }catch(error) {
+    res.json(error.message)
+  } 
 }
 
 async function getAllReportByUser(req, res) {
@@ -153,6 +171,22 @@ async function getInformationReport(req, res) {
   }
 }
 
+async function deleteSummary(req, res) {
+  const { id } = req.body
+
+  try{
+    await Report.destroy({
+      where: { id: id }
+    })
+    
+    res.redirect("/denuncia/usuario")
+
+  }catch(error) {
+    res.redirect("/denuncia/usuario")
+  }
+}
+
+
 async function getReport(req, res) {
   const { id } = req.params
 
@@ -201,6 +235,54 @@ async function getReport(req, res) {
   }
 }
 
+async function getReportToUser(req, res) {
+  const { id } = req.params
+
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  try{
+    Summary.belongsTo(User,{
+      foreignKey: 'refUser'
+    })
+
+    Summary.belongsTo(Book,{
+      foreignKey: 'refBook'
+    })
+    
+    Report.belongsTo(Summary, {
+      foreignKey: 'refSummary'
+    })
+
+    const report = await Report.findOne({
+      where: { id: id }
+    })
+
+    const summary = await Summary.findOne({ 
+      where: { id: report.refSummary },
+      include: [{
+        association: 'book',
+        key: 'refBook'
+      }],
+      nested: true
+    })
+
+    res.render('listReportToUser', { 
+      report: report, 
+      status: report.status, 
+      summary: summary,
+      profile,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer
+    })
+  }catch(err) {
+    res.json("")
+  }
+}
+
 async function getUserInformation(req, res) {
   if (req.isAuthenticated()) {
       const  { email } = req.user
@@ -236,7 +318,10 @@ module.exports = {
   createReport, 
   getInformationReport, 
   getAllReportByUser,
+  updateReportToUser,
   listFormsToReport, 
   updateReport,
-  getReport
+  getReport,
+  getReportToUser,
+  deleteSummary
 }
