@@ -1,5 +1,6 @@
-<body>
-  <nav class="navbar navbar-expand-lg navBarColor">
+
+<body  style="background-color: #EEE3CB;">
+  <nav class="navbar navbar-expand-lg navBarColor" style="background-color: #D7C0AE;">
     <div class="container-fluid">
       <a class="navbar-brand" href="/menu">ColabBook</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,9 +44,6 @@
               <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sobre</a>
-          </li>
         </ul>
         <div class="d-lg-flex justify-content-end col">
           <form id="form-search" enctype="application/x-www-form-urlencoded"
@@ -70,7 +68,7 @@
             </li>
             <% if(volunteer || admin) {%>
               <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
-              <%}%>
+            <%}%>
             <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
             <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
             <li><a class="dropdown-item" href="/denuncia/usuario">Resumos denunciados</a></li>
@@ -87,3 +85,4 @@
       </div>
     </div>
   </nav>
+  

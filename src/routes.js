@@ -187,4 +187,6 @@ routes.post('/modificarsenha', ResetPasswordController.resetPassword)
 routes.get('/enviarMensagem', (req, res) => { res.render(views + "sendResetPassword", { messageError: false, message: false }) })
 routes.post('/enviarMensagem', SendMailController.sendMail)
 
+routes.get('/sobre', (req, res) => res.render(views + "about"))
+
 module.exports = routes

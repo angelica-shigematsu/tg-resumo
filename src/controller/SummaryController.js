@@ -80,7 +80,7 @@ async function showAllSummary(req, res) {
   res.render('listAllSummary', {  
     summaries: summaries, 
     ratings: ratings,
-    message: "Enviado para avaliação", 
+    message: false, 
     messageError: false, 
     messageReport: false,
     menu: menu,
