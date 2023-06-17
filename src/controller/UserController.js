@@ -1,18 +1,38 @@
 const User = require('../model/User')
 
 async function createVolunteer(req, res, next) {
+  const dataCurrently = new Date().getFullYear()
+  const active = 'inativo';
   const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules, emailRepeat } = req.body;
-  const active = 'ativo';
 
-  let dateBirth = new Date(dateBirthUser)
+  if (level != "Voluntario") active = 'ativo'
+
+  let user = {
+    fullName , 
+    userName, 
+    cpf, 
+    dateBirthUser, 
+    email, 
+    password, 
+    level, 
+    reason, 
+    rules, 
+    emailRepeat
+  }
+
+  let dateBirthFormat = new Date(dateBirthUser)
+
+  if (dateBirthFormat.getFullYear() > dataCurrently) res.render('user', { user, message: false, messageError: "Digite data de nascimento válido" })
+
+  let dateBirth = new Date(dateBirthUser) 
 
   let age = await getAge(dateBirth.getFullYear());
 
-  if (emailRepeat != email) res.render('user', { message: false, messageError: "O email não estão iguais" })
+  if (emailRepeat != email) res.render('user', { user, message: false, messageError: "O email não estão iguais" })
 
-  if(rules == undefined) return  res.render('user', { message: false, messageError: "Precisa aceitar os termos" })
+  if(rules == undefined) return  res.render('user', { user, message: false, messageError: "Precisa aceitar os termos" })
 
-  if(level == "Voluntario" && age < 18) return  res.render('user', { message: false, messageError: "Menor de 18 não pode ser voluntário" })
+  if(level == "Voluntario" && age < 18) return  res.render('user', { user, message: false, messageError: "Menor de 18 não pode ser voluntário" })
 
   const existsUser = await User.findOne({
     where: {
@@ -44,7 +64,7 @@ async function createVolunteer(req, res, next) {
 async function getAge(yearBirth) {
   let date = new Date().getFullYear();
 
-  return yearBirth - date
+  return date - yearBirth 
 }
 
 async function listVolunteer(req, res) {

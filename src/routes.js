@@ -81,7 +81,7 @@ routes.post('/logout', function(req, res, next){
 
 routes.get('/menu', isAllLevel, (req, res) => {
   if(req.user.active == 'inativo')
-    return res.render("index", {error: 'Sua conta foi desativada'})
+    return res.render("index", {error: 'Sua está inativa ou espere alguns dias para avaliação do voluntário'})
 
   if(req.user.level == 'Usuario') 
     res.render("homepage", { menu: false, admin: false, volunteer: false, profile: req.user})
@@ -139,7 +139,7 @@ routes.post('/questao/excluir',isVolunteer, QuestionAndAnswerController.deleteQu
 
 routes.get('/questao/usuario/listaQuestionario/', isAllLevel, QuestionAndAnswerController.listAllQuestionsByUser)
 
-routes.get('/usuario', (req , res) => res.render(views + "user", { message: false, messageError: false }))
+routes.get('/usuario', (req , res) => res.render(views + "user", { user: false, message: false, messageError: false }))
 routes.post('/usuario', UserController.createVolunteer, (req, res, next) => {
   passport.authenticate('local',{
     successRedirect: "/menu",
