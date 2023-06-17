@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 const Book = require('../model/Book')
 const CheckSummary = require('../model/CheckSummary')
 const Rating = require('../model/Rating')
@@ -8,7 +10,7 @@ const User = require('../model/User')
 const Writer = require('../model/Writer')
 
 async function searchTitleBook(req, res) {
-  const { title } = req.body
+  const { fieldSearch } = req.body
 
   const profile = await getUserInformation(req, res)
   let menu = await getlevelUser(profile)
@@ -16,7 +18,7 @@ async function searchTitleBook(req, res) {
   let volunteer = await getlevelVolunteer(profile)
 
   try{
-    let book = await Book.findOne({ attributes: ['refWriter', 'title', 'id'], where: { title: title }})
+    let book = await findBook(fieldSearch)
     let idWriter = book.refWriter
     let writer = await Writer.findOne({ where: { idWriter : idWriter }})
 
@@ -37,13 +39,23 @@ async function searchTitleBook(req, res) {
     })
   }catch(error){
     res.render('summary', {
-      messageError: `Não existe este livro ${title}`, 
+      messageError: `Não existe este livro ${fieldSearch}`, 
       profile,
       menu, 
       admin,
       volunteer
     })
   }
+}
+
+async function findBook(fieldSearch) {
+  const book = await Book.findOne({
+    where: { 
+      title: { [Op.like]: `%${fieldSearch}%` }
+    },
+    attributes: ['id', 'title', 'refWriter'],
+  })
+  return book
 }
 
 async function createSummary(req, res) {
