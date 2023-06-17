@@ -19,7 +19,6 @@ async function getInformationMenu(req, res) {
 
 async function createWriter(req, res) {
   const { nameWriter } = req.body
-  const { dateBirthWriter } = req.body
 
   try{
     const profile = await getUserInformation(req, res)
@@ -30,8 +29,7 @@ async function createWriter(req, res) {
     const writers = await showAllWriters()
 
     await Writer.create({
-    nameWriter,
-    dateBirthWriter
+    nameWriter
   }).then(() => res.render("listAllWriters", {
      writers: writers, 
      message: 'Criado com sucesso', 

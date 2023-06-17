@@ -1,3 +1,4 @@
+
 <body  style="background-color: #EEE3CB;">
   <nav class="navbar navbar-expand-lg navBarColor" style="background-color: #D7C0AE;">
     <div class="container-fluid">
@@ -41,16 +42,16 @@
                 <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
                 <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
               <%}%>
-              <li><a class="dropdown-item" href="/resumo/favorito">Resumo favoritos</a></li>
+              <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
             </ul>
           </li>
         </ul>
         <div class="d-lg-flex justify-content-end col">
           <form id="form-search" enctype="application/x-www-form-urlencoded"
-            method="POST" action="/nav/usuario">
+            method="POST" action="/nav/escritor">
             <div class="mb-3 row">
               <div class="col-sm-8">
-                <input class="form-control me-2" type="search" placeholder="Procure Usuários" name="searchUser" aria-label="Search"/>
+                <input class="form-control me-2" type="search" placeholder="Procure escritor" name="fieldSearch" aria-label="Search"/>
               </div>
               <div class="col-sm-3">
                 <button class="btn btn-outline-success col" form="form-search" type="submit">Search</button>
@@ -85,3 +86,4 @@
       </div>
     </div>
   </nav>
+  

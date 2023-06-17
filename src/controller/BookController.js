@@ -9,7 +9,6 @@ async function getForeignKey(req, res){
   let admin = await getlevelAdmin(profile)
   let volunteer = await getlevelVolunteer(profile)
 
-  console.log(profile.level)
   await Writer.findAll({ raw : true, order: [
     ['nameWriter', 'ASC']//ordem decrescente
   ]}).then(writers => {
@@ -55,7 +54,8 @@ async function listBook(req, res) {
     })
     const writers = await WriterController.showAllWriters()
     res.render('listBook', {
-      book: book, writers: writers,  profile: profile,
+      book: book, writers: writers,  
+      profile: profile,
       menu: menu,
       admin: admin,
       volunteer: volunteer })

@@ -11,10 +11,6 @@ const Writer = connection.define('writers', {
   nameWriter: {
     type: Sequelize.STRING,
     allowNull: false
-  },
-  dateBirthWriter: {
-    type: Sequelize.DATEONLY,
-    allowNull: false
   }
 })
 
@@ -22,6 +18,6 @@ Writer.hasMany(Summary, {
   foreignKey: 'refWriter'
 })
 
-Writer.sync({force: false}).then(() => {})
+Writer.sync({alter: true}).then(() => {})
 
 module.exports = Writer

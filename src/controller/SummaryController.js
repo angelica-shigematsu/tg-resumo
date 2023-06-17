@@ -60,30 +60,84 @@ async function findBook(fieldSearch) {
 
 async function createSummary(req, res) {
   const { body, refWriter, refBook} = req.body
-  let profile = await getUserInformation(req,res);
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
   let refUser = profile.id;
   let status = 'Não avaliado'
-
-  try{
     await Summary.create({
     body,
     status,
     refWriter,
     refUser,
     refBook
-  }).then(() => showAllSummary(req, res))
-  }catch(err) {
-    res.jons(err)
-  }
+    })
+
+    const summaries = await listAllSummary();
+    
+    const ratings = await Rating.findAll({
+      raw: true
+    })
+
+    res.render('listSummariesForEachUser', {  
+      summaries: summaries, 
+      ratings: ratings,
+      message: false, 
+      messageError: false, 
+      messageReport: false,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      profile: profile
+    })
+ 
 }
 
 async function showAllSummary(req, res) {
-  const summaries = await listAllSummary();
 
   let profile = await getUserInformation(req, res);
   let menu = await getlevelUser(profile);
   let admin = await getlevelAdmin(profile)
   let volunteer = await getlevelVolunteer(profile)
+
+  Summary.belongsTo(User, {
+    foreignKey: {
+      name: 'refUser'
+    }
+})
+
+  Summary.belongsTo(Writer, {
+      foreignKey: {
+        name: 'refWriter'
+      }
+  })
+
+  Summary.belongsTo(Book, {
+      foreignKey: {
+        name: 'refBook'
+      }
+  });  
+  
+  const summaries = await Summary.findAll({
+    order: [['createdAt', 'DESC']],
+    include: [{
+      association: 'writer',
+      attributes: ['nameWriter'],
+      key: 'refWriter'
+    },{
+      association: 'book',
+      attributes: ['title'],
+      key: 'refBook'
+    },
+    {
+      association: 'user',
+      attributes: ['id', 'fullName'],
+      key: 'refUser'
+    }],
+    nested: true, 
+  })
 
   const ratings = await Rating.findAll({
     raw: true

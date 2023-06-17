@@ -8,6 +8,120 @@ const Writer = require('../model/Writer');
 const Favorite = require('../model/Favorite');
 const User = require('../model/User');
 
+async function searchBook(req, res) {
+  const { fieldSearch } = req.body
+
+  Book.belongsTo(Writer, {
+    foreignKey: {
+      name: 'refWriter'
+    }
+  })
+
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  try {
+    const books = await Book.findAll({
+      where: { 
+        title: {  [Op.like]: `%${fieldSearch}%` }
+      },
+      include: [{
+        association: 'writer',
+        attributes: ['nameWriter'],
+        key: 'refWriter'
+      }],
+      nest: true
+    })
+
+    if (!fieldSearch) {
+      res.render('listAllBook', { 
+        books: books,
+        profile: profile,
+        menu: menu,
+        admin: admin,
+        volunteer: volunteer,
+       })
+  }
+
+  res.render('listAllBook', { 
+    books: books,
+    profile: profile,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+   })
+
+ }catch(error) {
+  res.render('listAllBook', {
+    books: [],
+    profile: profile,
+    menu,
+    admin,
+    volunteer,
+    message: false,
+    messageError: `Não existe: ${fieldSearch}`})
+ } 
+}
+
+async function searchWriter(req, res) {
+  const { fieldSearch } = req.body
+
+  Book.belongsTo(Writer, {
+    foreignKey: {
+      name: 'refWriter'
+    }
+  })
+
+  let profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile);
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+  try {
+    const writers = await Writer.findAll({
+    where: { 
+      nameWriter: {  [Op.like]: `%${fieldSearch}%` }
+    }
+  })
+
+    if (!fieldSearch) {
+      res.render("listAllWriters", {
+        writers: writers,
+        message: false, 
+        messageError: false,
+        menu: menu,
+        admin: admin,
+        volunteer: volunteer,
+        profile: profile
+  })
+  }
+
+  res.render("listAllWriters", {
+    writers: writers,
+    message: false, 
+    messageError: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+})
+
+ }catch(error) {
+  res.render("listAllWriters", {
+    writers: writers,
+    message: false, 
+    messageError: false,
+    menu: menu,
+    admin: admin,
+    volunteer: volunteer,
+    profile: profile
+})
+ } 
+}
+
+
 async function searchSummary(req, res) {
   const { fieldSearch } = req.body
   let summaries = []
@@ -453,7 +567,9 @@ async function getlevelVolunteer(profile) {
     return false
 }
 
-module.exports = { 
+module.exports = {
+  searchBook,
+  searchWriter, 
   searchSummary,
   searchByTitle,
   searchSummaryFavorite,
