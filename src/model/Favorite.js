@@ -29,6 +29,6 @@ const Favorite = connection.define('favorites', {
   }
 })
 
-Favorite.sync({alter: true}).then(() => {})
+Favorite.sync({force: false}).then(() => {})
 
 module.exports = Favorite

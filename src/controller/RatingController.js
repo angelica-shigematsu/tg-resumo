@@ -6,7 +6,7 @@ const Summary = require('../model/Summary')
 const User = require('../model/User')
 
 async function createRating(req, res) {
-  const { ratingStar, note, refUser, refSummary} = req.body
+  const { ratingStar, note, refSummary} = req.body
   try{
     let profile = await getUserInformation(req, res);
     let menu = await getlevelUser(profile);
@@ -18,7 +18,7 @@ async function createRating(req, res) {
       ratingStar,
       note,
       refSummary,
-      refUser
+      refUser: profile.id
     })
     
     const ratings = await Rating.findAll({
@@ -117,12 +117,21 @@ async function getSummary(id) {
 }
 
 async function getRating(id) {
+  Rating.belongsTo(User, {
+    foreignKey: {
+      name: 'refUser'
+    }
+  })
   const ratings = await Rating.findAll({
-    raw: true,
-    order: [['note', 'DESC']],
     where: {
       refSummary: id
-    }
+    },
+    include: [{
+      association: 'user',
+      attributes: ['fullName'],
+      key: 'refUser'
+    }],
+    nested: true
   })
   return ratings
 }

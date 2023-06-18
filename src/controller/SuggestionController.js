@@ -85,12 +85,21 @@ async function getSummary(id) {
 }
 
 async function getRating(id) {
+  Rating.belongsTo(User, {
+    foreignKey: {
+      name: 'refUser'
+    }
+  })
   const ratings = await Rating.findAll({
-    raw: true,
-    order: [['note', 'DESC']],
     where: {
       refSummary: id
-    }
+    },
+    include: [{
+      association: 'user',
+      attributes: ['fullName'],
+      key: 'refUser'
+    }],
+    nested: true
   })
   return ratings
 }

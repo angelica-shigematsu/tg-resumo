@@ -18,6 +18,6 @@ Writer.hasMany(Summary, {
   foreignKey: 'refWriter'
 })
 
-Writer.sync({alter: true}).then(() => {})
+Writer.sync({force: false}).then(() => {})
 
 module.exports = Writer

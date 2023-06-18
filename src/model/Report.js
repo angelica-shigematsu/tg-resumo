@@ -39,6 +39,6 @@ const Report = connection.define('reports', {
   }
 })
 
-Report.sync({alter: true}).then(() => {})
+Report.sync({force: false}).then(() => {})
 
 module.exports = Report

@@ -39,6 +39,6 @@ const CheckSummarys = connection.define('checkSummarys', {
   }
 })
 
-CheckSummarys.sync({alter: true}).then(() => {})
+CheckSummarys.sync({force: false}).then(() => {})
 
 module.exports = CheckSummarys;

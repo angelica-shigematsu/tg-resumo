@@ -35,5 +35,5 @@ const Rating = connection.define('ratings', {
   }
 })
 
-Rating.sync({alter: true}).then(() => {})
+Rating.sync({force: false}).then(() => {})
 module.exports = Rating

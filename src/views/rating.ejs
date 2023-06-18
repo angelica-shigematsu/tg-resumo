@@ -34,7 +34,7 @@
         </div>
         <div class="col-sm-10">
           <label for="" class="col-sm-2 col-form-label">Voluntário</label>
-          <select class="form-select col-sm-6" aria-label="Default select example" name="refUser" required>
+          <select class="form-select col-sm-6" aria-label="Default select example" required>
             <option value="<%=summary.user.id%>"><%=summary.user.fullName%></option>
         </select>
         </div>
@@ -67,8 +67,8 @@
           <button class="btn btnProgress" type="submit" form="form-rating">Cadastrar</button>
         </div>
       </form>
-    <h3>Sugerir Modificação</h3>
       <div  <%if(profile.id == summary.user.id){%> hidden <%}%>>
+        <h3>Sugerir Modificação</h3>
         <form action="/sugestao" id="form-suggestion" method="POST">
           <div class="d-grid">
             <input type="text" value="<%=summary.id%>" name="refSummary" hidden>
@@ -85,16 +85,16 @@
             </div>
           </form>
       </div>
-      <% ratings.forEach(rating => {%>
-        <div class="mb-3 row">
-          <h5>Comentários</h5>
-          <div class="col-sm-10 ">
-          <p>Usuário: <%= summary.user.fullName %></p>
-          <p><%= rating.note %></p>  
-        </div>
-        <hr>
-        <%})%>
     </div>
+    <% ratings.forEach(rating => {%>
+      <div class="mb-3 row">
+        <h5>Comentários</h5>
+        <div class="col-sm-10 ">
+        <p>Usuário: <%= rating.user.fullName %></p>
+        <p><%= rating.note %></p>  
+      </div>
+      <hr>
+      <%})%>
   </div>
 </div>
  
