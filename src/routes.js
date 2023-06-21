@@ -18,6 +18,7 @@ const CheckSummarysController = require('./controller/CheckSummaryController')
 const SuggestionContoller = require('./controller/SuggestionController')
 const ResetPasswordController = require('./controller/ResetPasswordController')
 const SendMailController = require('./controller/SendMailController')
+const HomeController = require('./controller/HomeController')
 
 const { isAdmin, isUser, isAllLevel, isVolunteer, isVolunteerOrAdmin } = require('./middleware/IsAuthenticateByLevel')
 
@@ -79,21 +80,14 @@ routes.post('/logout', function(req, res, next){
   });
 });
 
-routes.get('/menu', isAllLevel, (req, res) => {
+routes.get('/menu', isAllLevel, async (req, res) => {
   if(req.user.active == 'inativo')
     return res.render("index", {error: 'Sua está inativa ou espere alguns dias para avaliação do voluntário'})
-
-  if(req.user.level == 'Usuario') 
-    res.render("homepage", { menu: false, admin: false, volunteer: false, profile: req.user})
-  
-  if (req.user.level == 'Administrador') 
-    res.render("homepage", { menu: true, admin: true, volunteer: false, profile: req.user })
-
-  if (req.user.level == 'Voluntario') 
-    res.render("homepage", { menu: true, admin: false, volunteer: true, profile: req.user })
+   await HomeController.getRecentlySummaryPublished(req, res)
 })
 
 //Routes of Writer não alterar (finalizado)
+
 routes.get('/autor', isVolunteerOrAdmin, WriterController.getInformationMenu)
 routes.post('/autor', isVolunteerOrAdmin, WriterController.createWriter)
 routes.get('/autor/listEscritor/:id', isAllLevel, WriterController.listWriter)
@@ -190,5 +184,7 @@ routes.get('/enviarMensagem', (req, res) => { res.render(views + "sendResetPassw
 routes.post('/enviarMensagem', SendMailController.sendMail)
 
 routes.get('/sobre', (req, res) => res.render(views + "about"))
+
+routes.get('/livro/resumo/listaResumo/:id', isAllLevel, HomeController.getAllSummariesByBook)
 
 module.exports = routes

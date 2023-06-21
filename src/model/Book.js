@@ -12,6 +12,10 @@ const Book = connection.define('books', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  photo_link: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
   refWriter: {
     type: Sequelize.INTEGER,
     allowNull: false,

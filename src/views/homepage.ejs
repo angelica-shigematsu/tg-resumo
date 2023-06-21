@@ -8,15 +8,13 @@
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
+      <%books.forEach((book)=> {%>
+      <a href="/livro/resumo/listaResumo/<%=book.id%>">
       <div class="carousel-item active">
-        <img src="images/isaura.png" class="d-block w-30" alt="...">
+        <img src="<%=book.photo_link%>" class="d-block w-30" alt="...">
       </div>
-      <div class="carousel-item w-40">
-        <img src="images/dom_casmurro.png" class="d-block w-45" alt="...">
-      </div>
-      <div class="carousel-item w-40">
-        <img src="images/hora_estrela.png" class="d-block w-45" alt="...">
-      </div>
+      </a>
+      <%})%>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -27,27 +25,16 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-<div class="d-flex justify-content-around flex-wrap">
-  <div class="flex-legend">
-    <img src="images/hora_estrela.png" alt="" class="item">
-    <img src="images/heart.svg" alt="" class="item-icon">
-    <p>Imagem: Amazon</p>
-  </div>
-  <div class="flex-legend">
-    <img src="images/dom_casmurro.png" alt="" class="item">
-    <img src="images/heart.svg" alt="" class="item-icon">
-    <p>Imagem: Amazon</p>
-  </div>  
-  <div class="flex-legend">
-    <img src="images/capitaes.png" alt="" class="item">
-    <img src="images/heart.svg" alt="" class="item-icon">
-    <p>Imagem: Amazon</p>
-  </div>
-  <div class="flex-legend">
-    <img src="images/isaura.png" alt="" class="item">
-    <img src="images/heart.svg" alt="" class="item-icon">
-    <p>Imagem: Amazon</p>
-  </div>
-</div>
 
+  <div class="d-flex justify-content-around flex-wrap">
+    <%books.forEach((book)=> {%>
+
+        <div class="flex-legend">
+          <a href="/livro/resumo/listaResumo/<%=book.id%>">
+            <img src="<%=book.photo_link%>" alt="" class="item">
+          </a>
+          <p>Imagem: Amazon</p>
+        </div>  
+    <%})%>
+  </div>
 <%- include('partials/footer.ejs') %> 
