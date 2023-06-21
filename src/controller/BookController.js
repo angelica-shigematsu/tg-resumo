@@ -23,13 +23,14 @@ async function getForeignKey(req, res){
 }
 
 async function createBook(req, res){
-  const { title, genre, refWriter } = req.body
+  const { title, genre, refWriter, photo_link } = req.body
 
   try{
     await Book.create({
       title,
       refWriter,
-      genre
+      genre,
+      photo_link
     }).then(() => res.status(200).redirect("/livro/listaLivro"))
   }catch(err){
     res.json(err)

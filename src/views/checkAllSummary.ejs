@@ -1,13 +1,13 @@
 <%- include('partials/nav.ejs')  %> 
 <%- include('partials/header.ejs') %> 
-<%const status = ["Não Avaliado", "Devolvido"]%>
+
 <% if (messageError) { %>
   <div class="alert alert-warning" role="alert">
     <%=messageError%>
   </div>
 <%} else {
   summaries.forEach(summary => { %>
-    <%if(status.includes(summary.status) && profile.id != summary.user.id) {%>
+    <%if(profile.id != summary.user.id) {%>
       <div class="card w-75">
         <div class="card-body">
           <h5 class="card-title">Livro: <%= summary.book.title %></h5>
