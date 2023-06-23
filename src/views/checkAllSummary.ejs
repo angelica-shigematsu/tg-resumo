@@ -10,6 +10,7 @@
     <%if(profile.id != summary.user.id) {%>
       <div class="card w-75">
         <div class="card-body">
+          <p><%= summary.createdAt.getDate() %>/<%= summary.createdAt.getMonth()+1 %>/<%= summary.createdAt.getFullYear() %></p>
           <h5 class="card-title">Livro: <%= summary.book.title %></h5>
           <p>Escritor do resumo: <%=summary.user.fullName%></p>
           <p><%=summary.status%></p>

@@ -68,6 +68,7 @@ async function getInformationAllSummary(req, res) {
     
     const summaries = await Summary.findAll({
       where: { status: 'Não Avaliado'},
+      order: [['createdAt', 'ASC']],
       include: [{
         association: 'book',
         atributes: ['title'],
