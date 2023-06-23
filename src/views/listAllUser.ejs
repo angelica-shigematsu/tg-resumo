@@ -1,10 +1,33 @@
 <%- include('partials/navSearchUser.ejs')  %> 
 <%- include('partials/header.ejs') %> 
 
+<div class="d-flex justify-content-start">
+  <div class="row">
+    <div class="col-sm">
+      <form action="/usuario/status" method="POST" id="form-status-user-ativo">
+        <input type="text" class="form-control" id="active" name="active" value="ativo" hidden>
+        <button class="btn btn-success" type="submit" form="form-status-user-ativo">Usuários Ativos</button>
+      </form>
+    </div>
+    <div class="col-sm-10">
+      <form action="/usuario/status" method="POST" id="form-status-user">
+        <input type="text" class="form-control" id="active" name="active" value="inativo" hidden>
+        <button class="btn btn-warning" type="submit" form="form-status-user">Usuários Pedentes/Usuários Inativos</button>
+      </form>
+    </div>
+  </div>
+</div>
 <% users.forEach(user => { %>
   <div class="card w-75">
     <div class="card-body">
+      <%if(user.level == 'Voluntario' && user.active == 'inativo') {%>
+          <div class="alert alert-warning" role="alert">
+            Pedente
+          </div>
+      <%}%>
       <h5 class="card-title"><%= user.fullName.toUpperCase() %></h5>
+      <p>Nível: <%=user.level%></p>
+      <p>Ativo: <%=user.active%></p>
       <p class="card-text">
         <p>Cadastrou em:</p>
         <p><%= user.createdAt.getDate() %>/<%= user.createdAt.getMonth()+1 %>/<%= user.createdAt.getFullYear() %></p>

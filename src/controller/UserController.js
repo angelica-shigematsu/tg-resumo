@@ -2,7 +2,7 @@ const User = require('../model/User')
 
 async function createVolunteer(req, res, next) {
   const dataCurrently = new Date().getFullYear()
-  const active = 'inativo';
+  let active = 'inativo';
   const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules, emailRepeat } = req.body;
 
   if (level != "Voluntario") active = 'ativo'
@@ -40,7 +40,7 @@ async function createVolunteer(req, res, next) {
     }
   })
 
-  if(existsUser) return res.render('user', { message: false, messageError: "Já tem cadastro com essa conta" })
+  if(existsUser) return res.render('user', { user: user, message: false, messageError: "Já tem cadastro com essa conta" })
 
   try{
     await User.create({
@@ -67,16 +67,40 @@ async function getAge(yearBirth) {
   return date - yearBirth 
 }
 
-async function listVolunteer(req, res) {
-  try {
-  const users = await User.findAll({raw: true, order: [
-    ['fullName', 'ASC']
-    ]
-  });
+async function listVolunteerByStatus(req, res) {
     const profile = await getUserInformation(req, res)
     let menu = await getlevelUser(profile)
     let admin = await getlevelAdmin(profile)
     let volunteer = await getlevelVolunteer(profile)
+    const { active } = req.body
+
+    const users = await User.findAll({
+      raw: true, 
+      where: { active },
+      order: [['createdAt', 'DESC']]
+    })
+
+    res.render("listAllUser", {
+      users: users, 
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer, 
+      profile: profile
+    });
+ 
+};
+
+async function listVolunteer(req, res) {
+  try {
+    const profile = await getUserInformation(req, res)
+    let menu = await getlevelUser(profile)
+    let admin = await getlevelAdmin(profile)
+    let volunteer = await getlevelVolunteer(profile)
+
+    const users = await User.findAll({
+      raw: true, 
+      order: [['createdAt', 'DESC']]
+    })
 
     res.render("listAllUser", {
       users: users, 
@@ -150,5 +174,6 @@ async function getlevelVolunteer(profile) {
 module.exports = { 
   createVolunteer, 
   listVolunteer, 
+  listVolunteerByStatus,
   updateVolunteer 
 }
