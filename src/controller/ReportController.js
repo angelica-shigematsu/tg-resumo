@@ -154,6 +154,7 @@ async function getInformationReport(req, res) {
     let volunteer = await getlevelVolunteer(profile)
 
     const reports = await Report.findAll({
+      where: { status: 'Não Avaliado'}, 
       order: [['createdAt', 'DESC']],
       raw: true,
       nest: true
