@@ -105,6 +105,7 @@ routes.post('/livro/alterar/:id', isVolunteerOrAdmin, BookController.updateBook)
 routes.post('/livro/excluir', isVolunteerOrAdmin, BookController.deleteBook)
 
 //Route of Resumo
+routes.post('/resumo/chooseBook', isAllLevel, SummaryController.showAllBookToRegiterSummary)
 routes.get('/resumo', isAllLevel, SummaryController.showSummary)
 routes.post('/titulo', isAllLevel, SummaryController.searchTitleBook)
 routes.get('/resumo/submit',isAllLevel, (req, res) => res.render(views + "summarySubmit"))
@@ -144,6 +145,7 @@ routes.post('/usuario', UserController.createVolunteer, (req, res, next) => {
   )(req, res, next)
 })
 routes.get('/usuario/listaUsuarios', isAdmin, UserController.listVolunteer)
+routes.post('/usuario/status', isAdmin, UserController.listVolunteerByStatus)
 routes.get('/perfil', isAllLevel, ProfileController.showUserPage)
 routes.get('/usuario/:id', isAllLevel, ProfileController.listProfile)
 routes.post('/usuario/alterar/:id', isAllLevel, UserController.updateVolunteer)

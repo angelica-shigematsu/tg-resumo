@@ -9,7 +9,7 @@ const Summary = require('../model/Summary')
 const User = require('../model/User')
 const Writer = require('../model/Writer')
 
-async function searchTitleBook(req, res) {
+async function showAllBookToRegiterSummary(req, res) {
   const { fieldSearch } = req.body
 
   const profile = await getUserInformation(req, res)
@@ -17,8 +17,41 @@ async function searchTitleBook(req, res) {
   let admin = await getlevelAdmin(profile)
   let volunteer = await getlevelVolunteer(profile)
 
-  try{
-    let book = await findBook(fieldSearch)
+    Book.belongsTo(Writer, {
+      foreignKey: 'refWriter'
+    })
+
+    const books = await Book.findAll({
+      where: { 
+        title: { [Op.like]: `%${fieldSearch}%` }
+      },
+      attributes: ['id', 'title', 'refWriter']
+    })
+
+    res.render("chooseBook", { 
+      books: books,
+      profile: profile,
+      menu: menu,
+      admin: admin,
+      volunteer: volunteer,
+      messageErro: false,
+    })
+  
+}
+
+async function searchTitleBook(req, res) {
+  const { id } = req.body
+
+  const profile = await getUserInformation(req, res)
+  let menu = await getlevelUser(profile)
+  let admin = await getlevelAdmin(profile)
+  let volunteer = await getlevelVolunteer(profile)
+
+    const book = await Book.findOne({
+      where: { id },
+      attributes: ['id', 'title', 'refWriter'],
+    })
+
     let idWriter = book.refWriter
     let writer = await Writer.findOne({ where: { idWriter : idWriter }})
 
@@ -37,25 +70,7 @@ async function searchTitleBook(req, res) {
       volunteer: volunteer,
       messageErro: false,
     })
-  }catch(error){
-    res.render('summary', {
-      messageError: `Não existe este livro ${fieldSearch}`, 
-      profile,
-      menu, 
-      admin,
-      volunteer
-    })
-  }
-}
-
-async function findBook(fieldSearch) {
-  const book = await Book.findOne({
-    where: { 
-      title: { [Op.like]: `%${fieldSearch}%` }
-    },
-    attributes: ['id', 'title', 'refWriter'],
-  })
-  return book
+  
 }
 
 async function createSummary(req, res) {
@@ -438,6 +453,7 @@ module.exports = {
     createSummary, 
     listAllSummary, 
     listSummary, 
+    showAllBookToRegiterSummary,
     showAllSummary,
     showAllSummaryVolunteerToUp,
     listSummariesForEachUser,
