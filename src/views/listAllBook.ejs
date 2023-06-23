@@ -1,15 +1,15 @@
 <%- include('partials/navSearchBook.ejs')  %> 
 <%- include('partials/header.ejs') %> 
-
-<% books.forEach(book => { %>
-  <div class="card w-75">
-    <div class="card-body">
-      <h5 class="card-title">Livro: <%= book.title.toUpperCase() %></h5>
-      <p class="card-text">
-      <p>Autor: <%=book.writer.nameWriter%></p>
-      <a href="/livro/listaLivro/<%= book.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+  <h3>Todos os Livros</h3>
+  <br>
+  <% books.forEach(book => { %>
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Livro: <%= book.title.toUpperCase() %></h5>
+        <p class="card-text">
+        <p>Autor: <%=book.writer.nameWriter%></p>
+        <a href="/livro/listaLivro/<%= book.id%>" class="btn btn-primary" type="submit" form="form-autor">Detalhes</a>
+      </div>
     </div>
-  </div>
-<% }) %>
-
+  <% }) %>
 <%- include('partials/footer.ejs') %> 

@@ -1,6 +1,7 @@
 <%- include('partials/navSearchFavorite.ejs') %>
 <%- include('partials/header.ejs') %> 
-
+<h3>Seus Resumos Favoritados</h3>
+</br>
   <% let arraySummaryFavorite = [] %>
   <%favorites.forEach(favorite => {
      arraySummaryFavorite.push(favorite.refSummary)
@@ -58,5 +59,6 @@
       <% } %>
     <% }) %>
   <% } %>
+
 <%- include('partials/footer.ejs') %> 
 
