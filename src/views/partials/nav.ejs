@@ -17,12 +17,11 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <% if (menu) {%>
-            <li><a class="dropdown-item" href="/autor">Autor</a></li>
-            <li><a class="dropdown-item" href="/livro">Livro</a></li>
-            <li><a class="dropdown-item" href="/questao">Questionários</a></li>
-            <li><a class="dropdown-item" href="/usuario">Usuário</a></li>
+            <li><a class="dropdown-item" href="/autor">Cadastrar Autor</a></li>
+            <li><a class="dropdown-item" href="/livro">Cadastrar Livro</a></li>
+            <li><a class="dropdown-item" href="/questao">Cadastrar Questionários</a></li>
             <%}%>
-            <li><a class="dropdown-item" href="/resumo/usuario">Meus Resumos</a></li>
+            <li><a class="dropdown-item" href="/resumo/usuario">Seus Resumos</a></li>
             <li><a class="dropdown-item" href="/resumo">Cadastrar Resumo</a></li>
           </ul>
         </li>
@@ -42,11 +41,11 @@
               <li><a class="dropdown-item" href="/usuario/listaUsuarios">Lista de Usuários</a></li>
               <li><a class="dropdown-item" href="/denuncia">Lista de Denúncia</a></li>
             <%}%>
-            <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
+            <li><a class="dropdown-item" href="/resumo/favorito">Seus Resumos</a></li>
           </ul>
         </li>
       </ul>
-      <div class="d-lg-flex justify-content-end col">
+      <div class="d-lg-flex justify-content-end">
         <form id="form-search" enctype="application/x-www-form-urlencoded"
           method="POST" action="/nav">
           <div class="mb-3 row">
@@ -58,31 +57,26 @@
             </div>
           </div>
         </form>
-      </div>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <%=profile.fullName%>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li>
-            <a class="dropdown-item" href="/perfil">Perfil</a></li>
-          </li>
-          <% if(volunteer || admin) {%>
-            <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus questionários</a></li>
-          <%}%>
-          <li><a class="dropdown-item" href="/resumo/usuario">Seus resumos</a></li>
-          <li><a class="dropdown-item" href="/resumo/favorito">Resumos favoritos</a></li>
-          <li><a class="dropdown-item" href="/denuncia/usuario">Resumos denunciados</a></li>
-          <li>
-            <div class="nav-item">
-              <form action="/logout"  method="POST">
-                <button type="submit" class="btn btn-light">Logout</button>
-              </form>
-            </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%=profile.fullName%>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+            <% if(volunteer || admin) {%>
+              <li><a class="dropdown-item" href="/questao/usuario/listaQuestionario">Seus <br> Questionários</a></li>
+            <%}%>
+            <li><a class="dropdown-item" href="/resumo/usuario">Seus Resumos</a></li>
+            <li><a class="dropdown-item" href="/resumo/favorito">Seus Resumos <br>Favoritos</a></li>
+            <li><a class="dropdown-item" href="/denuncia/usuario">Seus Resumos <br> Denunciados</a></li>
+              <div class="nav-item">
+                <form action="/logout"  method="POST">
+                  <button type="submit" class="btn btn-light">Logout</button>
+                </form>
+              </div>
             </li>
-          </li>
-        </ul>
-      </li>
+          </ul>
+        </li>
     </div>
   </div>
 </nav>
