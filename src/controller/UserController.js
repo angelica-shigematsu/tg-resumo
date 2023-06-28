@@ -1,11 +1,12 @@
 const User = require('../model/User')
+const bcrypt = require('bcrypt');
 
 async function createVolunteer(req, res, next) {
   const dataCurrently = new Date().getFullYear()
   let active = 'inativo';
-  const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules, emailRepeat } = req.body;
+  const { fullName , userName, cpf, dateBirthUser, email, password, level, reason, rules, emailRepeat, passwordRepeat } = req.body;
 
-  if (level != "Voluntario") active = 'ativo'
+  if (level !== "Voluntario") active = 'ativo'
 
   let user = {
     fullName , 
@@ -20,15 +21,17 @@ async function createVolunteer(req, res, next) {
     emailRepeat
   }
 
+  if(password !== passwordRepeat) return res.render('user', { user, message: false, messageError: "Senha incorreta" })
+
   let dateBirthFormat = new Date(dateBirthUser)
 
-  if (dateBirthFormat.getFullYear() > dataCurrently) res.render('user', { user, message: false, messageError: "Digite data de nascimento válido" })
+  if (dateBirthFormat.getFullYear() > dataCurrently) return res.render('user', { user, message: false, messageError: "Digite data de nascimento válido" })
 
   let dateBirth = new Date(dateBirthUser) 
 
   let age = await getAge(dateBirth.getFullYear());
 
-  if (emailRepeat != email) res.render('user', { user, message: false, messageError: "O email não estão iguais" })
+  if (emailRepeat !== email) return res.render('user', { user, message: false, messageError: "O email não estão iguais" })
 
   if(rules == undefined) return  res.render('user', { user, message: false, messageError: "Precisa aceitar os termos" })
 
@@ -42,23 +45,20 @@ async function createVolunteer(req, res, next) {
 
   if(existsUser) return res.render('user', { user: user, message: false, messageError: "Já tem cadastro com essa conta" })
 
-  try{
+  const passwordCript = await criptPassword(password)
+
     await User.create({
         fullName,
         userName,
         cpf,
         dateBirthUser,
         email,
-        password,
+        password: passwordCript,
         active,
         level, 
         reason
       })
-        
     next();
-    }catch(err){
-      res.json(err)
-    }
 };
 
 async function getAge(yearBirth) {
@@ -169,6 +169,11 @@ async function getlevelVolunteer(profile) {
     return true
   else
     return false
+}
+
+async function criptPassword(password) {
+  const passwordCript = await bcrypt.hash(password, 10);
+  return passwordCript
 }
 
 module.exports = { 

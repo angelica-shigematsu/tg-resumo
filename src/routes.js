@@ -3,6 +3,9 @@ const express = require('express')
 const routes = express.Router()
 
 const views = __dirname + "/views/"
+const bcrypt = require('bcrypt');
+const LocalStrategy = require('passport-local').Strategy;
+
 
 const WriterController = require('./controller/WriterController')
 const UserController = require('./controller/UserController')
@@ -25,7 +28,8 @@ const { isAdmin, isUser, isAllLevel, isVolunteer, isVolunteerOrAdmin } = require
 const session = require('express-session')
 const flash = require('connect-flash')
 
-const passport = require('passport')
+const passport = require('passport');
+const User = require('./model/User');
 
 require('events').EventEmitter.prototype._maxListeners = 70;
 require('events').defaultMaxListeners = 70;
@@ -46,6 +50,24 @@ routes.use(session({
 routes.use(passport.initialize())
 routes.use(passport.session())
 routes.use(flash())
+
+passport.use(
+  new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+    const user = await User.findOne({
+      where: { email: email}
+    })
+
+      // Match password
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: 'Senha errada' });
+        }
+      });
+    })
+);
 
 routes.use((req, res, next) => {
   res.locals.success_msg = req.flash("Sucess message")

@@ -103,13 +103,14 @@ async function listAllBook(req, res) {
 
 async function updateBook(req, res) {
   const { id } =  req.params
-  const { title, genre, refWriter } = req.body
+  const { title, genre, refWriter, photo_link } = req.body
 
   try {
     await Book.update({
       title,
       genre,
-      refWriter
+      refWriter, 
+      photo_link
     }, {
       where: { id: id }
     }).then(book => {
